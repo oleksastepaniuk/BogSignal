@@ -51,8 +51,18 @@ def audit(root):
             assert labels.count == 1 and labels.shape == image.shape
             assert image.crs == labels.crs and image.transform == labels.transform
             assert image.descriptions == tuple(c['name'] for c in plan['channels'])
+            if plan.get('max_missing_fraction', 0) > 0:
+                from .pipeline import patch_coverage
+                with rasterio.open(root / r['input_validity']) as validity:
+                    v = validity.read()
+                    assert validity.crs == image.crs and validity.transform == image.transform
+                assert np.isin(v, [0, 1]).all() and v.shape == image.read().shape
+                assert np.array_equal(v == 1, ~np.ma.getmaskarray(image.read(masked=True)))
+                assert patch_coverage(v.astype(bool), plan['max_missing_fraction'])
+                assert v.reshape(v.shape[0], -1).sum(axis=1).tolist() == r['valid_input_pixels']
             y = labels.read(1)
             assert np.isin(y, [0, 1, 2, 3, 4, 5, 255]).all()
+            assert (y != 255).mean() >= plan.get('min_label_fraction', 0.95)
             counts = np.bincount(y[y != 255], minlength=6)
             assert counts.tolist() == r['counts']
             hist[r['split']] += counts
@@ -72,6 +82,9 @@ def audit(root):
         assert np.isfinite(sample['image']).all()
     stats = json.loads((root / 'normalization.json').read_text())
     assert stats['pixels'] == sum(r['split'] == 'train' for r in records) * 256 * 256
+    if plan.get('max_missing_fraction', 0) > 0:
+        expected = np.sum([r['valid_input_pixels'] for r in records if r['split'] == 'train'], axis=0)
+        assert stats['valid_pixels_per_channel'] == expected.tolist()
     with (root / 'class_distribution.csv').open('w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['split', 'class_id', 'class_name', 'pixels', 'pixel_share', 'substantial_patches', 'class_presence_split_share'])
@@ -129,6 +142,16 @@ coarse. Default Other and other source-map omissions remain uncertain.
 ## Trainable-pixel distribution
 
 '''
+    if plan.get('input_revision'):
+        units = ', '.join(f"{c['name']}: {c['units']}" for c in plan['channels'])
+        readme = readme.replace('S1 linear sigma-0, NISAR linear gamma-0. No dB conversion or clipping.',
+                                'S1 sigma-0 dB, NISAR gamma-0 dB; fixed clipping applied in the input revision.')
+        readme += f"\nInput revision: `{plan['input_revision']}`. Ordered channel units: {units}.\n"
+    if plan.get('max_missing_fraction', 0) > 0:
+        readme = readme.replace('All input pixels pass source and effective sensor-quality validity masks.',
+                                'Each required channel has at least 95% valid input pixels per patch; input-validity masks are exported.')
+        readme += '\nMissing inputs remain NoData on disk. PatchDataset fills zero after normalization and appends channel validity indicators by default (14 predictors + 14 masks = 28 model inputs). Labels remain trainable independently of missing inputs. Use evaluation_valid for joint-valid-pixel scoring.\n'
+    readme = readme.replace('At least 95% of a', 'At least %g%% of a' % (100*plan.get('min_label_fraction', 0.95)))
     (root / 'README.md').write_text(readme + '\n'.join(rows) + '\n' + sampling_section(root))
     print(json.dumps(report, indent=2))
 

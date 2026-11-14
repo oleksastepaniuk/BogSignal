@@ -71,13 +71,65 @@ def allowed_buffer(row, col, blocks):
     own = blocks[row // BLOCK, col // BLOCK]
     return all((blocks.get((r, c), own) == own for r in range(max(0, (row - BUFFER) // BLOCK), (row + SIZE + BUFFER - 1) // BLOCK + 1) for c in range(max(0, (col - BUFFER) // BLOCK), (col + SIZE + BUFFER - 1) // BLOCK + 1)))
 
-def plan(root, out, include_nisar=False):
+def patch_coverage(valid, max_missing_fraction):
+    """Reject if any channel exceeds the missing fraction; equality is accepted."""
+    if not np.isfinite(max_missing_fraction) or not 0 <= max_missing_fraction < 1:
+        raise ValueError('Invalid maximum missing fraction')
+    missing = (~valid).reshape(valid.shape[0], -1).sum(axis=1)
+    return bool(np.all(missing <= max_missing_fraction * valid.shape[-2] * valid.shape[-1]))
+
+
+def channel_masks(channel_list, masks, revision=None):
+    if revision:
+        lookup = {key: item['valid_mask'] for key, item in revision['auxiliary'].items()}
+    else:
+        lookup = dict(zip(['S2', 'S1_ASCENDING', 'S1_DESCENDING', 'NISAR_ASCENDING', 'NISAR_DESCENDING'], masks))
+    return [lookup[c['name'].rsplit('_', 1)[0]] for c in channel_list]
+
+
+def read_input_validity(bands, mask_readers, mask_paths, win, inside=None):
+    arrays = [d.read(1, window=win, masked=True) for d in bands]
+    mask_values = {path: mask_readers[path].read(1, window=win) == 1 for path in set(mask_paths)}
+    valid = np.stack([~np.ma.getmaskarray(a) & np.isfinite(a.data) &
+                      mask_values[path]
+                      for a, path in zip(arrays, mask_paths)])
+    # All polarizations from a pass share the same observation validity.
+    for path in set(mask_paths):
+        indices = [i for i, p in enumerate(mask_paths) if p == path]
+        valid[indices] = valid[indices].all(axis=0)
+    if inside is not None:
+        valid &= inside[None]
+    return arrays, valid
+
+def plan(root, out, include_nisar=False, input_manifest=None, max_missing_fraction=None, label_manifest=None, min_label_fraction=None):
     if (out / 'plan.json').exists():
         raise FileExistsError('Plan exists: choose a new output directory')
-    channel_list = channels(include_nisar)
+    revision_hashes = {}
+    revision = None
+    if input_manifest is not None:
+        from .preprocessing import load_manifest
+        revision, revision_hashes = load_manifest(root, input_manifest)
+    label_path, eligibility_path = LABEL, ELIGIBLE
+    if label_manifest is not None:
+        from .label_ignore import load_label_manifest
+        label_revision, label_hashes = load_label_manifest(root, label_manifest)
+        revision_hashes.update(label_hashes)
+        label_path, eligibility_path = label_revision['labels'], label_revision['eligibility']
+    if min_label_fraction is None:
+        min_label_fraction = 0.8 if revision or label_manifest else 0.95
+    if not np.isfinite(min_label_fraction) or not 0 < min_label_fraction <= 1:
+        raise ValueError('Invalid minimum label fraction')
+    channel_list = revision['channels'] if revision else channels(include_nisar)
     masks = MASKS + ([f'inputs/nisar/NISAR_{p}_polissia_target-20261025_valid_mask.tif' for p in ['ASCENDING', 'DESCENDING']] if include_nisar else [])
-    paths = sorted({c['path'] for c in channel_list} | set(masks) | {LABEL, ELIGIBLE, AOI, OSM})
-    hashes = {p: sha(root / p) for p in paths}
+    if revision:
+        masks = revision['valid_masks']
+    if max_missing_fraction is None:
+        max_missing_fraction = 0.05 if revision else 0.0
+    patch_coverage(np.ones((1, 1, 1), bool), max_missing_fraction)
+    mask_paths = channel_masks(channel_list, masks, revision)
+    paths = sorted({c['path'] for c in channel_list} | set(masks) | {label_path, eligibility_path, AOI, OSM})
+    hashes = dict(revision_hashes)
+    hashes.update({p: sha(root / p) for p in paths})
     candidates = []
     rejected = Counter()
     with ExitStack() as stack:
@@ -91,26 +143,23 @@ def plan(root, out, include_nisar=False):
         for row in range(0, ref.height, 1024):
             for col in range(0, ref.width, 1024):
                 w = Window(col, row, min(1024, ref.width - col), min(1024, ref.height - row))
-                valid = datasets[AOI].read(1, window=w) == 1
-                for p in masks:
-                    valid &= datasets[p].read(1, window=w) == 1
-                if not valid.any():
+                inside = datasets[AOI].read(1, window=w) == 1
+                if not inside.any():
                     continue
-                for c in channel_list:
-                    a = datasets[c['path']].read(1, window=w, masked=True)
-                    valid &= ~np.ma.getmaskarray(a) & np.isfinite(a.data)
-                y = datasets[LABEL].read(1, window=w)
-                eligible = datasets[ELIGIBLE].read(1, window=w) == 1
+                _, valid = read_input_validity([datasets[c['path']] for c in channel_list],
+                                                datasets, mask_paths, w, inside)
+                y = datasets[label_path].read(1, window=w)
+                eligible = datasets[eligibility_path].read(1, window=w) == 1
                 if np.any(eligible & ~np.isin(y, range(6))):
                     raise ValueError('Invalid eligible class')
                 for r in range(0, int(w.height) - SIZE + 1, SIZE):
                     for c in range(0, int(w.width) - SIZE + 1, SIZE):
                         sl = np.s_[r:r + SIZE, c:c + SIZE]
-                        if not valid[sl].all():
+                        if not inside[sl].all() or not patch_coverage(valid[(slice(None),) + sl], max_missing_fraction):
                             rejected['invalid_input'] += 1
                             continue
-                        if eligible[sl].mean() < 0.95:
-                            rejected['label_fraction_below_95pct'] += 1
+                        if eligible[sl].mean() < min_label_fraction:
+                            rejected['label_fraction_below_minimum'] += 1
                             continue
                         candidates.append(dict(row=row + r, col=col + c, block=[(row + r) // BLOCK, (col + c) // BLOCK], counts=np.bincount(y[sl][eligible[sl]], minlength=6).tolist()))
     print(f'{len(candidates)} input-valid candidates scanned', flush=True)
@@ -207,7 +256,13 @@ def plan(root, out, include_nisar=False):
     totals = np.sum([summary[s]['substantial_class_patches'] for s in SPLITS], axis=0)
     for s in SPLITS:
         summary[s]['per_class_presence_split_shares'] = (np.array(summary[s]['substantial_class_patches']) / totals).tolist()
-    result = dict(version=2, channels=channel_list, valid_masks=masks, grid=grid, input_sha256=hashes, patch_size=SIZE, block_size=BLOCK, buffer=BUFFER, seed=chosen_seed, seed_search_count=128, split_score=score, class_presence_threshold=0.05, split_targets=FRACTIONS.tolist(), min_label_fraction=0.95, patches=selected, summary=summary, rejections=dict(rejected))
+    result = dict(version=2, channels=channel_list, valid_masks=masks, channel_valid_masks=mask_paths, max_missing_fraction=max_missing_fraction, grid=grid, input_sha256=hashes, patch_size=SIZE, block_size=BLOCK, buffer=BUFFER, seed=chosen_seed, seed_search_count=128, split_score=score, class_presence_threshold=0.05, split_targets=FRACTIONS.tolist(), min_label_fraction=min_label_fraction, label_path=label_path, eligibility_path=eligibility_path, patches=selected, summary=summary, rejections=dict(rejected))
+    if label_manifest:
+        result['label_revision'] = str(label_manifest.relative_to(root))
+    if revision:
+        result['input_revision'] = str(input_manifest.relative_to(root))
+        result['preprocessing_policy'] = revision['policy']
+        result['auxiliary'] = revision['auxiliary']
     out.mkdir(parents=True, exist_ok=True)
     save(out / 'plan.json', result)
     save(out / 'candidates.json', candidates)
@@ -218,6 +273,8 @@ def add_nisar(root, out, base):
     if (out / 'plan.json').exists():
         raise FileExistsError('Plan exists')
     plan = json.loads(base.read_text())
+    if plan.get('max_missing_fraction', 0) > 0:
+        raise ValueError('Use a complete input manifest to plan partial-input channels together')
     for p, digest in plan['input_sha256'].items():
         if sha(root / p) != digest:
             raise ValueError(f'Base input changed: {p}')
@@ -274,32 +331,50 @@ def export(root, out):
     sums = np.zeros(nc)
     squares = np.zeros(nc)
     n = 0
+    counts_valid = np.zeros(nc, dtype='int64')
+    partial = plan.get('max_missing_fraction', 0) > 0
     with ExitStack() as stack:
         bands = [stack.enter_context(rasterio.open(root / c['path'])) for c in plan['channels']]
-        label = stack.enter_context(rasterio.open(root / LABEL))
-        eligible = stack.enter_context(rasterio.open(root / ELIGIBLE))
+        label = stack.enter_context(rasterio.open(root / plan.get('label_path', LABEL)))
+        eligible = stack.enter_context(rasterio.open(root / plan.get('eligibility_path', ELIGIBLE)))
         masks = [stack.enter_context(rasterio.open(root / p)) for p in plan.get('valid_masks', MASKS)]
         for i, p in enumerate(plan['patches']):
             w = Window(p['col'], p['row'], SIZE, SIZE)
-            layers = []
-            for d, c in zip(bands, plan['channels']):
-                a = d.read(1, window=w, masked=True)
-                if np.ma.getmaskarray(a).any() or not np.isfinite(a.data).all():
-                    raise ValueError('Invalid input patch')
-                layers.append(a.data.astype('float32') * np.float32(c['scale']))
-            if not all(((d.read(1, window=w) == 1).all() for d in masks)):
-                raise ValueError('Invalid sensor mask')
-            x = np.stack(layers)
-            y = np.where(eligible.read(1, window=w) == 1, label.read(1, window=w), 255).astype('uint8')
+            if partial:
+                mask_paths = plan['channel_valid_masks']
+                mask_readers = dict(zip(plan['valid_masks'], masks))
+                arrays, input_valid = read_input_validity(bands, mask_readers, mask_paths, w)
+                if not patch_coverage(input_valid, plan['max_missing_fraction']):
+                    raise ValueError('Input patch exceeds missing-channel limit')
+                x = np.stack([np.where(v, a.data.astype('float32') * np.float32(c['scale']), -9999)
+                              for a, c, v in zip(arrays, plan['channels'], input_valid)])
+            else:
+                layers = []
+                for d, c in zip(bands, plan['channels']):
+                    a = d.read(1, window=w, masked=True)
+                    if np.ma.getmaskarray(a).any() or not np.isfinite(a.data).all():
+                        raise ValueError('Invalid input patch')
+                    layers.append(a.data.astype('float32') * np.float32(c['scale']))
+                if not all(((d.read(1, window=w) == 1).all() for d in masks)):
+                    raise ValueError('Invalid sensor mask')
+                x = np.stack(layers)
+                input_valid = np.ones(x.shape, dtype=bool)
+            label_valid = eligible.read(1, window=w) == 1
+            if label_valid.mean() < plan.get('min_label_fraction', 0.95):
+                raise ValueError('Patch below minimum trainable label coverage')
+            y = np.where(label_valid, label.read(1, window=w), 255).astype('uint8')
             assert np.isin(y, [0, 1, 2, 3, 4, 5, 255]).all()
             profile = dict(driver='GTiff', width=SIZE, height=SIZE, crs=label.crs, transform=transform(w, label.transform), compress='deflate', tiled=True, blockxsize=128, blockysize=128)
             paths = {}
-            for kind, array in [('images', x), ('labels', y[None])]:
+            arrays_to_write = [('images', x), ('labels', y[None])]
+            if partial:
+                arrays_to_write.append(('input_validity', input_valid.astype('uint8')))
+            for kind, array in arrays_to_write:
                 dest = out / p['split'] / kind / (p['id'] + '.tif')
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 if not dest.exists():
                     tmp = dest.with_suffix('.partial.tif')
-                    with rasterio.open(tmp, 'w', **profile, count=array.shape[0], dtype=str(array.dtype), nodata=255 if kind == 'labels' else None) as d:
+                    with rasterio.open(tmp, 'w', **profile, count=array.shape[0], dtype=str(array.dtype), nodata=255 if kind == 'labels' else -9999 if kind == 'images' and partial else None) as d:
                         d.write(array)
                         if kind == 'images':
                             d.descriptions = tuple((c['name'] for c in plan['channels']))
@@ -311,23 +386,26 @@ def export(root, out):
                         raise ValueError(f'Patch mismatch: {dest}')
                 paths[kind] = str(dest.relative_to(out))
             if p['split'] == 'train':
-                values = x.astype('float64').reshape(nc, -1)
+                values = np.where(input_valid, x, 0).astype('float64').reshape(nc, -1)
+                counts_valid += input_valid.reshape(nc, -1).sum(axis=1)
                 sums += values.sum(axis=1)
                 squares += (values * values).sum(axis=1)
                 n += values.shape[1]
-            records.append(dict(p, **paths))
+            records.append(dict(p, **paths, valid_input_pixels=input_valid.reshape(nc, -1).sum(axis=1).tolist()))
             if i % 250 == 0:
                 print(f"Exported {i + 1}/{len(plan['patches'])}", flush=True)
-    mean = sums / n
-    std = np.sqrt(np.maximum(squares / n - mean * mean, 0))
-    save(out / 'normalization.json', dict(channels=[c['name'] for c in plan['channels']], mean=mean.tolist(), std=std.tolist(), pixels=n, scope='training patches only; physical units'))
+    if np.any(counts_valid == 0):
+        raise ValueError('No valid training pixels for a channel')
+    mean = sums / counts_valid
+    std = np.sqrt(np.maximum(squares / counts_valid - mean * mean, 0))
+    save(out / 'normalization.json', dict(channels=[c['name'] for c in plan['channels']], mean=mean.tolist(), std=std.tolist(), pixels=n, valid_pixels_per_channel=counts_valid.tolist(), scope='valid training pixels only; physical units'))
     with (out / 'index.jsonl').open('w') as f:
         for r in records:
             f.write(json.dumps(r) + '\n')
     for p, digest in plan['input_sha256'].items():
         if sha(root / p) != digest:
             raise ValueError(f'Input changed during build: {p}')
-    save(out / 'complete.json', dict(patches=len(records), summary=plan['summary'], plan_sha256=sha(out / 'plan.json'), validation='every exported image and label pixel read back; every selected sensor pixel valid; source hashes unchanged'))
+    save(out / 'complete.json', dict(patches=len(records), summary=plan['summary'], plan_sha256=sha(out / 'plan.json'), validation='every exported image and label pixel read back; per-channel input coverage verified; source hashes unchanged'))
     print('Dataset complete', flush=True)
 
 def main():
@@ -337,17 +415,27 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--base-plan', type=Path)
     p.add_argument('--include-nisar', action='store_true')
+    p.add_argument('--input-manifest', type=Path, help='Completed preprocessed input revision; plan only')
+    p.add_argument('--label-manifest', type=Path, help='Completed label revision; plan only')
+    p.add_argument('--min-label-fraction', type=float, help='Trainable labels; defaults to 0.8 for revised inputs/labels, else 0.95')
+    p.add_argument('--max-missing-fraction', type=float, help='Per channel; defaults to 0.05 with input manifest, otherwise 0')
     a = p.parse_args()
     root = a.data_root.resolve()
     out = a.output.resolve()
     if not out.is_relative_to(root / 'dataset') or out == root / 'dataset':
         p.error('Output must be a named directory under data/dataset')
+    if (a.label_manifest or a.min_label_fraction is not None) and a.action != 'plan':
+        p.error('--label-manifest and --min-label-fraction are only accepted for plan')
+    if a.max_missing_fraction is not None and a.action != 'plan':
+        p.error('--max-missing-fraction is only accepted for plan')
+    if a.input_manifest and a.action != 'plan':
+        p.error('--input-manifest is only accepted for plan')
     if a.action == 'add-nisar':
         if a.base_plan is None:
             p.error('--base-plan is required for add-nisar')
         add_nisar(root, out, a.base_plan.resolve())
     elif a.action == 'plan':
-        plan(root, out, a.include_nisar)
+        plan(root, out, a.include_nisar, a.input_manifest.resolve() if a.input_manifest else None, a.max_missing_fraction, a.label_manifest.resolve() if a.label_manifest else None, a.min_label_fraction)
     else:
         export(root, out)
 if __name__ == '__main__':

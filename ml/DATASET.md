@@ -1,8 +1,34 @@
 # Dataset preparation
 
-**Current dataset:** `data/dataset/s1s2nisar_256_v3` (from repository root).
+**Current dataset:** `data/dataset/s1s2nisar_256_v4` (completed and audited 2026-11-14).
 
-**Current training sampler:** `training_sampling.json`, `plan.json` and
+- 14 saved image channels; partial-data loader appends 14 validity indicators by
+  default, giving 28 model inputs. Labels are a separate single-channel raster.
+- Fresh geographic splits: 2,609 train, 585 validation,
+  559 test patches; 256 x 256 pixels at 20 m EPSG:3035.
+- Corrected dB radar inputs, conservative hole filling, one-pixel outer Other
+  ignore fringe, minimum 80% trainable labels and 95% valid imagery per channel.
+- Normalization fitted only on valid training imagery, separately per channel.
+  Training sampling retains the established 75% minority-rich / 25% background
+  draw policy; validation and test are evaluated uniformly.
+- V3 remains preserved. Raw v3/v4 model scores do not isolate preprocessing
+  effects because geographic splits and labels changed.
+
+See [dataset creation](../docs/dataset_creation.md) for reproduction and validation,
+and [channels and labels](../docs/dataset_creation.md#channel-and-label-reference)
+for the exact channel order, units, validity masks and label codes. The dataset's
+`plan.json`, `normalization.json`, `training_sampling.json`, `audit.json`,
+`label_coverage_comparison.json`, and generated `README.md` contain final details.
+`data/dataset/CURRENT.json` selects v4.
+
+## Previous v3 dataset: retained reference
+
+The following describes the preserved v3 release. Its commands select old linear
+power inputs and must not be used to recreate v4.
+
+**Previous dataset:** `data/dataset/s1s2nisar_256_v3` (from repository root).
+
+**Previous v3 training sampler:** `training_sampling.json`, `plan.json` and
 `index.jsonl` contain the same updated weights. It draws 75% probability from 1,249 patches with at
 least one minority class occupying 5% of the whole patch, and 25% from the remaining
 1,174 background-heavy patches. The positive pool is an equal mixture of five

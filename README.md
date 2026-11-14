@@ -8,6 +8,8 @@ We aim to combine radar and optical observations to study wetland extent and cha
 - `web/` — future map-based visualization.
 - `data/` — local datasets; large or restricted data must stay out of Git.
 
+Dataset creation: [versioned workflow](docs/dataset_creation.md) and [existing v3 details](ml/DATASET.md). V4 is completed and audited, with 3,753 patches in fresh geographic splits; v3 remains preserved.
+
 ## Python setup
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first. It manages Python, dependencies, and the local virtual environment.
@@ -80,3 +82,5 @@ npm run preview
 The build is written to `web/dist/`. The preview command serves that build locally for checking; it does not publish the app.
 
 Commit `package.json` and `package-lock.json` when dependencies change. Keep `node_modules/` and `dist/` local; both are ignored by Git.
+
+Inference workflow: [OSM wetland inspection and Polissia mapping](ml/inference/README.md). Uses frozen v4 inputs; a trained model adapter/checkpoint is required.
