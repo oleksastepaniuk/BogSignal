@@ -218,3 +218,43 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+data/
+
+# BogSignal: frontend dependencies and generated output
+node_modules/
+web/dist/
+web/build/
+web/.next/
+web/coverage/
+
+# Credentials and machine-local configuration
+.env.*
+!.env.example
+config/local/
+configs/local/
+*.pem
+*.key
+*credentials*.json
+*token*.json
+
+# Local data: only reviewed samples and manifests may be tracked
+/data/*
+!/data/samples/
+!/data/manifests/
+!/data/README.md
+
+# Large geospatial assets and model artifacts (including samples)
+*.tif
+*.tiff
+*.h5
+*.hdf5
+*.nc
+*.zarr/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+/ml/outputs/
+/ml/checkpoints/
+/ml/runs/

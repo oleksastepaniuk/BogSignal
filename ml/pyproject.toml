@@ -1,0 +1,25 @@
+[project]
+name = "bogsignal"
+version = "0.1.0"
+description = "Experimental satellite-based wetland mapping for Polissia."
+requires-python = ">=3.11"
+dependencies = [
+    "asf-search",
+    "duckdb",
+    "earthaccess",
+    "earthengine-api>=1.7.52",
+    "geopandas",
+    "h5py",
+    "numpy",
+    "pyarrow",
+    "pyproj",
+    "rasterio",
+    "shapely>=2.1",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
