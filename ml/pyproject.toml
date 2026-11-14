@@ -21,5 +21,8 @@ dependencies = [
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
+[project.scripts]
+bogsignal-dataset = "bogsignal.dataset.pipeline:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
