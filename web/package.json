@@ -13,5 +13,8 @@
   },
   "devDependencies": {
     "vite": "^8.3.8"
+  },
+  "dependencies": {
+    "mapbox-gl": "^3.35.0"
   }
 }
