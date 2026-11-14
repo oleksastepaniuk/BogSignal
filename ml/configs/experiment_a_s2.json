@@ -1,0 +1,21 @@
+{
+  "experiment": "A_sentinel2",
+  "dataset": "../data/dataset/s1s2nisar_256_v4",
+  "output": "../data/experiments/A_s2_resnet34_seed17",
+  "channels": ["S2_B2", "S2_B3", "S2_B4", "S2_B8", "S2_B11", "S2_B12"],
+  "seed": 17,
+  "epochs": 50,
+  "patience": 10,
+  "min_epochs": 15,
+  "batch_size": 16,
+  "workers": 4,
+  "encoder_lr": 0.0001,
+  "decoder_lr": 0.001,
+  "weight_decay": 0.0001,
+  "loss": "cross_entropy",
+  "ignore_index": 255,
+  "decoder_channels": [256, 128, 64, 32, 16],
+  "augmentation": "random horizontal/vertical flips and quarter turns",
+  "precision": "bfloat16",
+  "evaluate_test": false
+}
