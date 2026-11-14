@@ -12,11 +12,18 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 9vw, 5rem); letter-spacing: -0
 p { line-height: 1.7; font-size: 1.125rem; }
 .eyebrow { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; }
 
-.cover { min-height: 100svh; display: grid; place-content: center; max-width: 42rem; margin: 0 auto; padding: 2rem; }
+.cover {
+  min-height: 100svh; display: grid; place-content: center;
+  grid-template-columns: minmax(0, 42rem); padding: 2rem;
+  color: #fff; text-shadow: 0 1px 12px rgb(0 0 0 / 0.4);
+  background:
+    linear-gradient(rgb(12 32 26 / 0.45), rgb(12 32 26 / 0.7)),
+    url('/images/cover-river-wetland.jpg') center / cover no-repeat #193b32;
+}
 
 .nav {
   position: sticky; top: 0; z-index: 1;
-  display: flex; justify-content: center; gap: 2rem;
+  display: flex; justify-content: safe center; gap: 2rem;
   padding: 1rem; background: #f3f6f0; border-bottom: 1px solid #c9d4c4;
   overflow-x: auto;
 }
