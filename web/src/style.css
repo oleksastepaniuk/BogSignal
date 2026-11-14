@@ -1,0 +1,14 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #193b32;
+  background: #f3f6f0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100svh; display: grid; place-items: center; padding: 2rem; }
+main { width: 100%; max-width: 42rem; }
+h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 9vw, 5rem); letter-spacing: -0.05em; }
+p { line-height: 1.7; font-size: 1.125rem; }
+.eyebrow { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; }
+.status { margin-top: 2rem; color: #4d655b; }

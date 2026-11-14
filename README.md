@@ -38,3 +38,45 @@ source .venv/bin/activate
 In Windows PowerShell, use `.venv\Scripts\Activate.ps1`. Run `deactivate` when finished. In your editor, select the Python interpreter inside `ml/.venv/`.
 
 Commit `pyproject.toml` and `uv.lock` when dependencies change; keep `.venv/`, credentials, and downloaded datasets local.
+
+## Web setup
+
+The web app uses Vite and plain JavaScript. It currently shows a simple BogSignal landing page; the interactive map is planned.
+
+### Install Node.js
+
+Install [Node.js 24 LTS](https://nodejs.org/en/download), which includes npm. If you work in WSL, install Node.js inside your WSL distribution. Check that both tools are available:
+
+```bash
+node --version
+npm --version
+```
+
+The web environment is separate from Python. Dependencies live in `web/node_modules/`; no Python environment activation is needed. The `.nvmrc` file records the Node.js version for people using nvm.
+
+### Run locally
+
+From the repository root:
+
+```bash
+cd web
+npm ci
+npm run dev
+```
+
+`npm ci` installs the versions recorded in `package-lock.json`. Run it on first setup and after pulling dependency changes.
+
+Open the local address printed in the terminal (usually `http://localhost:5173`). The page updates as you edit files in `web/src/`. Press Ctrl+C to stop the server.
+
+### Build and preview
+
+From `web/`:
+
+```bash
+npm run build
+npm run preview
+```
+
+The build is written to `web/dist/`. The preview command serves that build locally for checking; it does not publish the app.
+
+Commit `package.json` and `package-lock.json` when dependencies change. Keep `node_modules/` and `dist/` local; both are ignored by Git.
