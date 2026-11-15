@@ -140,4 +140,54 @@ setupDemo().catch(error=>{
   console.error(error);
 });
 
+async function setupSeasonal() {
+  const response = await fetch(import.meta.env.BASE_URL+'seasonal/manifest.json');
+  if (!response.ok) throw new Error('Seasonal examples unavailable');
+  const {examples} = await response.json();
+  const names = {cheremske:'Cheremske',somyne:'Somyne',syra_pohonia:'Syra Pohonia'};
+  const sites = Object.keys(names);
+  for (const site of sites) {
+    if (examples.filter(row=>row.site===site).length!==2) throw new Error(`Expected two ${site} examples`);
+  }
+  const host=$('seasonal-examples');
+  host.innerHTML=`
+    <fieldset><legend>Choose a site</legend><div class="choices" id="seasonal-sites">
+      ${sites.map((site,i)=>`<button type="button" data-site="${site}" aria-pressed="${i===0}">${names[site]}</button>`).join('')}
+    </div></fieldset>
+    <fieldset><legend>Choose a sampled patch</legend><div class="choices" id="seasonal-patches">
+      <button type="button" data-patch="0" aria-pressed="true">Example 1</button>
+      <button type="button" data-patch="1" aria-pressed="false">Example 2</button>
+    </div></fieldset>
+    <p id="seasonal-caption" class="note" aria-live="polite"></p>
+    <div class="seasonal-grid">
+      <figure><img id="seasonal-june" width="256" height="256" alt=""><figcaption>June prediction</figcaption></figure>
+      <figure><img id="seasonal-october" width="256" height="256" alt=""><figcaption>October prediction</figcaption></figure>
+      <figure><img id="seasonal-change" width="256" height="256" alt=""><figcaption>Swamp/Marsh prediction changes</figcaption></figure>
+    </div>
+    <p class="legend seasonal-legend"><span style="--swatch:#197b49">Predicted Swamp/Marsh</span><span style="--swatch:#2879b9">Predicted water</span><span style="--swatch:#3470ad">New Swamp/Marsh prediction</span><span style="--swatch:#c7673c">Lost Swamp/Marsh prediction</span></p>
+    <p class="note">The left and middle panels use the same land-cover colors as the earlier examples. In the right panel, gray means no Swamp/Marsh classification change. Blue and orange describe a change in the model's prediction, not confirmed change on the ground.</p>`;
+  let site=sites[0], patch=0;
+  function render() {
+    const row=examples.filter(item=>item.site===site)[patch];
+    for (const key of ['june','october','change']) {
+      const image=$('seasonal-'+key);
+      image.src=`${import.meta.env.BASE_URL}seasonal/${site}-${row.id}-${key}.png`;
+      image.alt=`${names[site]} example ${patch+1}: ${key} ${key==='change'?'Swamp and Marsh prediction changes':'land-cover prediction'} on the shared valid area`;
+    }
+    const area=(row.compared_pixels*0.0004).toFixed(2);
+    const june=(row.june_wetland_pixels*0.0004).toFixed(2);
+    const october=(row.october_wetland_pixels*0.0004).toFixed(2);
+    $('seasonal-caption').textContent=`${names[site]} / example ${patch+1} (${row.id}). Compared area: ${area} km². Predicted Swamp/Marsh: ${june} km² in June, ${october} km² in October.`;
+    document.querySelectorAll('#seasonal-sites button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.site===site)));
+    document.querySelectorAll('#seasonal-patches button').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.patch)===patch)));
+  }
+  host.querySelectorAll('#seasonal-sites button').forEach(button=>button.addEventListener('click',()=>{site=button.dataset.site;patch=0;render();}));
+  host.querySelectorAll('#seasonal-patches button').forEach(button=>button.addEventListener('click',()=>{patch=Number(button.dataset.patch);render();}));
+  render();
+}
+setupSeasonal().catch(error=>{
+  $('seasonal-examples').textContent='Site comparisons could not load. Please reload the page.';
+  console.error(error);
+});
+
 setupLandscape().catch(error=>{document.getElementById('map-status').textContent='The regional map could not load. Please reload the page.';console.error(error);});

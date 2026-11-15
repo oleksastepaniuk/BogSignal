@@ -71,6 +71,29 @@ The full-resolution 20 m source outputs stay in data/inference.
 Map verification: with the site running, execute `node scripts/check_map.mjs`
 using the same optional PLAYWRIGHT_MODULE setting as the other browser checks.
 
+## Provisional June–October site examples
+
+The "A first step toward better-informed conservation" section shows two
+sampled patch comparisons each for Cheremske, Somyne and Syra Pohonia. The
+frozen model D checkpoint uses unchanged Sentinel-2 and Sentinel-1 inputs;
+only provisional June/October NISAR HH/HV observations change. The third panel
+shows predicted Swamp/Marsh gains and losses on pixels valid at both dates.
+These are selected illustrations, not site-wide or field-verified change maps.
+
+The site boxes come from Argos `data/targets/polesia_restoration_sites_bbox.geojson`.
+The complete counts and limitations are in
+`docs/site_provisional_june_oct_2026.md`. To reproduce the local counts and
+then export the six checked-in image sets from BogSignal/ml:
+
+```sh
+PYTHONPATH=src .venv/bin/python compare_site_provisional.py
+PYTHONPATH=src .venv/bin/python compare_site_provisional.py --export-selected
+```
+
+The first command requires its output directory to be absent and does not overwrite
+an existing report; the second uses its saved counts to select the two examples
+per site. The public manifest records source dates and the selection rule.
+
 
 ## Original-resolution swipe backgrounds
 
