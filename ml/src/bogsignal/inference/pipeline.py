@@ -107,6 +107,7 @@ def run(root,out,predictor,checkpoint,score_kind='logits'):
     size,halo=spec['patch_size'],spec['halo']
     nc=len(spec['channels'])
     targets=gpd.read_file(out/spec['targets']);geometry=targets.geometry.union_all()
+    geojson_geometry=mapping(geometry)
     grid=spec['grid'];affine=rasterio.Affine(*grid['transform'])
     profile=dict(driver='GTiff',height=grid['height'],width=grid['width'],crs=grid['crs'],transform=affine,
                  tiled=True,blockxsize=128,blockysize=128,compress='deflate',BIGTIFF='IF_SAFER',SPARSE_OK='TRUE')
@@ -122,7 +123,7 @@ def run(root,out,predictor,checkpoint,score_kind='logits'):
         writers['probabilities'].descriptions=tuple(NAMES)
         for i,(row,col,height,width) in enumerate(spec['tiles']):
             core_win=Window(col,row,width,height)
-            roi=geometry_mask([mapping(geometry)],out_shape=(height,width),transform=transform(core_win,affine),invert=True)
+            roi=geometry_mask([geojson_geometry],out_shape=(height,width),transform=transform(core_win,affine),invert=True)
             roi &= aoi.read(1,window=core_win)==1
             if not roi.any():
                 continue
