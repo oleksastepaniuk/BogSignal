@@ -149,7 +149,7 @@ async function setupSeasonal() {
   for (const site of sites) {
     if (examples.filter(row=>row.site===site).length!==1) throw new Error(`Expected one ${site} example`);
   }
-  const viewNames={prediction:'Model prediction',s2:'Sentinel-2 RGB',s1:'Sentinel-1 VV',nisar:'NISAR HH/HV false color'};
+  const viewNames={prediction:'Model predictions',nisar:'NISAR HH/HV false color',s2:'Sentinel-2 RGB',s1:'Sentinel-1 VV'};
   const host=$('seasonal-examples');
   host.innerHTML=`
     <fieldset><legend>Choose a site</legend><div class="choices" id="seasonal-sites">
@@ -160,10 +160,17 @@ async function setupSeasonal() {
     </div></fieldset>
     <p id="seasonal-caption" class="note" aria-live="polite"></p>
     <div class="seasonal-grid" id="seasonal-grid">
-      <figure><img id="seasonal-june" width="256" height="256" alt=""><figcaption id="seasonal-june-label">June prediction</figcaption></figure>
-      <figure><img id="seasonal-october" width="256" height="256" alt=""><figcaption id="seasonal-october-label">October prediction</figcaption></figure>
-      <figure id="seasonal-change-figure"><img id="seasonal-change" width="256" height="256" alt=""><figcaption>Swamp/Marsh prediction changes</figcaption></figure>
+      <figure><img id="seasonal-june" width="256" height="256" alt=""><figcaption id="seasonal-june-label">June 2026</figcaption></figure>
+      <figure><img id="seasonal-october" width="256" height="256" alt=""><figcaption id="seasonal-october-label">October 2026</figcaption></figure>
+      <div class="seasonal-change-panel"><figure id="seasonal-change-figure"><img id="seasonal-change" width="256" height="256" alt=""><figcaption>Changes in wetland predictions</figcaption></figure>
+    <div class="seasonal-change-legend" aria-label="Changes in wetland predictions legend">
+      <span><i class="change-swatch change-new" aria-hidden="true"></i>Newly predicted Swamp/Marsh</span>
+      <span><i class="change-swatch change-lost" aria-hidden="true"></i>No longer predicted Swamp/Marsh</span>
+      <span><i class="change-swatch change-same" aria-hidden="true"></i>No Swamp/Marsh membership change</span>
+      <span><i class="change-swatch change-missing" aria-hidden="true"></i>Missing imagery at one or both dates</span>
+    </div></div>
     </div>
+    <p>The third panel highlights where the model newly identifies Swamp/Marsh or no longer predicts it. <strong>These differences do not necessarily indicate actual wetland expansion or loss.</strong></p>
     <p id="seasonal-key" class="note"></p>
     <details class="map-notes"><summary>Image dates and display details</summary><p id="seasonal-dates" class="note"></p></details>`;
   let site=sites[0], view='prediction';
@@ -173,17 +180,17 @@ async function setupSeasonal() {
       const image=$('seasonal-'+month);
       image.src=`${import.meta.env.BASE_URL}seasonal_full/${row.files[month+'_'+view].filename}`;
       image.alt=`${names[site]} full patch in ${month}: ${viewNames[view]}`;
-      $('seasonal-'+month+'-label').textContent=`${month==='june'?'June':'October'} ${viewNames[view].toLowerCase()}`;
+      $('seasonal-'+month+'-label').textContent=`${month==='june'?'June':'October'} 2026`;
     }
     $('seasonal-change').src=`${import.meta.env.BASE_URL}seasonal_full/${row.files.change.filename}`;
     $('seasonal-change').alt=`${names[site]} full patch: predicted Swamp and Marsh gains and losses between June and October`;
-    $('seasonal-caption').textContent=`${names[site]}: one full 5.12 km square, including surrounding land. June and October use the same map grid.`;
+    $('seasonal-caption').textContent='Each comparison covers a 5.12 × 5.12 km area on the same map grid.';
     $('seasonal-key').textContent=view==='prediction'
       ? `Green = predicted Swamp/Marsh; gray = Other; blue = water; ochre and purple = peatland classes. In the change panel, blue = newly predicted Swamp/Marsh, orange = no longer predicted, gray = no wetland-class change. White = unavailable at one or both dates.`
       : view==='s2' ? 'Sentinel-2 model-grid RGB uses B4/B3/B2 with the same 0–0.3 reflectance stretch in both months. White = cloud-screened or missing.'
       : view==='s1' ? 'Sentinel-1 ascending VV backscatter, shown at a fixed −30 to 0 dB grayscale stretch. Descending VV/VH also enter the model.'
       : 'Illustrative false color from ascending NISAR: red = HH, green = HV, blue = HH−HV contrast. Both ascending and descending HH/HV enter the model. Colors are radar signals, not land-cover classes.';
-    if(view!=='prediction') $('seasonal-key').textContent+=' The Difference panel always shows the model prediction change.';
+    if(view!=='prediction') $('seasonal-key').textContent+=' The third panel always shows changes in wetland predictions.';
     const dateLine=month=>{
       const d=row.dates[month];
       return `${month==='june'?'June':'October'} — Sentinel-2: ${d.s2.join(', ')}; Sentinel-1 ascending/descending: ${d.s1_ascending.join(', ')} / ${d.s1_descending.join(', ')}; provisional NISAR ascending/descending: ${d.nisar_ascending.join(', ')} / ${d.nisar_descending.join(', ')}.`;

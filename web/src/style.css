@@ -242,5 +242,15 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .secondary-link:hover { color:white; }
 
 .cover { position:relative; }
+.seasonal-grid { grid-template-columns:1fr 1fr 1.65fr; }
+.seasonal-change-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(7rem,.65fr); gap:.75rem; align-items:start; min-width:0; }
+.seasonal-change-legend { display:flex; flex-direction:column; gap:.8rem; font-size:.78rem; line-height:1.4; color:#4d655b; }
+.seasonal-change-legend span { display:flex; align-items:flex-start; gap:.45rem; }
+.change-swatch { display:inline-block; flex:none; width:.9rem; height:.9rem; margin-top:.12rem; border:1px solid #819184; border-radius:2px; }
+.change-new { background:#346fad; }
+.change-lost { background:#c7673c; }
+.change-same { background:#dde4d8; }
+.change-missing { background:#fff; }
+@media(max-width:800px) { .seasonal-grid { grid-template-columns:1fr; } .seasonal-change-panel { grid-template-columns:minmax(0,1fr) minmax(7rem,.55fr); } }
 .challenge-badge { position:absolute; top:1rem; right:1.5rem; margin:0; padding:.5rem .8rem; border:1px solid rgb(255 255 255 / .65); border-radius:.35rem; background:rgb(12 32 26 / .5); color:#fff; font-size:.72rem; font-weight:700; line-height:1.5; letter-spacing:.08em; text-align:center; }
 @media(max-width:700px) { .challenge-badge { position:static; justify-self:end; margin-bottom:1.5rem; max-width:100%; font-size:.65rem; } }

@@ -106,12 +106,16 @@
         <p><strong>The highest-scoring 5% of our validation area contained 73.4% of the swamp and marsh pixels in our reference maps.</strong> This suggests BogSignal could help researchers narrow their search, prioritizing promising areas for closer investigation.</p>
         <div id="ranking"></div>
         <p class="note">These are two different results: the overlap improvement compares models with and without NISAR; the ranking chart describes the combined model alone. Neither measures field-verified accuracy.</p>
-        <h3>A first step toward better-informed conservation</h3>
-        <p>BogSignal can help focus wetland research on places worth a closer look. The next steps are independent checks of promising locations and repeated observations to investigate change. Identifying wetland signals does not establish restoration suitability.</p>
-        <h4>June and October across all three sensors</h4>
-        <p>We revisited one full 5.12 km × 5.12 km patch at each of Cheremske, Somyne and Syra Pohonia. Select a site to compare predictions and the Sentinel-2, Sentinel-1 and NISAR images supplied to the same frozen model in June and October. Each patch includes surrounding land beyond the named wetland area.</p>
+        <h3>From wetland mapping to monitoring</h3>
+        <p>BogSignal helps researchers identify promising areas for closer investigation. We also explored how wetland predictions vary between seasonal observations — a first step toward monitoring environmental change.</p>
+        <h4>June vs. October: Seeing the difference</h4>
+        <p>We compared satellite observations from June and October at three sites in Ukrainian Polissia: <strong>Cheremske, Somyne and Syra Pohonia</strong>.</p>
+        <p>Explore how the same trained model responds to changes in Sentinel-2, Sentinel-1 and NISAR imagery, and where its wetland predictions differ between the two dates.</p>
         <div id="seasonal-examples"><p role="status">Loading site comparisons...</p></div>
-        <p class="note seasonal-caution"><strong>Exploratory comparison:</strong> NISAR observations are provisional, and satellite dates vary within each month. The panels show model predictions for selected patches, not verified wetland change or restoration impact. White means imagery was unavailable at one or both dates.</p>
+        <h4>Understanding the radar images</h4>
+        <p>NISAR images use illustrative false colors: red represents HH polarization, green represents HV, and blue represents their contrast. Both ascending and descending observations are included in the model, while the displayed NISAR imagery uses ascending observations.</p>
+        <p>Radar colors represent differences in the returned signal, not confirmed wetland types.</p>
+        <p class="note seasonal-caution"><strong>Important:</strong> This is an exploratory comparison using provisional NISAR observations. Differences may reflect seasonal conditions, observation geometry or data quality. They are changes in model predictions, not independently verified environmental changes or evidence of restoration impact. White areas indicate missing imagery at one or both dates.</p>
         <details id="full-results" class="map-notes"><summary>Results &amp; methods</summary>
         <div class="cred-grid">
           <article class="cred-card">
