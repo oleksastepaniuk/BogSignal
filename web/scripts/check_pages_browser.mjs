@@ -26,11 +26,11 @@ for(const viewport of [{width:1280,height:900},{width:390,height:844}]) {
  }
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  assert.ok((await page.request.get(new URL('ATTRIBUTIONS.md',base).href)).ok());
- await page.locator('#open-results').click();
+ await page.locator('#full-results > summary').click();
  assert.equal(await page.locator('#full-results').getAttribute('open'),'');
  assert.equal(await page.locator('#full-results .cred-card').count(),2);
  assert.equal(await page.locator('#map-provenance').count(),0);
- const report=page.locator('#credentials a[href="/BogSignal/experiment/final_experiment_report.html"]').first();
+ const report=page.locator('#full-results a[href="/BogSignal/experiment/final_experiment_report.html"]').first();
  await report.click();await page.locator('.report-return a').waitFor();
  assert.equal(await page.locator('.report-data a').count(),3);
  for(const href of await page.locator('.report-data a').evaluateAll(links=>links.map(a=>a.href)))assert.ok((await page.request.get(href)).ok());
