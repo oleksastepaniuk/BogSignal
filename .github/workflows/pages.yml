@@ -2,12 +2,12 @@ name: Publish BogSignal website
 
 on:
   push:
-    branches: [develop]
+    branches: [main]
     paths:
       - 'web/**'
       - '.github/workflows/pages.yml'
   pull_request:
-    branches: [develop]
+    branches: [main]
     paths:
       - 'web/**'
       - '.github/workflows/pages.yml'
@@ -47,7 +47,7 @@ jobs:
           path: web/dist
 
   deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/develop'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     permissions:

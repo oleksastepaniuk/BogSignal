@@ -93,16 +93,16 @@ Then regenerate web assets with the BogSignal project environment:
 
 ## GitHub Pages
 
-The existing repository publishes the website from `develop` using
+The existing repository publishes the website from `main` using
 `.github/workflows/pages.yml`. Only `web/dist` is uploaded; the ML environment,
 raw imagery and native inference products are not required by GitHub Actions.
 The checked-in presentation assets under web/public are the deployment inputs.
 
 In repository Settings > Pages, select GitHub Actions as the source.
 The expected URL is https://oleksastepaniuk.github.io/BogSignal/ .
-GitHub's github-pages environment must allow deployments from develop.
-Pushes changing web/ or the workflow on develop build and deploy automatically.
-Pull requests to develop build and check paths without deploying.
+GitHub's github-pages environment must allow deployments from main.
+Pushes changing web/ or the workflow on main build and deploy automatically.
+Pull requests to main build and check paths without deploying.
 
 Local development remains at `/`. To verify the repository-path build:
 
