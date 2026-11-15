@@ -129,7 +129,7 @@ payload=dict(examples=selected, baseline=summary['baseline'], sensor_cards=senso
              report_sha256=hashlib.sha256((report/'final_experiment_report.html').read_bytes()).hexdigest())
 (OUT/'demo.json').write_text(json.dumps(payload,indent=2)+'\n')
 report_html=(report/'final_experiment_report.html').read_text()
-report_button='<p class="report-return"><a href="/" style="display:inline-block;padding:9px 16px;border:1px solid #176b58;border-radius:6px;background:#176b58;color:white;text-decoration:none;font-weight:600">&larr; Back to BogSignal</a></p>'
+report_button='<p class="report-return"><a href="../" style="display:inline-block;padding:9px 16px;border:1px solid #176b58;border-radius:6px;background:#176b58;color:white;text-decoration:none;font-weight:600">&larr; Back to BogSignal</a></p>'
 (OUT/'final_experiment_report.html').write_text(report_html.replace('<main>','<main>'+report_button,1))
 shutil.copy2(report/'final_experiment_report_data.json',OUT/'final_experiment_report_data.json')
 print(json.dumps(selected,indent=2))

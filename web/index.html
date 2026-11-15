@@ -68,13 +68,13 @@
         <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
         <div id="results" class="table-wrap"></div>
         <p class="note">IoU measures overlap. Recall measures reference wetlands recovered; reference precision measures agreement among predicted wetlands. The temporal follow-up has a smaller matched footprint: compare TD only with the matched D values in its row, not directly with A-D above. TD averages NISAR linear power over 3-5 observations before dB conversion; processing, dates and training populations also differ. It improved reference precision but reduced recall, so D remains highlighted.</p>
-        <p><a href="/experiment/final_experiment_report.html">Complete experiment report</a> &middot; <a href="#credentials">Methods, limitations &amp; sources</a></p>
+        <p><a href="%BASE_URL%experiment/final_experiment_report.html">Complete experiment report</a> &middot; <a href="#credentials">Methods, limitations &amp; sources</a></p>
         </details>
       </section>
       <section id="credentials">
         <h2>Methods &amp; Sources</h2>
         <h3>Complete report</h3>
-        <p><a href="/experiment/final_experiment_report.html">Read the complete final experiment report</a> for dates, training design, temporal follow-ups, sources and full evaluations.</p>
+        <p><a href="%BASE_URL%experiment/final_experiment_report.html">Read the complete final experiment report</a> for dates, training design, temporal follow-ups, sources and full evaluations.</p>
         <h3>Model</h3>
         <p>Inputs: Sentinel-2 optical bands, Sentinel-1 C-band backscatter and NISAR L-band GCOV power. A six-class <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> uses a ResNet-34 encoder; displayed maps sum Swamp and Marsh probabilities before five-class selection.</p>
         <ul>
@@ -84,10 +84,10 @@
           <li>These experiments do not establish restoration suitability or verified discovery of new wetland sites.</li>
         </ul>
         <p class="note">Our experiment uses radar backscatter power (GCOV for NISAR), not interferometric phase. Bright radar returns alone do not establish wetland type or peat presence.</p>
-        <p class="note">Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ. <a href="/experiment/demo.json">Selection and provenance</a> / <a href="/experiment/final_experiment_report_data.json">Complete report data</a></p>
+        <p class="note">Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ. <a href="%BASE_URL%experiment/demo.json">Selection and provenance</a> / <a href="%BASE_URL%experiment/final_experiment_report_data.json">Complete report data</a></p>
         <details class="map-notes"><summary>Map notes &amp; provenance</summary>
 <p class="note">Select labels or predictions to compare. If both are enabled, predictions draw above labels. Coverage: teal = predicted, gray = no prediction. Regional predictions include training and held-out geography; this map is not a new accuracy evaluation. Scores are uncalibrated and do not establish restoration suitability.</p><p id="map-resolution" class="note"></p>
-<p class="note"><a href="/map/manifest.json">Map provenance and coverage</a>. The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
+<p class="note"><a href="%BASE_URL%map/manifest.json">Map provenance and coverage</a>. The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
         </details>
         <h3>Sources</h3>
         <p>Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>

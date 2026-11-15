@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 export async function setupLandscape() {
   const host=document.getElementById('landscape-map');
   const status=document.getElementById('map-status');
-  const load=async path=>{const response=await fetch('/map/'+path);if(!response.ok)throw new Error('Map asset unavailable: '+path);return response.json();};
+  const load=async path=>{const response=await fetch(import.meta.env.BASE_URL+'map/'+path);if(!response.ok)throw new Error('Map asset unavailable: '+path);return response.json();};
   const [info,countries,polissia]=await Promise.all([load('manifest.json'),load('countries.geojson'),load('polissia.geojson')]);
   const map=L.map(host,{scrollWheelZoom:false,minZoom:5,maxZoom:13,maxBounds:[[46,14],[58,44]],maxBoundsViscosity:.8});
   map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
@@ -18,7 +18,7 @@ export async function setupLandscape() {
   map.createPane('predictions');map.getPane('predictions').style.zIndex=430;
   map.createPane('study');map.getPane('study').style.zIndex=450;
   const outline=L.geoJSON(polissia,{pane:'study',style:{color:'#26664d',weight:2,fillOpacity:.02},onEachFeature:(_,layer)=>layer.bindPopup('Polissia study area. Outline adapted from the regional map on savepolesia.org and local polygons. Approximate ecological outline; not a legal or habitat boundary.')});
-  const overlay=(name,pane)=>L.imageOverlay('/map/'+name+'.png',info.bounds,{pane,opacity:.9,alt:name==='labels'?'Historical/inferred weak-reference classes':name==='prediction'?'Regional model D predicted classes':'Coverage: teal predicted, gray unavailable',className:'map-raster'});
+  const overlay=(name,pane)=>L.imageOverlay(import.meta.env.BASE_URL+'map/'+name+'.png',info.bounds,{pane,opacity:.9,alt:name==='labels'?'Historical/inferred weak-reference classes':name==='prediction'?'Regional model D predicted classes':'Coverage: teal predicted, gray unavailable',className:'map-raster'});
   const layers={polissia:outline,labels:overlay('labels','references'),prediction:overlay('prediction','predictions'),coverage:overlay('coverage','coverage')};
   for(const [key,layer] of Object.entries(layers)) {
     const checkbox=document.getElementById('map-'+key);

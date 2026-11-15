@@ -89,3 +89,27 @@ Then regenerate web assets with the BogSignal project environment:
 
     cd /home/krk/projects/BogSignal
     ml/.venv/bin/python web/scripts/export_demo.py
+
+
+## GitHub Pages
+
+The existing repository publishes the website from `develop` using
+`.github/workflows/pages.yml`. Only `web/dist` is uploaded; the ML environment,
+raw imagery and native inference products are not required by GitHub Actions.
+The checked-in presentation assets under web/public are the deployment inputs.
+
+In repository Settings > Pages, select GitHub Actions as the source.
+The expected URL is https://oleksastepaniuk.github.io/BogSignal/ .
+GitHub's github-pages environment must allow deployments from develop.
+Pushes changing web/ or the workflow on develop build and deploy automatically.
+Pull requests to develop build and check paths without deploying.
+
+Local development remains at `/`. To verify the repository-path build:
+
+    PAGES_BASE_PATH=/BogSignal/ npm run build
+    PAGES_BASE_PATH=/BogSignal/ node scripts/check_pages.mjs
+    PAGES_BASE_PATH=/BogSignal/ npm run preview -- --host 0.0.0.0
+
+Open http://localhost:4173/BogSignal/ for the production preview.
+Public data/image credits are in public/ATTRIBUTIONS.md and deployed alongside
+the site; source-specific terms still apply.

@@ -19,11 +19,11 @@ document.querySelectorAll('main section').forEach((s) => observer.observe(s));
 const pct = x => (100*x).toFixed(1)+'%';
 const $ = id => document.getElementById(id);
 async function setupDemo() {
-  const response = await fetch('/experiment/demo.json');
+  const response = await fetch(import.meta.env.BASE_URL+'experiment/demo.json');
   if (!response.ok) throw new Error('Saved data unavailable');
   const data = await response.json();
   for(const card of data.sensor_cards) {
-    $('sensor-'+card.sensor).src='/experiment/'+card.filename;
+    $('sensor-'+card.sensor).src=import.meta.env.BASE_URL+'experiment/'+card.filename;
     $('sensor-'+card.sensor).alt=card.title+', validation patch '+card.patch_id;
     $('sensor-'+card.sensor+'-caption').textContent=card.title+' / '+card.patch_id+'. Mosaic source window: '+card.source_window.join(' to ')+'. '+card.display+'.';
   }
@@ -93,7 +93,7 @@ async function setupDemo() {
   });
   function renderExample() {
     for (const [id,suffix,label] of [['panel-b','b','B prediction'],['panel-d','d','D prediction'],['reference','reference','Weak reference'],['satellite','rgb','Matching Sentinel-2 satellite background'],['map-b','b-overlay','B prediction overlay'],['map-d','d-overlay','D prediction overlay']]) {
-      $(id).src=`/experiment/${example.key}-${suffix}.png`;
+      $(id).src=`${import.meta.env.BASE_URL}experiment/${example.key}-${suffix}.png`;
       $(id).alt=`${label}, validation patch ${example.id}`;
     }
     const delta=100*example.delta;
