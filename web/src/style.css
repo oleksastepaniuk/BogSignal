@@ -255,8 +255,7 @@ h2, #full-results > summary { font-size:1.5em; font-weight:700; }
 .dataset-card-body h3 { font-size:1.1rem; margin:1.5rem 0 .7rem; }
 .dataset-card-body p { font-size:1rem; margin:.6rem 0; }
 .dataset-card-body .note { font-size:.875rem; color:#4d655b; }
-.dataset-card-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.4rem; }
-.dataset-platform { font-size:.8rem; color:#4d655b; }
+.dataset-card-footer { display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.4rem; }
 .dataset-card-footer a { font-weight:600; text-underline-offset:.25em; }
 .dataset-card-footer .dataset-action { padding:.65rem 1rem; font-size:.9rem; background:#193b32; color:#fff; text-decoration:none; }
 .dataset-card-footer .dataset-action:hover { background:#24654d; }
