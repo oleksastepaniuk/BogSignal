@@ -229,3 +229,7 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .credit-list strong { display:block; font-size:.95rem; }
 .credit-list p { margin:.25rem 0 0; font-size:.8rem; line-height:1.5; color:#4d655b; }
 .credit-list a { overflow-wrap:anywhere; }
+
+.report-links { display:flex; flex-wrap:wrap; gap:.8rem; margin:1.25rem 0 1.8rem; }
+.secondary-link { background:transparent; border:1px solid #a9bcac; color:#193b32; }
+.secondary-link:hover { color:white; }

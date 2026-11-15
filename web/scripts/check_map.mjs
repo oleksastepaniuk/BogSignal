@@ -37,7 +37,7 @@ try {
   assert.ok(!(await page.locator('.country-name').allTextContents()).includes('RUSSIA'));
   assert.equal(await page.locator('#landscape h2').textContent(),'Europe’s Amazon');
   assert.equal(await page.locator('#landscape #map-resolution').count(),0);
-  assert.equal(await page.locator('#credentials #map-resolution').count(),1);
+  assert.equal(await page.locator('#map-resolution').count(),0);
   await page.locator('#landscape').screenshot({path:'/tmp/bogsignal-map-'+viewport.width+'.png'});
   assert.deepEqual(errors,[]);
   console.log('PASS regional map layers, coverage, local assets, zoom/reset and layout at '+viewport.width+'px');

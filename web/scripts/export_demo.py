@@ -130,6 +130,8 @@ payload=dict(examples=selected, baseline=summary['baseline'], sensor_cards=senso
 (OUT/'demo.json').write_text(json.dumps(payload,indent=2)+'\n')
 report_html=(report/'final_experiment_report.html').read_text()
 report_button='<p class="report-return"><a href="../" style="display:inline-block;padding:9px 16px;border:1px solid #176b58;border-radius:6px;background:#176b58;color:white;text-decoration:none;font-weight:600">&larr; Back to BogSignal</a></p>'
-(OUT/'final_experiment_report.html').write_text(report_html.replace('<main>','<main>'+report_button,1))
+report_resources='<nav class="report-data" aria-label="Report data files"><a href="final_experiment_report_data.json">Complete report data <small>JSON</small></a><a href="demo.json">Example selection and provenance <small>JSON</small></a><a href="../map/manifest.json">Map provenance and coverage <small>JSON</small></a></nav>'
+report_style='.report-data{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 24px}.report-data a{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid #aac4b5;border-radius:999px;text-decoration:none;background:#f5faf6;font-size:14px}.report-data small{font-size:10px;font-weight:700;background:#e0ebdd;border-radius:10px;padding:2px 5px}'
+(OUT/'final_experiment_report.html').write_text(report_html.replace('</style>',report_style+'</style>',1).replace('<main>','<main>'+report_button+report_resources,1))
 shutil.copy2(report/'final_experiment_report_data.json',OUT/'final_experiment_report_data.json')
 print(json.dumps(selected,indent=2))

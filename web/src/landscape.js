@@ -32,6 +32,5 @@ export async function setupLandscape() {
   document.getElementById('map-detail').addEventListener('click',()=>map.setView(info.example_center,10,{animate:false}));
   new ResizeObserver(()=>map.invalidateSize({pan:false})).observe(host);
   status.textContent='Our model covers '+(info.counts.predicted_pixels*0.0004).toLocaleString(undefined,{maximumFractionDigits:0})+' km² — nearly three-quarters of the study area. Remaining gaps are primarily due to missing or unusable satellite observations.';
-  document.getElementById('map-resolution').textContent='Overview images use nearest-neighbour reprojection; native inference is 20 m. Map display pixels are about '+Math.round(info.display_pixel_size_meters*Math.cos(52*Math.PI/180))+' m at 52°N. Other and excluded classes are transparent; use Coverage to distinguish predicted Other from missing predictions.';
   host.dataset.ready='true';
 }
