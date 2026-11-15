@@ -47,7 +47,7 @@
       </section>
       <section id="experiment">
         <h2>Putting NISAR to the test</h2>
-        <p>We trained the same AI model with two sets of satellite inputs: <strong>without NISAR</strong> (B: Sentinel-2 optical imagery + Sentinel-1 radar), and <strong>with NISAR</strong> (D: those inputs plus NISAR).</p>
+        <p>We trained the same AI segmentation model with two sets of satellite inputs: <strong>without NISAR</strong> (B: Sentinel-2 optical imagery + Sentinel-1 radar), and <strong>with NISAR</strong> (D: those inputs plus NISAR).</p>
         <p>Both were compared against the same historical and inferred wetland references over the same validation area. Explore where NISAR helped, made little difference, or worked less well.</p>
         <div id="demo"><p role="status">Loading retained examples...</p></div>
         <noscript>Enable JavaScript for comparisons. The complete report remains available below.</noscript>
@@ -63,6 +63,7 @@
         <h3>A first step toward better-informed conservation</h3>
         <p>BogSignal can help focus wetland research on places worth a closer look. The next steps are independent checks of promising locations and repeated observations to investigate change. Identifying wetland signals does not establish restoration suitability.</p>
         <details id="full-results" class="map-notes"><summary>Full results &amp; methods</summary>
+        <p>We used U-Net with a ResNet-34 encoder initialized from ImageNet weights. The encoder extracts image features, while the decoder combines them with finer spatial detail to predict a class for each pixel. The same architecture and training recipe were used for each sensor combination, with input channels adapted to the selected sensors and their validity masks. The model predicts six classes; for the displayed wetland results, Swamp and Marsh probabilities are added before choosing among five combined classes.</p>
         <h3>Detailed experiment results</h3>
         <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
         <div id="results" class="table-wrap"></div>
