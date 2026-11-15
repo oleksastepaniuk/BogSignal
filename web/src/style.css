@@ -189,3 +189,6 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .cred-heading { margin:2rem 0 0; }
 @media(max-width:800px) { .cred-grid-3 { grid-template-columns:1fr; } }
 @media(max-width:600px) { .cred-grid { grid-template-columns:1fr; } }
+.sources-table th { width:32%; vertical-align:top; }
+.sources-table td { white-space:normal; line-height:1.6; vertical-align:top; }
+#credentials > h3 { margin-top:1.8rem; }
