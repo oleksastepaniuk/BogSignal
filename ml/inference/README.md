@@ -2,8 +2,8 @@
 
 This workflow predicts six-class segmentation from the frozen v4 imagery and
 normalization. It never changes training data, labels, splits, normalization,
-or CURRENT.json. No model architecture, checkpoint, or real predictions are
-included. Code lives in `src/bogsignal/inference/pipeline.py`.
+or CURRENT.json. The frozen model D adapter is now provided below; checkpoints and generated
+regional rasters remain local ignored data. Code lives in `src/bogsignal/inference/pipeline.py`.
 
 Run commands from `BogSignal/ml/` with the existing environment. Outputs are
 separate named directories under `data/inference/`.
@@ -61,9 +61,8 @@ cropland, Peatland non-cropland. The runner currently sends B=1.
 
 A Torch adapter must create the exact trained architecture with 28 input and
 6 output channels, load its weights, call `eval()`, use `torch.inference_mode()`,
-move inputs to the desired device, and return CPU NumPy outputs. Torch is not
-installed or required by this inference infrastructure. The model architecture
-and checkpoint contract must be supplied by the training implementation.
+move inputs to the desired device, and return CPU NumPy outputs. The generic inference runner has no Torch requirement. The model D adapter
+uses Torch and the trained architecture from the project ML environment.
 
 Once that adapter and checkpoint exist:
 
@@ -74,8 +73,8 @@ PYTHONPATH=src .venv/bin/python -m bogsignal.inference.pipeline run \
   --score-kind logits
 ```
 
-`your_model_adapter` and `/path/to/model.pt` are placeholders, not provided model
-files. For a callable returning normalized probabilities instead, specify
+The generic adapter name and checkpoint path above are placeholders; use the
+concrete model D invocation below for this project. For a callable returning normalized probabilities instead, specify
 `--score-kind probabilities`. Wrong dimensions, nonfinite scores or invalid
 probabilities fail the run. No additional dB conversion or normalization fitting
 is performed. The predictor must not apply v4 normalization a second time.
@@ -125,3 +124,34 @@ data/inference/osm_unclassified_v4/inference_plan.json.
 This is a planned experiment only: no real model predictions have run. Synthetic
 end-to-end tests passed as part of the 36-test suite. The v4 dataset folder was
 not changed while this inference code was added.
+
+
+## Frozen model D regional run (website)
+
+The completed adapter is `bogsignal.inference.torch_adapter:load_predictor`.
+It loads the exact saved 14-channel / 28-input ResNet-34 U-Net checkpoint,
+checks its frozen digest, and returns six logits using CUDA BF16 when available.
+Inputs must already be normalized by the pipeline using frozen training statistics.
+
+Run in WSL from BogSignal/ml with the project .venv:
+
+    PYTHONPATH=src .venv/bin/python -m bogsignal.inference.pipeline plan --data-root ../data --dataset ../data/dataset/s1s2nisar_256_v4 --output ../data/inference/polissia_D_v4_web --region polissia
+    PYTHONPATH=src .venv/bin/python -m bogsignal.inference.pipeline run --data-root ../data --output ../data/inference/polissia_D_v4_web --predictor bogsignal.inference.torch_adapter:load_predictor --checkpoint ../data/experiments/D_s2s1nisar_resnet34_seed17/best.pt --score-kind logits
+
+Existing output folders are never overwritten. Use a new output name for a new run.
+Only a successful complete.json certifies completion. Native rasters remain 20 m.
+Regional inference includes training and held-out geography and does not compute
+new test-set evaluation scores. It does not change dataset labels or splits.
+
+The website exporter reads completed probabilities and sums Swamp+Marsh before
+five-class argmax, matching the presentation's inference decision. It exports
+one nearest-neighbour overview PNG per layer, not one file per validation patch.
+Source probabilities, classes, confidence, coverage and polygon_summary remain
+in data/inference; missing all-sensor coverage stays explicit.
+
+Completed local run: `polissia_D_v4_web`, 28,337 planned contextual tiles;
+332,349,087 / 451,130,482 target pixels predicted (73.67%, 132,939.63 km2).
+7,379 contexts were rejected by the unchanged validity policy. Output readback,
+probability/class consistency, input digests and checkpoint digest passed.
+The 20 m classes, six probability bands, confidence, coverage and polygon summary
+are retained under data/inference/polissia_D_v4_web/.

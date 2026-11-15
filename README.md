@@ -84,3 +84,20 @@ The build is written to `web/dist/`. The preview command serves that build local
 Commit `package.json` and `package-lock.json` when dependencies change. Keep `node_modules/` and `dist/` local; both are ignored by Git.
 
 Inference workflow: [OSM wetland inspection and Polissia mapping](ml/inference/README.md). Uses frozen v4 inputs; a trained model adapter/checkpoint is required.
+
+Training workflow: [ResNet-34 U-Net sensor experiments](ml/TRAINING.md). Includes
+the Sentinel-2-only configuration, GPU smoke check, fixed validation scoring,
+checkpoint provenance and optional pinned CUDA dependencies.
+
+First completed experiment: [Sentinel-2 baseline results](docs/experiments/A_s2_resnet34_seed17.md)
+— one-seed geographic validation macro IoU 32.64%, macro Dice 43.18%; swamp/marsh
+recall remains weak. The test split has not been scored.
+The report also includes fixed-area candidate ranking: 80.47% of mapped
+Swamp/Marsh pixels recovered at 10% of scored area flagged, with 13.19%
+weak-reference precision, using the same checkpoint without retraining.
+
+[A-D sensor comparison](docs/experiments/sensor_comparison_seed17.md): all four
+seed-17 runs are trained and evaluated on matched validation pixels. Combined
+Swamp/Marsh recall is highest for S2 + NISAR (45.09%); all three sensors have
+the highest combined-class F1 (43.50%) and reference precision (48.23%). These
+are weak-reference validation results; the test split remains unscored.

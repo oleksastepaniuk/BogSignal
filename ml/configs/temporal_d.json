@@ -1,0 +1,42 @@
+{
+  "experiment": "TD_sentinel2_sentinel1_mean_nisar",
+  "dataset": "../data/temporal/provisional_v1/T1",
+  "output": "../data/experiments/TD_s2s1_mean_nisar_resnet34_seed17",
+  "channels": [
+    "S2_B2",
+    "S2_B3",
+    "S2_B4",
+    "S2_B8",
+    "S2_B11",
+    "S2_B12",
+    "S1_ASCENDING_VV",
+    "S1_ASCENDING_VH",
+    "S1_DESCENDING_VV",
+    "S1_DESCENDING_VH",
+    "NISAR_ASCENDING_HH",
+    "NISAR_ASCENDING_HV",
+    "NISAR_DESCENDING_HH",
+    "NISAR_DESCENDING_HV"
+  ],
+  "seed": 17,
+  "epochs": 50,
+  "patience": 10,
+  "min_epochs": 15,
+  "batch_size": 16,
+  "workers": 4,
+  "encoder_lr": 0.0001,
+  "decoder_lr": 0.001,
+  "weight_decay": 0.0001,
+  "loss": "cross_entropy",
+  "ignore_index": 255,
+  "decoder_channels": [
+    256,
+    128,
+    64,
+    32,
+    16
+  ],
+  "augmentation": "random horizontal/vertical flips and quarter turns",
+  "precision": "bfloat16",
+  "evaluate_test": false
+}
