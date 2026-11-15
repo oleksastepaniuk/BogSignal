@@ -194,7 +194,7 @@ def write_report(run, output, evaluation_path=None):
     sensor_names = " + ".join(sensor for prefix, sensor in
         [("S2_", "Sentinel-2"), ("S1_", "Sentinel-1"), ("NISAR_", "NISAR")]
         if any(name.startswith(prefix) for name in config["channels"]))
-    config_name = next((run / "source").glob("experiment*.json")).name
+    config_name = next((run / "source").glob("*.json")).name
     if metadata_hashes(config["dataset"]) != complete["dataset_hashes"]:
         raise ValueError("Dataset metadata changed since experiment")
     recomputed = metrics(result["validation"]["confusion_matrix"])
@@ -237,6 +237,34 @@ def write_report(run, output, evaluation_path=None):
     maximum_drift = max(c["max_absolute_metric_difference"] for c in numerical_checks.values())
     exact_count = sum(c["exact_confusion_match"] for c in numerical_checks.values())
     plan = json.loads((Path(config["dataset"]) / "plan.json").read_text())
+    split_counts = {s: sum(r["split"] == s for r in plan["patches"]) for s in ["train", "validation", "test"]}
+    temporal = plan.get("temporal_policy")
+    temporal_text = ""
+    if temporal:
+        temporal_text = f"""## Temporal input policy
+
+Variant: **{plan['temporal_variant']}**, on inherited v4 geographic groups/folds.
+Collection: `{temporal['collection']}`, processing signature
+`{temporal['signature']}`. Window: {temporal['window_utc'][0]} through
+{temporal['window_utc'][1]}. At least **{temporal['minimum_observations']} valid
+joint HH/HV dates per pixel and pass** are required. Ascending/descending and
+anchor tracks/frames remain separate. All temporal variants share patch IDs,
+labels, masks and sampling weights. Optical and Sentinel-1 values remain fixed.
+
+T0 uses the latest valid provisional observation per pixel. T1 takes the mean
+of valid linear power before dB conversion/clipping. T2 adds population standard
+deviation and p10/p90 of per-date clipped dB. Normalization is fitted only on the
+matched training fold. Original validated C is a different dataset/processing
+regime and must not serve as the direct temporal baseline. Historical weak-label
+and residual radar-quality limitations still apply. No validated/provisional
+products are mixed in the temporal stack.
+
+"""
+    comparison_text = ("Primary temporal contrasts are T1 minus T0 (averaging) and T2 minus T1 (variability representation); the matched static B control is separate."
+                       if temporal else "The primary NISAR contrast is D versus B.")
+    if experiment_id == "TD":
+        comparison_text = ("Compare TD with the existing D checkpoint on common validation pixels. "
+                           "Processing versions and training eligibility differ, so this is not an isolated test of averaging.")
     validation_records = [r for r in plan["patches"] if r["split"] == "validation"]
     eligible_labels = sum(sum(r["counts"]) for r in validation_records)
     rows = []
@@ -326,13 +354,15 @@ area. Model inputs contain only the configured sensors and their validity masks.
 
 {combined_section(val, combined, stem)}
 {recall_section(val, evaluation, stem)}
+{temporal_text}
 ## Frozen setup
 
-- Dataset: `s1s2nisar_256_v4`; 2,609 training patches, 585 validation patches,
-  559 locked test patches. Geographic groups and buffers unchanged.
+- Dataset: `{Path(config['dataset']).name}`; {split_counts['train']:,} training patches,
+  {split_counts['validation']:,} validation patches, {split_counts['test']:,} locked test patches.
+  Geographic groups and buffers inherited from v4.
 - Inputs: {', '.join(config['channels'])}, plus their corresponding validity masks:
   **{manifest['input_channels']} model channels**.
-  V4 training-only normalization; missing normalized values zero-filled.
+  Dataset training-only normalization; missing normalized values zero-filled.
 - U-Net, ResNet-34 ImageNet encoder, decoder widths 256/128/64/32/16;
   **{manifest['parameters']:,} parameters**, six output logits. RGB kernels
   repeated/scaled for imagery; mask kernels zero-initialized; all layers trainable.
@@ -388,8 +418,8 @@ checkpoint, full learning history and validation predictions. Generated models
 and caches remain ignored by Git. [Reviewable metrics]({stem}_metrics.json)
 include the confusion counts and dataset/checkpoint hashes.
 
-For the sensor comparison, use the same splits, labels, sampling policy, recipe
-and scoring mask. The primary NISAR contrast is D versus B. Single-seed validation
+Use the same splits, labels, sampling policy, recipe
+and scoring mask. {comparison_text} Single-seed validation
 differences do not establish statistical significance or independent accuracy.
 """
     output.write_text(report)
