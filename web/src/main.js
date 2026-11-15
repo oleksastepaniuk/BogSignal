@@ -34,8 +34,8 @@ async function setupDemo() {
     <button data-key="little" aria-pressed="false">Made little difference</button>
     <button data-key="worsens" aria-pressed="false">Worked less well</button></div></fieldset>
     <p id="patch-caption" class="note" aria-live="polite"></p>
-    <div class="context-grid" aria-label="Weak labels, B prediction, D prediction">
-    <figure><img id="reference" width="256" height="256" alt=""><figcaption>Weak labels<br>Historical / inferred</figcaption></figure>
+    <div class="context-grid" aria-label="Historical / inferred reference, B prediction, D prediction">
+    <figure><img id="reference" width="256" height="256" alt=""><figcaption>Historical / inferred reference</figcaption></figure>
     <figure><img id="panel-b" width="256" height="256" alt=""><figcaption>B: Sentinel-2 + Sentinel-1</figcaption></figure>
     <figure><img id="panel-d" width="256" height="256" alt=""><figcaption>D: all sensors + NISAR</figcaption></figure></div>
     <p id="class-legend" class="legend"></p>
