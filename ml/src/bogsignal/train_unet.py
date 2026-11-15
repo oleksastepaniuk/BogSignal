@@ -15,9 +15,11 @@ Variants:
     --arch terramind                 TerraMind-small encoder instead of the ResNet U-Net
     --loss ovr                       one sigmoid per class; peat is "unknown" under swamp/marsh/water
     --train-ignore 4,5               drop classes from the training loss only (still scored)
+    --train-merge 2:1                train marsh as swamp, i.e. one wetland class (scored on the original labels)
     --sensors s2,s1                  sensor ablation
     --jitter 0.15 --zoom 0.6         radiometric and scale augmentation
     --folds 5 --fold 0               geographic k-fold over train+validation blocks
+    --extra DIR --ids DIR/ids.txt    extra per-patch input channels (e.g. InSAR features) on a restricted patch pool
 
 Score a checkpoint on chosen patches, optionally against another dataset
 version's labels, or with each sensor/channel blanked out:
@@ -90,13 +92,13 @@ def policy_weights(records: list[dict], minority_share: float = 0.75, presence: 
     return w.tolist()
 
 
-def fold_records(root: Path, fold: int, folds: int) -> tuple[list[dict], list[dict]]:
+def fold_records(root: Path, fold: int, folds: int, ids: set[str] | None = None) -> tuple[list[dict], list[dict]]:
     """Geographic k-fold over the train+validation patches; the test split is never touched.
 
     Whole split groups (connected wetland blocks) go to one fold, balanced greedily on swamp, marsh and patch
     counts. Training patches that touch a held-out patch are dropped so neighbours never straddle the boundary.
     """
-    records = [r for r in read_index(root).values() if r["split"] in ("train", "validation")]
+    records = [r for r in read_index(root).values() if r["split"] in ("train", "validation") and (ids is None or r["id"] in ids)]
     feats = json.loads((root / "splits.geojson").read_text())["features"]
     group_of = {tuple(f["properties"]["block"]): f["properties"]["group"] for f in feats}
     groups: dict[str, list[dict]] = {}
@@ -119,7 +121,8 @@ def fold_records(root: Path, fold: int, folds: int) -> tuple[list[dict], list[di
 class Patches(Dataset):
     def __init__(self, root: Path, split: str | None, channels: list[int], stats=None, augment=False,
                  ids: set[str] | None = None, label_root: Path | None = None, records: list[dict] | None = None,
-                 sensor_dropout: float = 0.0, train_ignore: tuple[int, ...] = (), jitter: float = 0.0, zoom: float = 0.0):
+                 sensor_dropout: float = 0.0, train_ignore: tuple[int, ...] = (), jitter: float = 0.0, zoom: float = 0.0,
+                 extra_root: Path | None = None, train_merge: dict[int, int] | None = None):
         self.root, self.channels, self.stats, self.augment = root, channels, stats, augment
         self.records = records if records is not None else [
             r for r in read_index(root).values() if (split is None or r["split"] == split) and (ids is None or r["id"] in ids)]
@@ -132,6 +135,14 @@ class Patches(Dataset):
         self.label_root = label_root or root
         self.label_index = read_index(label_root) if label_root else None
         self.sensor_dropout, self.train_ignore, self.jitter, self.zoom = sensor_dropout, train_ignore, jitter, zoom
+        # optional extra input channels stored per patch as <extra_root>/<id>.npy (C, H, W), NaN where missing
+        self.extra_root = extra_root
+        self.train_merge = train_merge or {}  # class id -> class id it is trained as (labels used for scoring are untouched)
+        self.n_extra = len(json.loads((extra_root / "channels.json").read_text())) if extra_root else 0
+        if extra_root:
+            self.records = [r for r in self.records if (extra_root / f"{r['id']}.npy").exists()]
+            if not self.records:
+                raise ValueError(f"no patches with extra channels in {extra_root}")
         self.sensor_positions = [p for p in ([channels.index(c) for c in chans if c in channels]
                                              for chans in SENSOR_CHANNELS.values()) if p]
 
@@ -148,6 +159,8 @@ class Patches(Dataset):
         rec = self.records[i]
         with rasterio.open(self.root / rec["images"]) as ds:
             x = to_model_units(ds.read(), self.linear_sar)[self.channels]
+        if self.extra_root:
+            x = np.concatenate([x, np.load(self.extra_root / f"{rec['id']}.npy").astype(np.float32)])
         labels = self.label_index[rec["id"]]["labels"] if self.label_index else rec["labels"]
         with rasterio.open(self.label_root / labels) as ds:
             y = ds.read(1)
@@ -157,6 +170,8 @@ class Patches(Dataset):
                 c = (len(x), 1, 1)
                 x = x * np.exp(np.random.normal(0, self.jitter, c)).astype(np.float32) + np.random.normal(0, self.jitter, c).astype(np.float32)
             x = np.nan_to_num(x)
+        for c, into in self.train_merge.items():
+            y[y == c] = into
         for c in self.train_ignore:
             y[y == c] = IGNORE
         if self.augment:
@@ -333,8 +348,10 @@ class Ema:
             e.copy_(b)
 
 
-def build_model(arch: str, encoder: str, channels: list[int], stats, pretrained: bool, head_dropout: float = 0.0):
+def build_model(arch: str, encoder: str, channels: list[int], stats, pretrained: bool, head_dropout: float = 0.0, n_extra: int = 0):
     if arch == "terramind":
+        if n_extra:
+            raise ValueError("extra channels are only supported with --arch unet")
         from bogsignal.terramind_seg import TerraMindSeg
 
         model = TerraMindSeg(channels, stats[0], stats[1], len(CLASSES), variant=encoder, pretrained=pretrained)
@@ -342,7 +359,7 @@ def build_model(arch: str, encoder: str, channels: list[int], stats, pretrained:
         return model
     if arch != "unet":
         raise ValueError(f"unknown arch {arch}")
-    model = smp.Unet(encoder, encoder_weights="imagenet" if pretrained else None, in_channels=len(channels), classes=len(CLASSES))
+    model = smp.Unet(encoder, encoder_weights="imagenet" if pretrained else None, in_channels=len(channels) + n_extra, classes=len(CLASSES))
     if head_dropout:  # a hook keeps the state dict identical to a plain smp.Unet
         model.segmentation_head.register_forward_pre_hook(lambda m, inp: (F.dropout2d(inp[0], head_dropout, m.training),))
     return model
@@ -352,7 +369,7 @@ def load_checkpoint(path: Path, device):
     ckpt = torch.load(path, map_location=device)
     a = ckpt["args"]
     stats = (np.array(ckpt["mean"], np.float32), np.array(ckpt["std"], np.float32))
-    model = build_model(a.get("arch", "unet"), a["encoder"], ckpt["channels"], stats, pretrained=False).to(device)
+    model = build_model(a.get("arch", "unet"), a["encoder"], ckpt["channels"], stats, pretrained=False, n_extra=ckpt.get("n_extra", 0)).to(device)
     model.load_state_dict(ckpt["model"])
     return ckpt, model, stats
 
@@ -366,6 +383,7 @@ def main() -> None:
     ap.add_argument("--encoder", default=None, help="default resnet34 (unet) or terramind_v1_small (terramind)")
     ap.add_argument("--loss", default="softmax", choices=list(LOSSES))
     ap.add_argument("--train-ignore", default="", help="comma list of class ids left out of the training loss only")
+    ap.add_argument("--train-merge", default="", help="train some classes as others, e.g. 2:1 trains marsh as swamp (one wetland class); scoring labels are unchanged")
     ap.add_argument("--epochs", type=int, default=20)
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--lr", type=float, default=3e-4)
@@ -384,7 +402,8 @@ def main() -> None:
     ap.add_argument("--test", action="store_true", help="also evaluate best.pt and last.pt on the test split at the end")
     ap.add_argument("--eval", type=Path, help="checkpoint to score instead of training")
     ap.add_argument("--split", default="validation", help="split to score with --eval ('any' for all)")
-    ap.add_argument("--ids", type=Path, help="with --eval: text file of patch ids to restrict to")
+    ap.add_argument("--ids", type=Path, help="text file of patch ids to restrict to (with --eval, or the pool for --folds)")
+    ap.add_argument("--extra", type=Path, help="folder of per-patch extra input channels (<id>.npy and channels.json), e.g. InSAR features")
     ap.add_argument("--labels", type=Path, help="with --eval: dataset root whose labels to score against")
     ap.add_argument("--knockout", action="store_true", help="with --eval: also score with each sensor and channel blanked")
     args = ap.parse_args()
@@ -419,26 +438,28 @@ def main() -> None:
     channels = [c for s in args.sensors.split(",") for c in SENSOR_CHANNELS[s]]
     train_ignore = tuple(int(c) for c in args.train_ignore.split(",") if c)
     if args.folds:
-        train_records, val_records = fold_records(args.data, args.fold, args.folds)
+        pool = set(args.ids.read_text().split()) if args.ids else None
+        train_records, val_records = fold_records(args.data, args.fold, args.folds, pool)
         print(f"fold {args.fold}/{args.folds}: {len(train_records)} train, {len(val_records)} held-out patches", flush=True)
     else:
         train_records = val_records = None
 
-    mean, std = channel_stats(Patches(args.data, "train", channels, records=train_records), args.workers)
+    mean, std = channel_stats(Patches(args.data, "train", channels, records=train_records, extra_root=args.extra), args.workers)
     stats = (mean, std)
     print("channels", channels, "\nmean", mean.round(3), "\nstd ", std.round(3), flush=True)
 
     train = Patches(args.data, "train", channels, stats, augment=True, records=train_records,
-                    sensor_dropout=args.sensor_dropout, train_ignore=train_ignore, jitter=args.jitter, zoom=args.zoom)
+                    sensor_dropout=args.sensor_dropout, train_ignore=train_ignore, jitter=args.jitter, zoom=args.zoom, extra_root=args.extra,
+                    train_merge={int(a): int(b) for a, b in (m.split(":") for m in args.train_merge.split(",") if m)})
     sampler = WeightedRandomSampler(train.sampling_weights(), len(train), replacement=True)
     seed_worker = lambda i: np.random.seed(args.seed * 1000 + i)  # noqa: E731
     loaders = {
         "train": DataLoader(train, args.batch_size, sampler=sampler, num_workers=args.workers, drop_last=True,
                             persistent_workers=True, pin_memory=True, worker_init_fn=seed_worker),
-        "validation": DataLoader(Patches(args.data, "validation", channels, stats, records=val_records), 32, num_workers=args.workers),
+        "validation": DataLoader(Patches(args.data, "validation", channels, stats, records=val_records, extra_root=args.extra), 32, num_workers=args.workers),
     }
 
-    model = build_model(args.arch, args.encoder, channels, stats, pretrained=True, head_dropout=args.head_dropout).to(device)
+    model = build_model(args.arch, args.encoder, channels, stats, pretrained=True, head_dropout=args.head_dropout, n_extra=train.n_extra).to(device)
     if args.arch == "terramind":
         backbone = list(model.backbone.parameters())
         for p in backbone:
@@ -456,7 +477,8 @@ def main() -> None:
     scaler = torch.amp.GradScaler(enabled=device.type == "cuda")
     ema = Ema(model, args.ema) if args.ema else None
     loss_fn = LOSSES[args.loss]
-    meta = {"channels": channels, "mean": mean.tolist(), "std": std.tolist(), "classes": CLASSES, "args": {k: str(v) for k, v in vars(args).items()}}
+    meta = {"channels": channels, "mean": mean.tolist(), "std": std.tolist(), "classes": CLASSES, "args": {k: str(v) for k, v in vars(args).items()},
+            "n_extra": train.n_extra}
     key = SELECT[args.select]
 
     best = -1.0
