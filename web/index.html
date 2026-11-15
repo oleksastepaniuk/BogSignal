@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BogSignal: exploring wetlands in Polissia with satellite observations." />
+    <title>BogSignal</title>
+  </head>
+  <body>
+    <header class="cover">
+      <p class="eyebrow">An Argos project</p>
+      <h1>BogSignal</h1>
+      <p class="cover-message">A clearer picture of Europe&rsquo;s hidden wetlands.</p>
+      <p>We cannot protect what we cannot see. BogSignal explores how NISAR can help us identify Polissia&#39;s wetlands &mdash; and focus conservation research where it is needed.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="#landscape">Landscape</a>
+      <a href="#why-radar">Why radar</a>
+      <a href="#experiment">Experiment</a>
+      <a href="#findings">Findings</a>
+      <a href="#credentials">Methods &amp; Sources</a>
+    </nav>
+
+    <main>
+      <section id="landscape">
+        <h2>Europe&rsquo;s Amazon</h2>
+<p class="lede">Across a roughly 186,000 km&sup2; region, Polissia is a mosaic of rivers, floodplains, peatlands and forests &mdash; one of Europe&rsquo;s great wetland landscapes. These habitats store carbon, regulate water and provide vital refuge for wildlife and migratory birds.</p>
+
+        <h3>Why bogs matter</h3>
+        <p>Bogs are among the most valuable ecosystems we have, and among the most overlooked. They take thousands of years to form from just three ingredients: peat, water and plants.</p>
+        <p>A bog's superpower is holding water. Sphagnum moss soaks it up and keeps it from evaporating, so a bog holds more water than a lake of the same size. That makes bogs quiet workhorses:</p>
+        <ul class="benefits">
+          <li><strong>Flood control.</strong> They absorb rain and meltwater and release it slowly into rivers and lakes.</li>
+          <li><strong>Clean water.</strong> Peat is a natural filter. Pollutants settle in it as water seeps through.</li>
+          <li><strong>Carbon storage.</strong> Peat stores carbon built up over millennia. Drain a bog and that carbon escapes as greenhouse gases.</li>
+        </ul>
+
+        <h3>Where Ukraine&rsquo;s bogs are</h3>
+        <p>Most of Ukraine's bogs lie in Polissia, mainly in the Rivne, Volyn and Chernihiv regions, and some are 5,000 to 12,000 years old. Polissia is Europe's largest intact floodplain region. It stretches across Ukraine, Belarus, Poland and Russia, and it is so flat that its altitude never varies by more than 150&nbsp;metres. The 750&nbsp;km-long Prypiat, one of Europe's most pristine rivers, winds through it towards the Dnipro. Along the way its meanders and oxbows form a maze of floodplains, peatlands, forests, bogs, marshes and lakes.</p>
+        <p>It is full of life. More than 60% of the world's aquatic warblers, Europe's rarest migratory songbird, depend on Polissia, and every spring millions of migrating birds stop on its floodplains to rest and refuel. European bison, brown bears, grey wolves and lynx live in its forests. About two thirds of the world's waterwheel plants, a rare carnivorous water plant, grow in the exclusion zone around Chornobyl. In Ukraine alone, 19,692&nbsp;km² of Polissia is protected as Emerald Network sites, Europe's network of areas of special conservation interest.</p>
+<fieldset class="map-controls"><legend>Map layers</legend><label><input id="map-polissia" type="checkbox" checked> Polissia outline</label><label><input id="map-labels" type="checkbox"> Historical / inferred labels</label><label><input id="map-prediction" type="checkbox" checked> With NISAR: predictions</label><label><input id="map-coverage" type="checkbox"> Area covered by our analysis</label></fieldset>
+<div class="map-actions"><button id="map-reset" type="button">Whole study area</button><button id="map-detail" type="button">Zoom to predictions</button></div>
+<div id="landscape-map" role="region" aria-label="Interactive map of Polissia, weak labels and model D predictions"></div><p id="map-status" class="note" role="status">Loading regional map...</p>
+<p class="legend"><span style="--swatch:#ffdc00">Swamp + Marsh</span><span style="--swatch:#2879b9">Water</span><span style="--swatch:#cf9a4b">Peatland cropland</span><span style="--swatch:#8b668b">Peatland non-cropland</span></p>
+<p class="note">Study outline adapted from <a href="https://savepolesia.org/">Save Polesia&rsquo;s regional map</a>; approximate boundary.</p>
+
+        <h3>Bringing the bogs back</h3>
+        <p>Decades of drainage, agricultural expansion and infrastructure development have put Polissia&#39;s wetlands under pressure. Over the last 100 years, Ukraine has drained more than 1 million hectares of bogs, and the draining goes on. A drained bog dries out and its peat catches fire easily. Peat fires can smoulder for years, and drainage also brings dust storms and floods on nearby land. From above, a drained bog can pass for forest or farmland, and some living wetlands are hidden under trees.</p>
+        <p>But efforts to reverse this damage are underway. Conservation initiatives such as <strong><a href="https://fzs.org/en/programs/ukraine/wild-polissia/">Wild Polissia</a></strong> are working to bring water back to drained wetlands, aiming to restore up to <strong>20,000 hectares</strong> in Ukraine alone.</p>
+
+        <h3>What inspired us</h3>
+        <p>In the Rivne Nature Reserve, work has begun to restore the natural water regime of two bog massifs, Somyne and Syra Pohonia. For decades, drainage canals carried water away from these bogs. Groundwater fell, the vegetation changed and the risk of peat fires grew. The aim now is to keep the water in. It is Ukraine's first comprehensive bog restoration on this scale, supported by the Frankfurt Zoological Society through the Wild Polissia programme, and the main works are due to finish by the end of November 2026.</p>
+        <p>To check whether it is working, the reserve has installed 17 automatic sensors that track groundwater levels and set up 30 study plots to monitor vegetation and water chemistry. The first changes may show within a few seasons, but full recovery of the bogs will take much longer.</p>
+        <p>Sensors and study plots show in detail what is happening at two bogs. But Polissia covers roughly 186,000&nbsp;km&sup2;, and before more bogs can be brought back, someone has to find them: which ones are drained, which still hold water and which are hidden under trees. No team can survey all of that on foot, but satellites pass over the whole region again and again. BogSignal asks whether satellite data, and the new NISAR radar in particular, can help conservation programmes, reserve staff and researchers decide where to look first.</p>
+        <p>We study three sites in western Ukrainian Polissia: Somyne and Syra Pohonia, where restoration is under way, and Cheremske, a protected reserve in Volyn region outside the restoration project.</p>
+        <figure class="map-figure">
+          <img
+            src="%BASE_URL%images/polesia-case-study-sites.jpg" width="1520" height="1040" loading="lazy"
+            alt="Map of Polesia spanning Poland, Belarus and Ukraine, with our three case-study sites marked in western Ukrainian Polissia: Cheremske near Kovel, and Somyne and Syra Pohonia close together north of Rivne." />
+          <figcaption>
+            Our case-study sites in Ukrainian Polissia. Map from <a href="https://savepolesia.org/polesia/">Save Polesia</a> (Frankfurt Zoological Society)
+            © <a href="http://pg-webstudio.de/">pg-webstudio.de</a>; basemap © <a href="https://www.mapbox.com/about/maps/">Mapbox</a>
+            © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>. Site markers added by us.
+          </figcaption>
+        </figure>
+
+        <div class="sites">
+          <article class="site">
+            <figure>
+              <img src="%BASE_URL%images/sites/somyne-lake.jpg" width="1280" height="960" loading="lazy"
+                alt="Lake with a wooden pier, a moored boat and reeds, with a line of birches on the far shore" />
+              <figcaption>Lake Somyne. Photo: Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:%D0%9E%D0%B7%D0%B5%D1%80%D0%BE_%D0%A1%D0%BE%D0%BC%D0%B8%D0%BD%D0%B5_(%D0%A1%D0%B0%D1%80%D0%BD%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80-%D0%BD).JPG">Wikimedia Commons</a></figcaption>
+            </figure>
+            <div>
+              <h4 class="site-name">Somyne</h4>
+              <p class="site-place">Rivne Nature Reserve, Rivne region</p>
+              <p>A bog massif where restoration is well under way. Seven earth dams now hold back water in the drainage canals, and work on the culverts is wrapping up. Next, three wooden sluice gates will go into hard-to-reach parts of the reserve so the water level in the canals can be controlled.</p>
+            </div>
+          </article>
+          <article class="site">
+            <figure>
+              <img src="%BASE_URL%images/sites/syra-pohonia.jpg" width="1280" height="960" loading="lazy"
+                alt="Open green bog covered in sedges, with scattered young pines on the horizon" />
+              <figcaption>Transition mire with rannoch-rush. Photo: Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%81%D0%B8%D0%B2_%D0%A1%D0%B8%D1%80%D0%B0_%D0%9F%D0%BE%D0%B3%D0%BE%D0%BD%D1%8F._%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D1%96%D0%B4%D0%BD%D0%B5_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BE._%D0%A3%D0%B3%D1%80%D1%83%D0%BF%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D1%88%D0%B5%D0%B9%D1%85%D1%86%D0%B5%D1%80%D1%96%D1%97_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BD%D0%BE%D1%97.jpg">Wikimedia Commons</a></figcaption>
+            </figure>
+            <div>
+              <h4 class="site-name">Syra Pohonia</h4>
+              <p class="site-place">Rivne Nature Reserve, Rivne region</p>
+              <p>A bog massif with open transition mires. Work starts once the main drainage canal is handed over to the reserve, which the State Property Fund of Ukraine has already approved. The plan is two culverts, ten earth dams and twelve wooden sluice gates.</p>
+            </div>
+          </article>
+          <article class="site">
+            <figure>
+              <img src="%BASE_URL%images/sites/cheremske.jpg" width="652" height="488" loading="lazy"
+                alt="Flooded mire with tussocks of dry grass and young birches under a blue sky" />
+              <figcaption>Photo: unknown author, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Cherem1.jpg">Wikimedia Commons</a></figcaption>
+            </figure>
+            <div>
+              <h4 class="site-name">Cheremske</h4>
+              <p class="site-place">Cheremske Nature Reserve, Volyn region</p>
+              <p>Our third site lies in Volyn region, one of the parts of Polissia that holds most of Ukraine's bogs. It is not part of the Rivne restoration project.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section id="why-radar">
+        <h2>Seeing beyond the surface</h2>
+        <p>To protect wetlands, we first need to understand where they are &mdash; and be able to follow how they change. Satellites can cover enormous areas repeatedly, but clouds and vegetation can conceal important clues.</p>
+        <p>We tested whether NISAR could add useful information to existing satellite observations, as a first step toward a stronger baseline for future monitoring.</p>
+        <div class="sensor-cards">
+          <article><p class="eyebrow">Sentinel-2</p><h3>What the landscape looks like</h3><p>Reflected sunlight reveals vegetation, open water and land cover. Clouds block the view, and a canopy can hide water below.</p><figure><img id="sensor-s2" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-s2-caption"></p></details></figcaption></figure></article>
+          <article><p class="eyebrow">Sentinel-1 &middot; C-band</p><h3>A different perspective</h3><p>Radar works day and night through clouds. Backscatter responds to surface roughness, moisture and vegetation structure.</p><figure><img id="sensor-s1" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-s1-caption"></p></details></figcaption></figure></article>
+          <article><p class="eyebrow">NISAR &middot; L-band</p><h3>Looking deeper into vegetation</h3><p>NISAR&rsquo;s longer-wavelength radar can penetrate further into some vegetation canopies, providing additional clues about woody structure and water beneath vegetation. These signals alone do not confirm a bog.</p><figure><img id="sensor-nisar" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-nisar-caption"></p></details></figcaption></figure></article>
+        </div>
+
+        <p class="note">Sensor background: <a href="https://www.jpl.nasa.gov/press-kits/nisar/mission-overview/science/">NASA/JPL: NISAR science</a> &middot; <a href="https://eros.usgs.gov/doi-remote-sensing-activities/2025/usgs/coastal-inundation-monitoring-nisar">USGS: inundation monitoring with NISAR</a>.</p>
+      </section>
+      <section id="experiment">
+        <h2>Putting NISAR to the test</h2>
+        <p>We trained the same AI segmentation model with two sets of satellite inputs: <strong>without NISAR</strong> (B: Sentinel-2 optical imagery + Sentinel-1 radar), and <strong>with NISAR</strong> (D: those inputs plus NISAR).</p>
+        <p>Both were compared against the same historical and inferred wetland references over the same validation area. Explore where NISAR helped, made little difference, or worked less well.</p>
+        <div id="demo"><p role="status">Loading retained examples...</p></div>
+        <noscript>Enable JavaScript for comparisons. The complete report remains available below.</noscript>
+      </section>
+      <section id="findings">
+        <h2>What we discovered</h2>
+        <p class="note">Preliminary findings from one experimental run, evaluated against historical and inferred wetland maps rather than independent field observations.</p>
+        <div id="sensor-finding"></div>
+        <h3>02 &mdash; Knowing where to look first</h3>
+        <p><strong>The highest-scoring 5% of our validation area contained 73.4% of the swamp and marsh pixels in our reference maps.</strong> This suggests BogSignal could help researchers narrow their search, prioritizing promising areas for closer investigation.</p>
+        <div id="ranking"></div>
+        <p class="note">These are two different results: the overlap improvement compares models with and without NISAR; the ranking chart describes the combined model alone. Neither measures field-verified accuracy.</p>
+        <h3>A first step toward better-informed conservation</h3>
+        <p>BogSignal can help focus wetland research on places worth a closer look. The next steps are independent checks of promising locations and repeated observations to investigate change. Identifying wetland signals does not establish restoration suitability.</p>
+        <details id="full-results" class="map-notes"><summary>Full results &amp; methods</summary>
+        <p>We used <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder initialized from ImageNet weights. The encoder extracts image features, while the decoder combines them with finer spatial detail to predict a class for each pixel. The same architecture and training recipe were used for each sensor combination, with input channels adapted to the selected sensors and their validity masks. The model predicts six classes; for the displayed wetland results, Swamp and Marsh probabilities are added before choosing among five combined classes.</p>
+        <h3>Detailed experiment results</h3>
+        <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
+        <div id="results" class="table-wrap"></div>
+        <p class="note">IoU measures overlap. Recall measures reference wetlands recovered; reference precision measures agreement among predicted wetlands. The temporal follow-up has a smaller matched footprint: compare TD only with the matched D values in its row, not directly with A-D above. TD averages NISAR linear power over 3-5 observations before dB conversion; processing, dates and training populations also differ. It improved reference precision but reduced recall, so D remains highlighted.</p>
+        <p><a href="%BASE_URL%experiment/final_experiment_report.html">Complete experiment report</a> &middot; <a href="#credentials">Methods, limitations &amp; sources</a></p>
+        </details>
+      </section>
+      <section id="credentials">
+        <h2>Methods &amp; Sources</h2>
+
+        <div class="report-cta">
+          <div>
+            <p class="eyebrow">Complete report</p>
+            <p>Dates, training design, temporal follow-ups, sources and full evaluations.</p>
+          </div>
+          <a class="button-link" href="%BASE_URL%experiment/final_experiment_report.html">Read the final experiment report <span aria-hidden="true">&rarr;</span></a>
+          <ul class="data-files" aria-label="Data files">
+            <li><a href="%BASE_URL%experiment/final_experiment_report_data.json">Complete report data <span>JSON</span></a></li>
+            <li><a href="%BASE_URL%experiment/demo.json">Example selection and provenance <span>JSON</span></a></li>
+            <li><a href="%BASE_URL%map/manifest.json">Map provenance and coverage <span>JSON</span></a></li>
+          </ul>
+        </div>
+
+        <div class="cred-grid">
+          <article class="cred-card">
+            <h3>Data &amp; model</h3>
+            <dl>
+              <dt>Inputs</dt>
+              <dd>Sentinel-2 optical bands, Sentinel-1 C-band backscatter and NISAR L-band GCOV power.</dd>
+              <dt>Radar signal</dt>
+              <dd>Radar backscatter power (GCOV for NISAR), not interferometric phase. Bright radar returns alone do not establish wetland type or peat presence.</dd>
+              <dt>Model</dt>
+              <dd>A six-class <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder. Displayed maps sum Swamp and Marsh probabilities before five-class selection.</dd>
+              <dt>Comparison</dt>
+              <dd>The sensor comparison asks whether adding NISAR improves agreement with weak reference labels.</dd>
+            </dl>
+          </article>
+          <article class="cred-card">
+            <h3>Limitations</h3>
+            <ul>
+              <li>Single seed (17), validation against historical/inferred weak references. Labels can be incomplete, wrong or temporally mismatched; Other is not verified dry land.</li>
+              <li>Validation informed checkpoint selection. No test-set evaluation results or independent field validation are available.</li>
+              <li>Review budget means scored area, not a count of sites. Scores are uncalibrated and do not confirm wetlands.</li>
+              <li>Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ.</li>
+              <li>These experiments do not establish restoration suitability or verified discovery of new wetland sites.</li>
+            </ul>
+          </article>
+        </div>
+
+        <details id="map-provenance" class="cred-card cred-details"><summary>Map notes &amp; provenance</summary>
+          <p>Select labels or predictions to compare. If both are enabled, predictions draw above labels. Coverage: teal = predicted, gray = no prediction. Regional predictions include training and held-out geography; this map is not a new accuracy evaluation. Scores are uncalibrated and do not establish restoration suitability.</p>
+          <p id="map-resolution"></p>
+          <p>The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
+        </details>
+
+        <h3>Sources</h3>
+        <p class="section-lede">Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>
+
+        <div class="source-group">
+          <h4 class="group-label">Satellite inputs</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://nisar-docs.asf.alaska.edu/gcov/">NASA&ndash;ISRO NISAR GCOV</a><span>via ASF DAAC</span></dt>
+              <dd>Ascending and descending HH/HV L-band gamma-0 backscatter. The baseline uses validated products; the separate temporal follow-up uses multiple provisional observations.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED">Copernicus Sentinel-2 L2A</a><span>via Google Earth Engine</span></dt>
+              <dd>Optical surface-reflectance bands B2, B3, B4, B8, B11 and B12. The model uses a shared 20 m mosaic. Swipe backgrounds use original-resolution 10 m RGB from the recorded source scenes; prediction masks remain at 20 m. Tiny RGB gaps are filled from nearby valid imagery for display only; source data, predictions and evaluation masks are unchanged.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_CLOUD_SCORE_PLUS_V1_S2_HARMONIZED">Google Cloud Score+</a></dt>
+              <dd>Cloud-quality screening for selecting the Sentinel-2 observations, together with scene-classification masks.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S1_GRD">Copernicus Sentinel-1 GRD</a><span>via Google Earth Engine</span></dt>
+              <dd>Ascending and descending VV/VH C-band radar inputs. GRD_FLOAT linear sigma-0 power was converted to dB for model inputs.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="source-group">
+          <h4 class="group-label">Reference labels</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://zenodo.org/records/10068479">Global 30 m annual wetland maps</a><span>2022 layer</span></dt>
+              <dd>Historical swamp, marsh and permanent-water reference classes, plus subtype votes within collected OSM wetland polygons.</dd>
+            </div>
+            <div>
+              <dt><a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></dt>
+              <dd>Collected water and wetland polygons for label construction, and saved country boundaries for the neutral basemap. OSM coverage is incomplete; not every water polygon was treated as permanent water.</dd>
+            </div>
+            <div>
+              <dt><a href="https://zenodo.org/records/15302184">European Wetland Map v5</a></dt>
+              <dd>Peatland evidence in the Polish part of the study area, using class 10.</dd>
+            </div>
+            <div>
+              <dt><a href="https://www.greifswaldmoor.de/global-peatland-database-en.html">Global Peatland Map 2.0</a><span>Greifswald Mire Centre</span></dt>
+              <dd>Peat-dominated class outside Poland. Its approximately 1 km source evidence does not become more precise when aligned to the 20 m grid.</dd>
+            </div>
+            <div>
+              <dt><a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200</a></dt>
+              <dd>Separated mapped peat into cropland and selected non-cropland land-cover classes; it does not establish drainage or restoration suitability.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="source-group">
+          <h4 class="group-label">Regional context &amp; facts</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://savepolesia.org/polesia/">Save Polesia</a> &amp; <a href="https://fzs.org/en/programs/ukraine/wild-polissia/">FZS Wild Polissia</a><span>Frankfurt Zoological Society</span></dt>
+              <dd>Facts about Polissia, regional context and conservation background. The study outline was adapted from the Save Polesia regional map (see <a href="#map-provenance">map notes</a>).</dd>
+            </div>
+            <div>
+              <dt><a href="https://wwf.ua/our-work/freshwater/restoration/">WWF-Ukraine</a></dt>
+              <dd>Facts about Ukrainian bogs and drainage.</dd>
+            </div>
+            <div>
+              <dt><a href="https://7dniv.rv.ua/ekolohiia/vidnovlennia-bolit-rivnenshchyna/">7dniv.rv.ua</a><span>29 October 2026</span></dt>
+              <dd>Details of the Somyne and Syra Pohonia restoration, citing the Government Portal of Ukraine.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <h3>Further reading &amp; tools</h3>
+        <div class="cred-grid">
+          <article class="cred-card">
+            <h4>Data discovery &amp; access</h4>
+            <ul class="link-list">
+              <li><a href="https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html">NASA&rsquo;s CMR API</a><span>Programmatic discovery of NISAR granules, acquisition metadata and footprints used by our acquisition workflow.</span></li>
+              <li><a href="https://search.earthdata.nasa.gov/search">NASA Earthdata Search</a><span>Reviewed for discovering and exploring NASA satellite products.</span></li>
+              <li><a href="https://search.asf.alaska.edu/">ASF Vertex</a><span>Reviewed for SAR product discovery; science products were downloaded directly from ASF using Earthdata authentication.</span></li>
+            </ul>
+          </article>
+          <article class="cred-card">
+            <h4>Technical references</h4>
+            <ul class="link-list">
+              <li><a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide</a><span>NISAR products, data access, GCOV interpretation and processing guidance.</span></li>
+              <li><a href="https://github.com/asc-csa/Synthetic_Aperture_Radar_Tutorial">CSA SAR Python/QGIS tutorial</a><span>A reviewed practical reference for SAR visualization and analysis; its example data were not used in our experiments.</span></li>
+            </ul>
+          </article>
+          <article class="cred-card">
+            <h4>Background reading</h4>
+            <ul class="link-list">
+              <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Papers</a><span>NASA&rsquo;s white-paper collection, notably <em>Floods</em> (radar for inundation mapping) and <em>Soil Moisture and Water Resources</em> (moisture and water-resource monitoring). They explain the motivation for using NISAR; they are not validation of BogSignal&rsquo;s model results.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing">NASA Introduction to Remote Sensing</a><span>Sensor characteristics, resolution and Earth-observation concepts.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar">NASA Introduction to SAR</a><span>Radar wavelength, polarization and scattering concepts.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/data/projects/arset">NASA ARSET</a><span>A catalogue of applied remote-sensing training, including SAR and NISAR.</span></li>
+            </ul>
+            <p class="card-note">Learning resources were reviewed during project research; listing a course does not imply completion of its training.</p>
+          </article>
+          <article class="cred-card">
+            <h4>Presentation inspiration</h4>
+            <ul class="link-list">
+              <li><a href="https://science.nasa.gov/mission/nisar/arcgis-storymaps/">NISAR StoryMaps</a><span>Examples of communicating radar applications through visual stories.</span></li>
+              <li><a href="https://uavsar.jpl.nasa.gov/education/postcards.html">UAVSAR Postcards</a><span>Educational radar imagery and visual explanations. UAVSAR is an airborne sensor; these images were not used as model inputs.</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <h3>Credits</h3>
+        <ul class="credit-list">
+          <li>
+            <img src="%BASE_URL%images/cover-river-wetland.jpg" alt="" loading="lazy" />
+            <div><strong>Cover photo</strong><p>By Ladislav Stercell on <a href="https://unsplash.com/photos/a-body-of-water-surrounded-by-trees-and-grass-kdIyhflzJrM">Unsplash</a></p></div>
+          </li>
+          <li>
+            <img src="%BASE_URL%images/polesia-case-study-sites.jpg" alt="" loading="lazy" />
+            <div><strong>Case-study sites map</strong><p>A screenshot of the Polesia map from <a href="https://savepolesia.org/polesia/">Save Polesia</a> (Frankfurt Zoological Society) with our site markers added; <a href="https://savepolesia.org/wp-content/uploads/2020/05/Save-Polesia_Website-map_data-sources.pdf">data sources</a> &copy; <a href="http://pg-webstudio.de/">pg-webstudio.de</a>; basemap &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>; site coordinates from Wikipedia.</p></div>
+          </li>
+          <li>
+            <img src="%BASE_URL%images/sites/somyne-lake.jpg" alt="" loading="lazy" />
+            <div><strong>Lake Somyne</strong><p><a href="https://commons.wikimedia.org/wiki/File:%D0%9E%D0%B7%D0%B5%D1%80%D0%BE_%D0%A1%D0%BE%D0%BC%D0%B8%D0%BD%D0%B5_(%D0%A1%D0%B0%D1%80%D0%BD%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80-%D0%BD).JPG">Озеро Сомине (Сарненський р-н)</a> by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</p></div>
+          </li>
+          <li>
+            <img src="%BASE_URL%images/sites/syra-pohonia.jpg" alt="" loading="lazy" />
+            <div><strong>Syra Pohonia</strong><p><a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%81%D0%B8%D0%B2_%D0%A1%D0%B8%D1%80%D0%B0_%D0%9F%D0%BE%D0%B3%D0%BE%D0%BD%D1%8F._%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D1%96%D0%B4%D0%BD%D0%B5_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BE._%D0%A3%D0%B3%D1%80%D1%83%D0%BF%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D1%88%D0%B5%D0%B9%D1%85%D1%86%D0%B5%D1%80%D1%96%D1%97_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BD%D0%BE%D1%97.jpg">Масив Сира Погоня. Перехідне болото</a> by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</p></div>
+          </li>
+          <li>
+            <img src="%BASE_URL%images/sites/cheremske.jpg" alt="" loading="lazy" />
+            <div><strong>Cheremske Nature Reserve</strong><p><a href="https://commons.wikimedia.org/wiki/File:Cherem1.jpg">Cherem1.jpg</a> by an unknown author, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, via Wikimedia Commons</p></div>
+          </li>
+          <li>
+            <span class="credit-tile" aria-hidden="true">Sentinel</span>
+            <div><strong>Satellite imagery</strong><p>Contains modified Copernicus Sentinel data (2026), accessed through Google Earth Engine.</p></div>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

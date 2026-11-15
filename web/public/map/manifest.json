@@ -1,0 +1,60 @@
+{
+  "example_center": [
+    52.128074905474264,
+    28.60502598905404
+  ],
+  "bounds": [
+    [
+      48.39166745404055,
+      22.14010919816639
+    ],
+    [
+      54.850116827110604,
+      34.73638605980431
+    ]
+  ],
+  "width": 4096,
+  "height": 3390,
+  "display_pixel_size_meters": 342.33670071499705,
+  "native_pixel_size_meters": 20,
+  "resampling": "nearest",
+  "counts": {
+    "rejected_context_tiles": 7379,
+    "target_pixels": 451130482,
+    "predicted_pixels": 332349087
+  },
+  "coverage_fraction": 0.7367027950020012,
+  "checkpoint_sha256": "e9da06345f207ef85926127168794c1d9cf1257a22377485b51c55f75c214d9f",
+  "inference_plan_sha256": "2ef5f2bc8150143a7fecc66eee9bdcf690c21dea497f17ecd8779d96234fdc6a",
+  "source": "data/inference/polissia_D_v4_web",
+  "outputs": {
+    "confidence.tif": "d485849357578bbff9819d202e7fa55f5dd7490ec218f2439f1a0fbaee44fee5",
+    "classes.tif": "d10a40c8d263abff38183a06e7ce919123d825b091164fc16339865532dc0c02",
+    "coverage.tif": "68cafcae451c1a7c5bceb643b5016f30ab3b515da3ffc7fb50da4174fcdd490d",
+    "probabilities.tif": "2d7179e24f89c4bbb057aa3b36261b8c56db908f56092f41e3362d80f9e53346"
+  },
+  "scope": "Regional inference wherever all-sensor validity rules permit; includes training and held-out geography; no new evaluation or test-set scores.",
+  "decision": "argmax([pOther,pSwamp+pMarsh,pWater,pPeatCrop,pPeatNonCrop])",
+  "label_source": "labels/ignore_fringe_v4/labels.tif",
+  "eligibility_source": "labels/ignore_fringe_v4/training_mask.tif",
+  "country_attribution": "OpenStreetMap contributors, ODbL 1.0; saved boundaries simplified only for display",
+  "polissia_caveat": "Approximate ecological boundary adapted from Save Polesia regional map and local polygons; not a legal or habitat boundary",
+  "implementation_provenance": {
+    "source_sha256": {
+      "ml/src/bogsignal/inference/torch_adapter.py": "e9dcd961208c4da134413304672311ade932f7cd839c491011a7245a11b7e9db",
+      "ml/src/bogsignal/inference/pipeline.py": "c65a67fe8f37eac3e70f8cfedf5c2382563f601bd32712a5c0b343cfb1d7639f"
+    },
+    "adapter": "bogsignal.inference.torch_adapter:load_predictor",
+    "device": "CUDA",
+    "precision": "BF16 model inference; float32 returned logits",
+    "normalization": "frozen training statistics, applied once"
+  },
+  "display_sha256": {
+    "polissia.geojson": "19e73729f561c8ae8ea1e6a2c1da93bc51bd17ee0ed2b87d750d72c4231420cb",
+    "countries.geojson": "8bc854b90622dcbc02dd1b1c09e7f41671fc811a48ba7269b16c64a9ca8d254a",
+    "labels.png": "ad2dbca3c9bc6d2ce5224a24eb218a12230dd289b7421a2bdd5c1bbc9a3432f1",
+    "prediction.png": "c4e7200d9c240cca265c4b97904aedfc9a18e03c890f9bbe6c6bb4973e7a22cd",
+    "coverage.png": "909c89a4b45ae3b78d5a67eabaf3148eb2894f212f279be74bffda12f72958e7"
+  },
+  "outline_reference": "https://savepolesia.org/"
+}
