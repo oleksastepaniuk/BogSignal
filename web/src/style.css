@@ -243,7 +243,8 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 
 .cover { position:relative; }
 .seasonal-grid { grid-template-columns:1fr 1fr 1.65fr; }
-.seasonal-change-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(7rem,.65fr); gap:.75rem; align-items:start; min-width:0; }
+.seasonal-change-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(7rem,.65fr); gap:.75rem; align-items:start; min-width:0; margin:1rem 0; }
+.seasonal-change-panel > figure { margin:0; }
 .seasonal-change-legend { display:flex; flex-direction:column; gap:.8rem; font-size:.78rem; line-height:1.4; color:#4d655b; }
 .seasonal-change-legend span { display:flex; align-items:flex-start; gap:.45rem; }
 .change-swatch { display:inline-block; flex:none; width:.9rem; height:.9rem; margin-top:.12rem; border:1px solid #819184; border-radius:2px; }
