@@ -1,0 +1,227 @@
+<title>Wetland Prediction Viewer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one map with the map picker beside it, so two maps can be flipped in place; scores and close-ups below. */
+:root {
+  --bg:#f2f5f0; --panel:#ffffff; --ink:#16332b; --ink-2:#4f665c; --line:#cfd9cc; --accent:#1c6b52; --on-accent:#ffffff; --hover:#e6ede4;
+  --wetland:#009e73; --water:#0072b2; --crop:#e69f00; --peat:#cc79a7; --other:#eceee6; --gap:#cbd2c7; --unlab:#fafaf6;
+  --both:#008c66; --refonly:#d55e00; --modelonly:#7a52c7;
+  --s1:#a9d6c2; --s2:#6fbf9f; --s3:#2f9f7a; --s4:#0b7a5a; --s5:#06513c;
+  --display:"Space Grotesk","Inter",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#101a17; --panel:#17241f; --ink:#e4ede6; --ink-2:#a3b5aa; --line:#2c3d36; --accent:#6fcfa6; --on-accent:#0d1a15; --hover:#1f302a; color-scheme:dark } }
+:root[data-theme="dark"] { --bg:#101a17; --panel:#17241f; --ink:#e4ede6; --ink-2:#a3b5aa; --line:#2c3d36; --accent:#6fcfa6; --on-accent:#0d1a15; --hover:#1f302a; color-scheme:dark }
+[hidden] { display:none !important; }
+body { background:var(--bg); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6; }
+.wrap { max-width:84rem; margin:0 auto; padding-block:2.25rem 4rem; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); display:flex; flex-direction:column; gap:2.25rem; }
+h1,h2,h3 { font-family:var(--display); text-wrap:balance; line-height:1.2; margin:0; }
+h1 { font-size:2rem; } h2 { font-size:1.3rem; } h3 { font-size:1rem; }
+p { margin:0; max-width:65ch; }
+header, section { display:flex; flex-direction:column; gap:.8rem; }
+.eyebrow { font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); }
+.lede { font-size:1.1rem; }
+.note { font-size:.85rem; color:var(--ink-2); }
+
+/* viewer */
+.viewer { display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem; align-items:start; }
+.side { display:flex; flex-direction:column; gap:1.1rem; min-width:0; }
+.ctl { display:flex; flex-direction:column; gap:.35rem; }
+.ctl-label { font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); }
+.seg { display:flex; flex-wrap:wrap; gap:.35rem; }
+.seg button { font:inherit; font-size:.9rem; line-height:1.3; text-align:left; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:.35rem; padding:.4rem .7rem; cursor:pointer; }
+.seg button small { display:block; font-size:.75rem; color:var(--ink-2); }
+.seg button:hover { background:var(--hover); }
+.seg button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.seg button[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.seg button[aria-pressed="true"] small { color:var(--on-accent); }
+.seg button:disabled { opacity:.45; cursor:default; }
+.seg button:disabled:hover { background:var(--panel); }
+.key { display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.8rem; color:var(--ink-2); max-width:none; }
+.key i { display:inline-block; width:.75rem; height:.75rem; margin-right:.35rem; vertical-align:-1px; border:1px solid var(--line); }
+.mapcol { display:flex; flex-direction:column; gap:.6rem; min-width:0; }
+.viewport { border:1px solid var(--line); background:var(--gap); width:100%; max-width:calc(66vh * {{ASPECT}}); }
+.viewport.full { max-width:100%; height:66vh; max-height:60rem; overflow:auto; }
+.stage { position:relative; width:100%; touch-action:manipulation; }
+.viewport.full .stage { width:{{FULLW}}px; }
+.stage img { display:block; width:100%; height:auto; max-width:none; }
+.viewport.full .stage img { image-rendering:pixelated; }
+.cursor { position:absolute; box-sizing:border-box; border:2px solid #16332b; box-shadow:0 0 0 1px #ffffff; pointer-events:none; }
+.readout { font-size:.9rem; min-height:4.8em; font-variant-numeric:tabular-nums; max-width:none; }
+.readout b { font-weight:600; }
+.dim { color:var(--ink-2); }
+.readout .tail { font-size:.75rem; }
+@media (min-width:62rem) {
+  .viewer { grid-template-columns:17rem minmax(0,1fr); gap:1.75rem; }
+  .seg.col { flex-direction:column; }
+  .seg.col button { width:100%; }
+}
+
+/* scores and close-ups */
+figure { margin:0; display:flex; flex-direction:column; gap:.3rem; min-width:0; }
+figure img { width:100%; height:auto; display:block; image-rendering:pixelated; border:1px solid var(--line); }
+figcaption { font-size:.8rem; color:var(--ink-2); line-height:1.35; }
+.num { font-variant-numeric:tabular-nums; }
+.ex { display:flex; flex-direction:column; gap:.5rem; }
+.pid { font-family:var(--body); font-weight:400; font-size:.8rem; color:var(--ink-2); margin-left:.4rem; }
+.scrollx { overflow-x:auto; }
+.rows { display:flex; flex-direction:column; gap:1.4rem; }
+.cells { display:grid; grid-template-columns:repeat(6,minmax(8.5rem,1fr)); gap:.5rem; }
+table { border-collapse:collapse; width:100%; min-width:36rem; max-width:56rem; font-size:.95rem; }
+th,td { text-align:left; padding:.5rem .9rem .5rem 0; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-weight:600; }
+th small, td small { display:block; color:var(--ink-2); font-size:.75rem; font-weight:400; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+td.best { font-weight:600; }
+details { font-size:.85rem; color:var(--ink-2); max-width:65ch; }
+details summary { cursor:pointer; color:var(--ink); font-weight:500; }
+details summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+details ul { margin:.6rem 0 0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.35rem; }
+@media (max-width:40rem) { h1 { font-size:1.6rem; } }
+</style>
+<div class="wrap">
+<header>
+  <p class="eyebrow">BogSignal · Polissia, autumn 2026</p>
+  <h1>Where does each model see wetland?</h1>
+  <p class="lede">Four versions of our model mapped the same {{KMW}} km wide piece of Polissia. Each is shown only on places it did not learn from. Pick a map and compare it with the existing wetland maps.</p>
+</header>
+
+<section>
+  <div class="viewer">
+    <div class="side">
+      <div class="ctl"><span class="ctl-label" id="lab-layer">1 · Pick a map</span>
+        <div class="seg col" role="group" aria-labelledby="lab-layer">{{LAYER_BUTTONS}}</div>
+      </div>
+      <div class="ctl"><span class="ctl-label" id="lab-view">2 · Show the model's</span>
+        <div class="seg col" role="group" aria-labelledby="lab-view">
+          <button type="button" id="view-cls" data-view="cls" aria-pressed="true">Land types</button>
+          <button type="button" id="view-score" data-view="score" aria-pressed="false">Confidence<small>how sure it is about wetland</small></button>
+          <button type="button" id="view-agree" data-view="agree" aria-pressed="false">Hits and misses<small>against the existing maps</small></button>
+        </div>
+      </div>
+      <div class="ctl"><span class="ctl-label" id="lab-zoom">Zoom</span>
+        <div class="seg" role="group" aria-labelledby="lab-zoom">
+          <button type="button" id="zoom-fit" data-zoom="fit" aria-pressed="true">Whole area</button>
+          <button type="button" id="zoom-full" data-zoom="full" aria-pressed="false">Close-up</button>
+        </div>
+      </div>
+      <p class="note">Tip: keys 1 to 6 flip between maps.</p>
+    </div>
+    <div class="mapcol">
+      <p class="key" data-legend="cls"><span><i style="background:var(--wetland)"></i>Wetland (swamp, marsh)</span><span><i style="background:var(--water)"></i>Open water</span><span><i style="background:var(--crop)"></i>Farmed peat</span><span><i style="background:var(--peat)"></i>Other peat land</span><span><i style="background:var(--other)"></i>Other land</span><span data-only="ref" hidden><i style="background:var(--unlab)"></i>Unknown</span></p>
+      <p class="key" data-legend="score" hidden><span>Chance of wetland, by the model:</span><span><i style="background:var(--other)"></i>under 5%</span><span><i style="background:var(--s1)"></i>5–10%</span><span><i style="background:var(--s2)"></i>10–20%</span><span><i style="background:var(--s3)"></i>20–35%</span><span><i style="background:var(--s4)"></i>35–55%</span><span><i style="background:var(--s5)"></i>over 55%</span></p>
+      <p class="key" data-legend="agree" hidden><span><i style="background:var(--both)"></i>Wetland on both</span><span><i style="background:var(--refonly)"></i>Missed by the model</span><span><i style="background:var(--modelonly)"></i>Only the model sees it: a mistake, or wetland the old maps missed</span><span><i style="background:var(--other)"></i>Not wetland</span><span><i style="background:var(--unlab)"></i>Unknown</span></p>
+      <p class="key" data-legend="s2" hidden><span>Satellite photo (Sentinel-2), late October 2026</span></p>
+      <div class="viewport" id="viewport"><div class="stage" id="stage">{{LAYER_IMAGES}}<div class="cursor" id="cursor" hidden></div></div></div>
+      <p class="readout" id="readout"><span class="dim">Point at the map, or tap it, to see how well each model did in that 5 km square.</span></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The radar change layers help a little</h2>
+  <div class="scrollx"><table>
+    <thead><tr><th>Model</th><th class="n">Wetland found<small>of what existing maps show</small></th><th class="n">Wetland correct<small>of what the model marks</small></th><th class="n">Match<small>100% = identical maps</small></th><th class="n">Ranking score<small>1 = perfect</small></th></tr></thead>
+    <tbody>{{TABLE}}</tbody></table></div>
+  <p class="note">Bold is the best in each column. The table covers all {{NPATCH}} test squares. On the map above the gap is wider than average: the baseline matches {{BLOCK_BASE}}, + InSAR {{BLOCK_PP}}. Each model was trained once per test region, so small gaps are not reliable. Scores show agreement with existing maps; nobody has checked on the ground.</p>
+</section>
+
+<section>
+  <h2>Five places up close, best to worst</h2>
+  <p>Picked by a fixed rule from {{NCAND}} wetland-rich squares, so you see good, typical and bad results. Each image is 5 km across.</p>
+  <p class="key"><span><i style="background:var(--wetland)"></i>Wetland (swamp, marsh)</span><span><i style="background:var(--water)"></i>Open water</span><span><i style="background:var(--crop)"></i>Farmed peat</span><span><i style="background:var(--peat)"></i>Other peat land</span><span><i style="background:var(--other)"></i>Other land</span><span><i style="background:var(--unlab)"></i>Unknown</span></p>
+  <div class="scrollx"><div class="rows">{{EXAMPLES}}</div></div>
+</section>
+
+<details>
+  <summary>How this was made</summary>
+  <ul>
+    <li>The models were tested on {{NPATCH}} squares of 5.12 km inside one NISAR radar frame (track 100, frame 28), split into five test regions. Every square is drawn by the model that trained on the other four.</li>
+    <li>The map shows {{NBLOCK}} of those squares, {{KMW}} by {{KMH}} km: the block with no missing squares that holds the most wetland. It is drawn at the models' own 20 m detail, north up. Neighbouring squares can come from different models, so some seams show.</li>
+    <li>Existing maps are BogSignal's reference labels: older wetland, peat and land-cover maps combined. They are not ground truth.</li>
+    <li>Land types use a lowered bar for rare classes, set on the other four regions. Without it the baseline finds {{PLAIN_FOUND}} of wetland and is correct {{PLAIN_CORRECT}} of the time.</li>
+    <li>Found, correct and match count every labelled 20 m pixel. Match is the shared wetland area divided by the combined area. Ranking score is wetland average precision, the mean of the five regions.</li>
+    <li>The close-ups sit at the 95th, 75th, 50th, 25th and 5th percentile of match, averaged over the four models, among squares with at least 5% wetland and at most 5% unknown on existing maps.</li>
+  </ul>
+</details>
+</div>
+<script>
+(function () {
+  var C = {{C}}, R = {{R}}, FULL_W = {{FULLW}};
+  var MODELS = {{MODELS}};
+  var P = {{PATCHES}};
+  var grid = {};
+  P.forEach(function (p, i) { grid[p[1] * C + p[2]] = i; });
+  var layer = '{{DEFAULT}}', view = 'cls', zoom = 'fit', seq = 0, last = null;
+  var stage = document.getElementById('stage'), viewport = document.getElementById('viewport');
+  var cursor = document.getElementById('cursor'), readout = document.getElementById('readout');
+  var imgs = {};
+  Array.prototype.forEach.call(stage.querySelectorAll('img'), function (im) { imgs[im.getAttribute('data-key')] = im; });
+  var layerBtns = document.querySelectorAll('button[data-layer]');
+  var viewBtns = document.querySelectorAll('button[data-view]');
+  var zoomBtns = document.querySelectorAll('button[data-zoom]');
+  function isModel() { return layer !== 's2' && layer !== 'ref'; }
+  function key() { return isModel() ? layer + '.' + view : layer; }
+  function press(list, attr, value) {
+    Array.prototype.forEach.call(list, function (b) { b.setAttribute('aria-pressed', b.getAttribute(attr) === value ? 'true' : 'false'); });
+  }
+  function render() {
+    var im = imgs[key()], t = ++seq;
+    function reveal() { if (t !== seq) return; for (var k in imgs) imgs[k].hidden = imgs[k] !== im; }
+    if (!im.getAttribute('src')) { im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); }
+    if (im.decode) im.decode().then(reveal, reveal); else reveal();
+    press(layerBtns, 'data-layer', layer);
+    press(viewBtns, 'data-view', view);
+    Array.prototype.forEach.call(viewBtns, function (b) { b.disabled = !isModel(); });
+    var legend = layer === 's2' ? 's2' : (layer === 'ref' ? 'cls' : view);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-legend]'), function (el) { el.hidden = el.getAttribute('data-legend') !== legend; });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-only]'), function (el) { el.hidden = el.getAttribute('data-only') !== layer; });
+    if (last !== null) describe(last);
+  }
+  function pct(x) { return x < 0 ? '–' : Math.round(x) + '%'; }
+  function describe(i) {
+    var p = P[i], parts = MODELS.map(function (m, j) {
+      var s = m[1] + ' ' + pct(p[5 + j]);
+      return m[0] === layer ? '<b>' + s + '</b>' : s;
+    });
+    var wet = p[4] <= 0 ? 'no wetland' : (p[4] < 1 ? 'under 1% wetland' : Math.round(p[4]) + '% wetland');
+    readout.innerHTML = '<b>This 5 km square:</b> ' + wet + ' on existing maps<br>Match with existing maps: ' + parts.join(' · ') +
+      '<br><span class="dim tail">Square ' + p[0] + ' · test region ' + (p[3] + 1) + ' of 5</span>';
+  }
+  function point(e) {
+    var box = stage.getBoundingClientRect();
+    var c = Math.floor((e.clientX - box.left) / box.width * C), r = Math.floor((e.clientY - box.top) / box.height * R);
+    if (c < 0 || r < 0 || c >= C || r >= R) return;
+    var i = grid[r * C + c];
+    if (i === undefined) { cursor.hidden = true; last = null; readout.innerHTML = '<span class="dim">No data at this spot.</span>'; return; }
+    last = i;
+    cursor.style.left = (c / C * 100) + '%'; cursor.style.top = (r / R * 100) + '%';
+    cursor.style.width = (100 / C) + '%'; cursor.style.height = (100 / R) + '%';
+    cursor.hidden = false;
+    describe(i);
+  }
+  stage.addEventListener('pointermove', point);
+  stage.addEventListener('pointerdown', point);
+  function setZoom(z) {
+    if (z === zoom) return;
+    zoom = z;
+    press(zoomBtns, 'data-zoom', zoom);
+    viewport.classList.toggle('full', zoom === 'full');
+    if (zoom === 'full') {
+      var fx = last === null ? 0.5 : (P[last][2] + 0.5) / C, fy = last === null ? 0.5 : (P[last][1] + 0.5) / R;
+      viewport.scrollLeft = fx * FULL_W - viewport.clientWidth / 2;
+      viewport.scrollTop = fy * (FULL_W * R / C) - viewport.clientHeight / 2;
+    }
+  }
+  Array.prototype.forEach.call(layerBtns, function (b) { b.addEventListener('click', function () { layer = b.getAttribute('data-layer'); render(); }); });
+  Array.prototype.forEach.call(viewBtns, function (b) { b.addEventListener('click', function () { view = b.getAttribute('data-view'); render(); }); });
+  Array.prototype.forEach.call(zoomBtns, function (b) { b.addEventListener('click', function () { setZoom(b.getAttribute('data-zoom')); }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var n = '123456'.indexOf(e.key);
+    if (n < 0 || n >= layerBtns.length) return;
+    layer = layerBtns[n].getAttribute('data-layer'); render();
+  });
+  render();
+})();
+</script>

@@ -1,0 +1,1074 @@
+{
+ "generated_utc": "2026-11-15T20:13:21+00:00",
+ "seed": 0,
+ "folds": 5,
+ "test_evaluated": false,
+ "variants": {
+  "base": {
+   "name": "Baseline",
+   "inputs": "Sentinel-2, Sentinel-1 and NISAR backscatter",
+   "channels": 14,
+   "complete": true
+  },
+  "pp": {
+   "name": "+ InSAR, 27 layers",
+   "inputs": "Baseline plus coherence, phase homogeneity and phase offset of each of the nine pairs",
+   "channels": 41,
+   "complete": true
+  },
+  "coh": {
+   "name": "+ coherence, 9 layers",
+   "inputs": "Baseline plus the coherence of each of the nine pairs",
+   "channels": 23,
+   "complete": true
+  },
+  "merge": {
+   "name": "One wetland class",
+   "inputs": "Baseline inputs; Swamp and Marsh trained as one class, scored on the original labels",
+   "channels": 14,
+   "complete": true
+  }
+ },
+ "kfold_validation_last_epoch": {
+  "base": {
+   "Swamp/marsh average precision": [
+    0.6133,
+    0.5417,
+    0.3707,
+    0.6591,
+    0.2234
+   ],
+   "Swamp average precision": [
+    0.4413,
+    0.4834,
+    0.2528,
+    0.2594,
+    0.1299
+   ],
+   "Marsh average precision": [
+    0.1646,
+    0.0732,
+    0.2468,
+    0.3955,
+    0.0716
+   ],
+   "Swamp/marsh recall at 5% area": [
+    0.6146,
+    0.5278,
+    0.5607,
+    0.7405,
+    0.6803
+   ],
+   "Swamp/marsh IoU, most likely class": [
+    0.2749,
+    0.2136,
+    0.2398,
+    0.3623,
+    0.1568
+   ],
+   "Peatland cropland average precision": [
+    0.1984,
+    0.2987,
+    0.1687,
+    0.2311,
+    0.2081
+   ],
+   "Permanent water average precision": [
+    0.8878,
+    0.8766,
+    0.783,
+    0.743,
+    0.8975
+   ],
+   "Six-class macro IoU": [
+    0.3376,
+    0.3205,
+    0.3301,
+    0.33,
+    0.3234
+   ]
+  },
+  "pp": {
+   "Swamp/marsh average precision": [
+    0.6826,
+    0.5755,
+    0.4585,
+    0.5303,
+    0.2872
+   ],
+   "Swamp average precision": [
+    0.4754,
+    0.5596,
+    0.3902,
+    0.2482,
+    0.1885
+   ],
+   "Marsh average precision": [
+    0.1454,
+    0.0705,
+    0.2073,
+    0.3696,
+    0.1014
+   ],
+   "Swamp/marsh recall at 5% area": [
+    0.6779,
+    0.5854,
+    0.6716,
+    0.6382,
+    0.7654
+   ],
+   "Swamp/marsh IoU, most likely class": [
+    0.3582,
+    0.3934,
+    0.315,
+    0.2557,
+    0.1519
+   ],
+   "Peatland cropland average precision": [
+    0.1624,
+    0.3552,
+    0.2547,
+    0.1886,
+    0.2472
+   ],
+   "Permanent water average precision": [
+    0.8886,
+    0.857,
+    0.7807,
+    0.6942,
+    0.8974
+   ],
+   "Six-class macro IoU": [
+    0.3377,
+    0.3413,
+    0.3444,
+    0.3161,
+    0.339
+   ]
+  },
+  "coh": {
+   "Swamp/marsh average precision": [
+    0.6804,
+    0.6278,
+    0.4428,
+    0.5794,
+    0.3297
+   ],
+   "Swamp average precision": [
+    0.4822,
+    0.6446,
+    0.3587,
+    0.3087,
+    0.208
+   ],
+   "Marsh average precision": [
+    0.1375,
+    0.1109,
+    0.2238,
+    0.3588,
+    0.1337
+   ],
+   "Swamp/marsh recall at 5% area": [
+    0.6636,
+    0.6007,
+    0.629,
+    0.6657,
+    0.7779
+   ],
+   "Swamp/marsh IoU, most likely class": [
+    0.3532,
+    0.3894,
+    0.2921,
+    0.2455,
+    0.2336
+   ],
+   "Peatland cropland average precision": [
+    0.1947,
+    0.3461,
+    0.1802,
+    0.1954,
+    0.2279
+   ],
+   "Permanent water average precision": [
+    0.8856,
+    0.8682,
+    0.7882,
+    0.7286,
+    0.8979
+   ],
+   "Six-class macro IoU": [
+    0.348,
+    0.3677,
+    0.3405,
+    0.3146,
+    0.3448
+   ]
+  },
+  "merge": {
+   "Swamp/marsh average precision": [
+    0.6444,
+    0.5015,
+    0.3916,
+    0.6104,
+    0.245
+   ],
+   "Swamp average precision": [
+    0.4474,
+    0.4561,
+    0.2198,
+    0.3007,
+    0.1707
+   ],
+   "Marsh average precision": [
+    0.0493,
+    0.0387,
+    0.026,
+    0.1108,
+    0.0155
+   ],
+   "Swamp/marsh recall at 5% area": [
+    0.6149,
+    0.5068,
+    0.5707,
+    0.7243,
+    0.6909
+   ],
+   "Swamp/marsh IoU, most likely class": [
+    0.3398,
+    0.2906,
+    0.2784,
+    0.3887,
+    0.1879
+   ],
+   "Peatland cropland average precision": [
+    0.2501,
+    0.3117,
+    0.1373,
+    0.2118,
+    0.2
+   ],
+   "Permanent water average precision": [
+    0.8952,
+    0.8631,
+    0.7842,
+    0.738,
+    0.8981
+   ],
+   "Six-class macro IoU": [
+    0.356,
+    0.3254,
+    0.2931,
+    0.3154,
+    0.3273
+   ]
+  }
+ },
+ "feature_test": {
+  "sample_pixels": 400000,
+  "pairs": 9,
+  "block_km": 20,
+  "folds": 4,
+  "results": {
+   "Swamp or marsh": {
+    "prevalence": 0.0309025,
+    "First thresholded detector, mean over pairs": {
+     "auc": 0.5982990910675895,
+     "ap": 0.060229170690458134
+    },
+    "Six season summaries": {
+     "auc": 0.7218549560868404,
+     "ap": 0.09731954650114641
+    },
+    "Coherence of each pair (9)": {
+     "auc": 0.8026725811049361,
+     "ap": 0.17114192198280995
+    },
+    "Coherence, homogeneity and phase offset of each pair (27)": {
+     "auc": 0.8774450448680171,
+     "ap": 0.24956484305427762
+    }
+   },
+   "Swamp": {
+    "prevalence": 0.0215675,
+    "First thresholded detector, mean over pairs": {
+     "auc": 0.5768276999476579,
+     "ap": 0.03952034558308802
+    },
+    "Six season summaries": {
+     "auc": 0.7463423043288016,
+     "ap": 0.0798749172133497
+    },
+    "Coherence of each pair (9)": {
+     "auc": 0.8251537876997782,
+     "ap": 0.16391120032125764
+    },
+    "Coherence, homogeneity and phase offset of each pair (27)": {
+     "auc": 0.8856062218335354,
+     "ap": 0.21582354283838123
+    }
+   },
+   "Peatland cropland": {
+    "prevalence": 0.0425325,
+    "First thresholded detector, mean over pairs": {
+     "auc": 0.6003613569535684,
+     "ap": 0.06059083022701742
+    },
+    "Six season summaries": {
+     "auc": 0.7359724290526659,
+     "ap": 0.09569657851998867
+    },
+    "Coherence of each pair (9)": {
+     "auc": 0.7833720127251305,
+     "ap": 0.1137416626578081
+    },
+    "Coherence, homogeneity and phase offset of each pair (27)": {
+     "auc": 0.8029986786965962,
+     "ap": 0.1348262552470967
+    }
+   },
+   "Permanent water": {
+    "prevalence": 0.01696,
+    "First thresholded detector, mean over pairs": {
+     "auc": 0.4733302465774728,
+     "ap": 0.03255017817885705
+    },
+    "Six season summaries": {
+     "auc": 0.9169788656744566,
+     "ap": 0.6017563486530482
+    },
+    "Coherence of each pair (9)": {
+     "auc": 0.8631891889392204,
+     "ap": 0.3108277518443605
+    },
+    "Coherence, homogeneity and phase offset of each pair (27)": {
+     "auc": 0.9355394034265722,
+     "ap": 0.6336567067238468
+    }
+   }
+  },
+  "phase_offset_rad": {
+   "Other": {
+    "median": 0.09870507568120956,
+    "p90": 0.26780766248703003,
+    "share_over_quarter_fringe": 0.0029209575306360894
+   },
+   "Swamp": {
+    "median": 0.11587575078010559,
+    "p90": 0.38767528533935547,
+    "share_over_quarter_fringe": 0.015347089658515892
+   },
+   "Marsh": {
+    "median": 0.11615395545959473,
+    "p90": 0.37460318207740784,
+    "share_over_quarter_fringe": 0.007696812515686439
+   },
+   "Permanent water": {
+    "median": 0.19409334659576416,
+    "p90": 1.1432161331176758,
+    "share_over_quarter_fringe": 0.06491956408925792
+   },
+   "Peatland cropland": {
+    "median": 0.12165256589651108,
+    "p90": 0.34869688749313354,
+    "share_over_quarter_fringe": 0.0056312604871103875
+   },
+   "Peatland non-cropland": {
+    "median": 0.10337739437818527,
+    "p90": 0.27839407324790955,
+    "share_over_quarter_fringe": 0.004209358196337946
+   }
+  },
+  "cm_per_rad_line_of_sight": 1.8939438227935546
+ },
+ "decision": {
+  "class_areas": {
+   "Reference labels": [
+    [
+     0.7811513269927367,
+     0.02969777441899966,
+     0.016416247626044426,
+     0.04352459957978665,
+     0.12921005138243252
+    ],
+    1.0,
+    1.0
+   ],
+   "Baseline: most likely class": [
+    [
+     0.8845635771749908,
+     0.01633699102874016,
+     0.01451198030424888,
+     0.019935954357166833,
+     0.06465149713485337
+    ],
+    0.3358978179037176,
+    0.6106031157383878
+   ],
+   "Baseline: fitted offsets": [
+    [
+     0.7983960965993094,
+     0.029078882746264988,
+     0.01383770930087083,
+     0.05001623698377412,
+     0.10867107436978064
+    ],
+    0.4748249456214058,
+    0.48493073983007523
+   ],
+   "+ InSAR, 27 layers: most likely class": [
+    [
+     0.8804476909333683,
+     0.021180020417643924,
+     0.014695358892057071,
+     0.020284866262456056,
+     0.0633920634944747
+    ],
+    0.4343136378534609,
+    0.6089771487341177
+   ],
+   "+ InSAR, 27 layers: fitted offsets": [
+    [
+     0.796652215488099,
+     0.031800065248797506,
+     0.013571136357760563,
+     0.05211855730988656,
+     0.10585802559545648
+    ],
+    0.5540572887180557,
+    0.5174287614448713
+   ],
+   "+ coherence, 9 layers: most likely class": [
+    [
+     0.8879473206440089,
+     0.02024750918002738,
+     0.014347921802497367,
+     0.01785905985423128,
+     0.05959818851923501
+    ],
+    0.42505537181053404,
+    0.6234445153414272
+   ],
+   "+ coherence, 9 layers: fitted offsets": [
+    [
+     0.8133829380721483,
+     0.028622161811148048,
+     0.013612711413175658,
+     0.04909685160615028,
+     0.0952853370973777
+    ],
+    0.5186550857642304,
+    0.5381459946988965
+   ],
+   "One wetland class: most likely class": [
+    [
+     0.8898259704165828,
+     0.01948610606334944,
+     0.014000057016376103,
+     0.020153976366461386,
+     0.05653389013723028
+    ],
+    0.3884742210700913,
+    0.592053627719664
+   ],
+   "One wetland class: fitted offsets": [
+    [
+     0.8051992003372137,
+     0.02793060596742005,
+     0.013506922880897377,
+     0.05032577130908523,
+     0.10303749950538367
+    ],
+    0.4761032150412681,
+    0.5062262486159051
+   ]
+  },
+  "offsets_by_fold": {
+   "base": {
+    "0": [
+     0.0,
+     2.0,
+     1.0,
+     1.5,
+     1.0
+    ],
+    "1": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "2": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "3": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "4": [
+     0.0,
+     2.0,
+     1.0,
+     1.5,
+     1.0
+    ]
+   },
+   "pp": {
+    "0": [
+     0.0,
+     1.5,
+     0.0,
+     1.5,
+     1.0
+    ],
+    "1": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "2": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "3": [
+     0.0,
+     1.5,
+     0.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ]
+   },
+   "coh": {
+    "0": [
+     0.0,
+     1.5,
+     0.0,
+     1.5,
+     1.0
+    ],
+    "1": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "2": [
+     0.0,
+     2.0,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "3": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "4": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     0.5
+    ]
+   },
+   "merge": {
+    "0": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "1": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "2": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "3": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ],
+    "4": [
+     0.0,
+     1.5,
+     0.5,
+     1.5,
+     1.0
+    ]
+   }
+  },
+  "example_rule_variant": "pp",
+  "example_patches": [
+   {
+    "rule": "Largest gain",
+    "id": "r010752_c009472",
+    "reference_share": 0.15538866402991736,
+    "base": 0.27388850381225865,
+    "pp": 0.8005743142885434,
+    "coh": 0.477171437060513,
+    "merge": 0.2745369911855006
+   },
+   {
+    "rule": "Second largest gain",
+    "id": "r009984_c009472",
+    "reference_share": 0.577871881736988,
+    "base": 0.1698218707564502,
+    "pp": 0.6144570720332753,
+    "coh": 0.5483841351450606,
+    "merge": 0.5554341744158162
+   },
+   {
+    "rule": "Smallest change",
+    "id": "r015104_c007168",
+    "reference_share": 0.0843271003008869,
+    "base": 0.0,
+    "pp": 0.0,
+    "coh": 0.0,
+    "merge": 0.0
+   },
+   {
+    "rule": "Second largest loss",
+    "id": "r012544_c010752",
+    "reference_share": 0.06902096900027067,
+    "base": 0.4178902953586498,
+    "pp": 0.08682970608032309,
+    "coh": 0.17492435703479575,
+    "merge": 0.45228170250109695
+   },
+   {
+    "rule": "Largest loss",
+    "id": "r013568_c012032",
+    "reference_share": 0.28468993634217865,
+    "base": 0.6043464016599323,
+    "pp": 0.18299097502906816,
+    "coh": 0.1452909989873116,
+    "merge": 0.5264195583596214
+   }
+  ],
+  "block": {
+   "patches": 90,
+   "width_km": 51.2,
+   "height_km": 46.08,
+   "reference_swamp_marsh_share": 0.09209238746119654,
+   "swamp_marsh_iou": {
+    "Baseline: most likely class": 0.2565800082732123,
+    "Baseline: fitted offsets": 0.34137291280148424,
+    "+ InSAR, 27 layers: fitted offsets": 0.5030979026271698,
+    "+ coherence, 9 layers: fitted offsets": 0.46195887928441554,
+    "One wetland class: fitted offsets": 0.3516965746194693
+   }
+  }
+ },
+ "fringe_method": {
+  "files": [
+   "NISAR_L2_PR_GUNW_023_100_A_028_024_2000_SH_20260621T030554_20260621T030633_20260703T030553_20260703T030632_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_024_100_A_028_025_2000_SH_20260703T030553_20260703T030632_20260715T030553_20260715T030632_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_025_100_A_028_026_2000_SH_20260715T030553_20260715T030632_20260727T030552_20260727T030631_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_026_100_A_028_028_2000_SH_20260727T030552_20260727T030631_20260820T030551_20260820T030628_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_028_100_A_028_029_2000_SH_20260820T030551_20260820T030628_20260901T030551_20260901T030628_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_029_100_A_028_030_2000_SH_20260901T030551_20260901T030628_20260913T030550_20260913T030628_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_030_100_A_028_031_2000_SH_20260913T030550_20260913T030628_20260925T030551_20260925T030626_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_031_100_A_028_032_2000_SH_20260925T030551_20260925T030626_20261007T030551_20261007T030628_P05023_N_F_J_001.h5",
+   "NISAR_L2_PR_GUNW_032_100_A_028_033_2000_SH_20261007T030551_20261007T030628_20261019T030551_20261019T030628_P05023_N_F_J_001.h5"
+  ],
+  "pairs": [
+   {
+    "reference": "2026-06-21",
+    "secondary": "2026-07-03",
+    "days": 12,
+    "flagged_share": 0.8686297977842775
+   },
+   {
+    "reference": "2026-07-03",
+    "secondary": "2026-07-15",
+    "days": 12,
+    "flagged_share": 0.9123000042782624
+   },
+   {
+    "reference": "2026-07-15",
+    "secondary": "2026-07-27",
+    "days": 12,
+    "flagged_share": 0.8876134913438231
+   },
+   {
+    "reference": "2026-07-27",
+    "secondary": "2026-08-20",
+    "days": 24,
+    "flagged_share": 0.7517015484179299
+   },
+   {
+    "reference": "2026-08-20",
+    "secondary": "2026-09-01",
+    "days": 12,
+    "flagged_share": 0.8140294657493794
+   },
+   {
+    "reference": "2026-09-01",
+    "secondary": "2026-09-13",
+    "days": 12,
+    "flagged_share": 0.8815460805377672
+   },
+   {
+    "reference": "2026-09-13",
+    "secondary": "2026-09-25",
+    "days": 12,
+    "flagged_share": 0.8264702352939949
+   },
+   {
+    "reference": "2026-09-25",
+    "secondary": "2026-10-07",
+    "days": 12,
+    "flagged_share": 0.707020837224639
+   },
+   {
+    "reference": "2026-10-07",
+    "secondary": "2026-10-19",
+    "days": 12,
+    "flagged_share": 0.7684860064299153
+   }
+  ],
+  "runs_per_pair": 100,
+  "threshold": 0.8,
+  "area_km2": {
+   "every_date": 43803.1808,
+   "some_dates": 15886.9824,
+   "never": 1643.1488000000002
+  },
+  "by_reference_class": {
+   "Other": {
+    "flagged_mean": 0.8214535533312759,
+    "every_date": 0.7144823764087654,
+    "some_dates": 0.2623111246367492,
+    "never": 0.023206498954485368
+   },
+   "Swamp": {
+    "flagged_mean": 0.854990247263978,
+    "every_date": 0.8234731420161884,
+    "some_dates": 0.09755072006727636,
+    "never": 0.07897613791653527
+   },
+   "Marsh": {
+    "flagged_mean": 0.8540797788629474,
+    "every_date": 0.7845290444838561,
+    "some_dates": 0.17232331576006413,
+    "never": 0.043147639756079784
+   },
+   "Permanent water": {
+    "flagged_mean": 0.22907286732087245,
+    "every_date": 0.17377697695527888,
+    "some_dates": 0.16881850080609107,
+    "never": 0.6574045222386301
+   },
+   "Peatland cropland": {
+    "flagged_mean": 0.7049196593767691,
+    "every_date": 0.51901034826916,
+    "some_dates": 0.446336082365919,
+    "never": 0.03465356936492094
+   },
+   "Peatland non-cropland": {
+    "flagged_mean": 0.8884930906549197,
+    "every_date": 0.8391833246351126,
+    "some_dates": 0.1380670335097496,
+    "never": 0.022749641855137847
+   }
+  },
+  "every_date_share_by_model_d_class": {
+   "Other": 0.7170458778371609,
+   "Swamp/marsh": 0.8276788530777849,
+   "Permanent water": 0.16156663225679596,
+   "Peatland cropland": 0.445099151660271,
+   "Peatland non-cropland": 0.8498894925718945
+  },
+  "inferred_dates": [
+   "2026-07-03",
+   "2026-07-15",
+   "2026-07-27",
+   "2026-08-20",
+   "2026-09-01",
+   "2026-09-13",
+   "2026-09-25",
+   "2026-10-07"
+  ],
+  "regional_phase_removed": {
+   "pairs": 9,
+   "km": 5.0,
+   "flagged_share": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "any_run_share": [
+    0.9691208130941527,
+    0.9771032434362189,
+    0.9778294544075795,
+    0.9416146629848997,
+    0.9617569407053946,
+    0.8311055777166411,
+    0.8591205578210949,
+    0.9427302277590737,
+    0.9538773604298094
+   ]
+  },
+  "rotation_degrees": -20.59999999999998,
+  "swamp_marsh_ap_per_pair": [
+   0.040331832048803806,
+   0.04415122947773365,
+   0.044719861397426924,
+   0.038688087045342344,
+   0.04434932844702111,
+   0.04546180734276094,
+   0.05637175786192906,
+   0.047557867418373014,
+   0.04551618276493822
+  ],
+  "swamp_marsh_prevalence": 0.03076598034122803,
+  "coherence": {
+   "dates": [
+    "2026-06-21",
+    "2026-07-03",
+    "2026-07-15",
+    "2026-07-27",
+    "2026-08-20",
+    "2026-09-01",
+    "2026-09-13",
+    "2026-09-25",
+    "2026-10-07"
+   ],
+   "mean_by_class": {
+    "Swamp + Marsh": [
+     0.49417415311027485,
+     0.5746316855231421,
+     0.5700316343925336,
+     0.5038417048832238,
+     0.5272044421395382,
+     0.5257496315667396,
+     0.5335768051201133,
+     0.4649973363159979,
+     0.46191445275153775
+    ],
+    "Peatland non-cropland": [
+     0.4353065490722656,
+     0.5289929509162903,
+     0.5275099277496338,
+     0.49444934725761414,
+     0.47023680806159973,
+     0.4922114610671997,
+     0.4923286736011505,
+     0.4868053197860718,
+     0.4473203122615814
+    ],
+    "Peatland cropland": [
+     0.3799695372581482,
+     0.43848830461502075,
+     0.43058398365974426,
+     0.3889400362968445,
+     0.46417760848999023,
+     0.4740521013736725,
+     0.442264586687088,
+     0.38402891159057617,
+     0.39967015385627747
+    ],
+    "Permanent water": [
+     0.3414360284805298,
+     0.3686838448047638,
+     0.36992165446281433,
+     0.3390764594078064,
+     0.3627893626689911,
+     0.3692132830619812,
+     0.36335262656211853,
+     0.3521158695220947,
+     0.3597782850265503
+    ],
+    "Other": [
+     0.4380270540714264,
+     0.5262477397918701,
+     0.5159265995025635,
+     0.48890331387519836,
+     0.46271640062332153,
+     0.4801858961582184,
+     0.46764275431632996,
+     0.46816495060920715,
+     0.44070741534233093
+    ]
+   },
+   "class_mean": {
+    "Swamp + Marsh": 0.5173468717559001,
+    "Peatland non-cropland": 0.4861290388637119,
+    "Peatland cropland": 0.42246391375859577,
+    "Permanent water": 0.35848526822196114,
+    "Other": 0.4765024582544963
+   }
+  }
+ },
+ "sources": [
+  {
+   "path": "runs/insar_e1/feature_test.json",
+   "sha256": "9eb21cae65b6743b8295dbac9ab20ac7233b9997575f541fabc566199c7fac56"
+  },
+  {
+   "path": "runs/exp/insar_base_f0/final.json",
+   "sha256": "66e25ca17108ca391cb3db556c2c02de3ab8a910df2d7f16e6c06f25df719177"
+  },
+  {
+   "path": "runs/exp/insar_base_f1/final.json",
+   "sha256": "ef582d7c9ea47a5e96a82e97815bc5a2e6bf82613a4a7858b64181afb878a157"
+  },
+  {
+   "path": "runs/exp/insar_base_f2/final.json",
+   "sha256": "26a4f2e8089cf7ed63df0159d3f6856e9985de4a8a2f7c1fb422e4a2afb938d1"
+  },
+  {
+   "path": "runs/exp/insar_base_f3/final.json",
+   "sha256": "a17ede08ea9222ddd98f0503b4d54b3253036433629ede4dfff97eb56d4e851d"
+  },
+  {
+   "path": "runs/exp/insar_base_f4/final.json",
+   "sha256": "0e175c38137a1b4aec927e1d6d71e560755cecf92610a3723e9f14fd5d219a60"
+  },
+  {
+   "path": "runs/exp/insar_pp_f0/final.json",
+   "sha256": "525366f5fd62aa3fa4b906ba205879ad76e38553ab02c8419a6b5875bd969c38"
+  },
+  {
+   "path": "runs/exp/insar_pp_f1/final.json",
+   "sha256": "08c03363681e83225f96cdff687265ac7f24b09ef8c41add572933fecdb65cd1"
+  },
+  {
+   "path": "runs/exp/insar_pp_f2/final.json",
+   "sha256": "e2b83b289be9ed2cc836168c138b2b52bfdb616ab2d45cdcc29a485072305925"
+  },
+  {
+   "path": "runs/exp/insar_pp_f3/final.json",
+   "sha256": "233dd34f81ae69ed4ae7a9980954a363731dabe8681d0af7bdf95d4f7d5d8d42"
+  },
+  {
+   "path": "runs/exp/insar_pp_f4/final.json",
+   "sha256": "b3bc1895871dffd389a703e7dca81aec864247607cc36cce817a6f1d544302d6"
+  },
+  {
+   "path": "runs/exp/insar_coh_f0/final.json",
+   "sha256": "33e6cd371b3b69b9e4ff273e1a47bfae99dc1b173c72e37e44a8aabb56b8232c"
+  },
+  {
+   "path": "runs/exp/insar_coh_f1/final.json",
+   "sha256": "a2990c68ec991d06130e9b3d543337eeff4fa7b4aaae4c3a369f5f71fec4d497"
+  },
+  {
+   "path": "runs/exp/insar_coh_f2/final.json",
+   "sha256": "001462cb188614bd24ab0e0d28bed48d1792fac7fcd399019e33fe0a1078e6d8"
+  },
+  {
+   "path": "runs/exp/insar_coh_f3/final.json",
+   "sha256": "b215ae865833c827f6ebb67c2650b985d26a1ffc40a5eddb5dbce80c14128efa"
+  },
+  {
+   "path": "runs/exp/insar_coh_f4/final.json",
+   "sha256": "e7fcbf7af4ea3d7aa5c803e6a3de1ccb729bc06c623a28413e8d56494c8933b8"
+  },
+  {
+   "path": "runs/exp/insar_merge_f0/final.json",
+   "sha256": "82a72c8b419573a9675728a3670e0d23083a8f3895ee8e3971bdac107ad42ab1"
+  },
+  {
+   "path": "runs/exp/insar_merge_f1/final.json",
+   "sha256": "aa8151258f61dece952fe5cea4dca62eb68926ced52dfb540aabc6a00eb861c7"
+  },
+  {
+   "path": "runs/exp/insar_merge_f2/final.json",
+   "sha256": "f954329abc2b2796b7e672549594bedb7ac2dd1286851c8948dbf590d58c0063"
+  },
+  {
+   "path": "runs/exp/insar_merge_f3/final.json",
+   "sha256": "9af07d81a51b81474301b32b92326e545dc9be94b6f25653b5c602d3442ae711"
+  },
+  {
+   "path": "runs/exp/insar_merge_f4/final.json",
+   "sha256": "1ad5e48b68a5e3d62fe460931752a7277d1640a2a74bc28ff5140f61907f0bae"
+  },
+  {
+   "path": "runs/insar_e1/oof/base/offsets.json",
+   "sha256": "048146a00616f4175b079ed69461a99447bb6be59db579abf3c2c14b5d1b1ce6"
+  },
+  {
+   "path": "runs/insar_e1/oof/pp/offsets.json",
+   "sha256": "c876f33383a32718574e261877bf73caaa3040ac45a0f2ea13566b6bfcb8e90f"
+  },
+  {
+   "path": "runs/insar_e1/oof/coh/offsets.json",
+   "sha256": "6536cf8df22277e868dc376d7bd5aaef2a5d9eeaef7443beac1ea91d1ee58962"
+  },
+  {
+   "path": "runs/insar_e1/oof/merge/offsets.json",
+   "sha256": "2214ce1433d52d437c5c91020715f37ab1032ff05f878d795fcf4c5410e9ac25"
+  },
+  {
+   "path": "runs/insar_e1/track100_frame28_paper/summary.json",
+   "sha256": "a15ae63ef009b102513202043c31b70fb0035b03478db7c7decd9a29b54c1e79"
+  },
+  {
+   "path": "runs/insar_e1/track100_frame28_paper_detrend5/summary.json",
+   "sha256": "f621ea578f4ef05b6e58e28ce0b1a656853265956a5a8b938f1bad1e0ab917dd"
+  },
+  {
+   "path": "BogSignal/web/public/map/manifest.json",
+   "sha256": "c70713d5e37df5ff4affe04cfc10303b70c4220bebfe36f74eeecb8149bf7e19"
+  },
+  {
+   "path": "BogSignal/web/public/map/prediction.png",
+   "sha256": "c4e7200d9c240cca265c4b97904aedfc9a18e03c890f9bbe6c6bb4973e7a22cd"
+  },
+  {
+   "path": "BogSignal/web/public/map/labels.png",
+   "sha256": "ad2dbca3c9bc6d2ce5224a24eb218a12230dd289b7421a2bdd5c1bbc9a3432f1"
+  },
+  {
+   "path": "BogSignal/web/public/map/coverage.png",
+   "sha256": "909c89a4b45ae3b78d5a67eabaf3148eb2894f212f279be74bffda12f72958e7"
+  },
+  {
+   "path": "runs/insar_e1/track100_frame28/summary.json",
+   "sha256": "b347d702b822cfc2ad8ab67298a37f394e46ff567747cd8bf93c0e793b10c138"
+  }
+ ]
+}
