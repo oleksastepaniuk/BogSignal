@@ -106,15 +106,11 @@
         <p><strong>The highest-scoring 5% of our validation area contained 73.4% of the swamp and marsh pixels in our reference maps.</strong> This suggests BogSignal could help researchers narrow their search, prioritizing promising areas for closer investigation.</p>
         <div id="ranking"></div>
         <p class="note">These are two different results: the overlap improvement compares models with and without NISAR; the ranking chart describes the combined model alone. Neither measures field-verified accuracy.</p>
-        <h3>From wetland mapping to monitoring</h3>
-        <p>BogSignal helps researchers identify promising areas for closer investigation. We also explored how wetland predictions vary between seasonal observations — a first step toward monitoring environmental change.</p>
-        <h4>June vs. October: Seeing the difference</h4>
-        <p>We compared satellite observations from June and October at three sites in Ukrainian Polissia: <strong>Cheremske, Somyne and Syra Pohonia</strong>.</p>
-        <p>Explore how the same trained model responds to changes in Sentinel-2, Sentinel-1 and NISAR imagery, and where its wetland predictions differ between the two dates.</p>
+        <h3>June vs. October: Seeing the difference</h3>
+        <p>BogSignal helps researchers identify promising wetlands for closer investigation. To explore its potential for monitoring environmental change, we compared satellite observations from June and October at three sites in Ukrainian Polissia: <strong>Cheremske, Somyne and Syra Pohonia</strong>, examining how the model's wetland predictions changed between the two dates.</p>
         <div id="seasonal-examples"><p role="status">Loading site comparisons...</p></div>
         <h4>Understanding the radar images</h4>
-        <p>NISAR images use illustrative false colors: red represents HH polarization, green represents HV, and blue represents their contrast. Both ascending and descending observations are included in the model, while the displayed NISAR imagery uses ascending observations.</p>
-        <p>Radar colors represent differences in the returned signal, not confirmed wetland types.</p>
+        <p>NISAR images use illustrative false colors: red represents HH polarization, green represents HV, and blue represents their contrast. Both ascending and descending observations are included in the model, while the displayed NISAR imagery uses ascending observations. Radar colors represent differences in the returned signal, not confirmed wetland types.</p>
         <p class="note seasonal-caution"><strong>Important:</strong> This is an exploratory comparison using provisional NISAR observations. Differences may reflect seasonal conditions, observation geometry or data quality. They are changes in model predictions, not independently verified environmental changes or evidence of restoration impact. White areas indicate missing imagery at one or both dates.</p>
         <details id="full-results" class="map-notes"><summary>Results &amp; methods</summary>
         <div class="cred-grid">
@@ -149,7 +145,7 @@
         <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
         <div id="results" class="table-wrap"></div>
         <p class="note">IoU measures overlap. Recall measures reference wetlands recovered; reference precision measures agreement among predicted wetlands. The temporal follow-up has a smaller matched footprint: compare TD only with the matched D values in its row, not directly with A-D above. TD averages NISAR linear power over 3-5 observations before dB conversion; processing, dates and training populations also differ. It improved reference precision but reduced recall, so D remains highlighted.</p>
-        <p><a class="button-link" href="%BASE_URL%experiment/final_experiment_report.html">Full experiment report</a></p>
+        <div class="report-links"><a class="button-link" href="%BASE_URL%experiment/final_experiment_report.html">Full experiment report</a><a class="button-link secondary-link" href="https://github.com/oleksastepaniuk/BogSignal">GitHub Repository</a></div>
         </details>
       </section>
       <section id="credentials">
