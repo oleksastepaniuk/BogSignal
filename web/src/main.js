@@ -145,7 +145,7 @@ async function setupSeasonal() {
   if (!response.ok) throw new Error('Seasonal examples unavailable');
   const {examples} = await response.json();
   const names = {cheremske:'Cheremske',somyne:'Somyne',syra_pohonia:'Syra Pohonia'};
-  const sites = Object.keys(names);
+  const sites = ['syra_pohonia','cheremske','somyne'];
   for (const site of sites) {
     if (examples.filter(row=>row.site===site).length!==1) throw new Error(`Expected one ${site} example`);
   }
