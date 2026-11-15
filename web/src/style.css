@@ -145,3 +145,7 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .budget-bar strong { font-size:1rem; }
 .budget-bars { gap:clamp(.8rem,2vw,1.5rem); }
 @media(max-width:700px) { .budget-chart { width:100%; } }
+
+.sources-table th { width:32%; vertical-align:top; }
+.sources-table td { white-space:normal; line-height:1.6; vertical-align:top; }
+#credentials > h3 { margin-top:1.8rem; }

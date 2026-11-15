@@ -63,7 +63,7 @@
         <h3>A first step toward better-informed conservation</h3>
         <p>BogSignal can help focus wetland research on places worth a closer look. The next steps are independent checks of promising locations and repeated observations to investigate change. Identifying wetland signals does not establish restoration suitability.</p>
         <details id="full-results" class="map-notes"><summary>Full results &amp; methods</summary>
-        <p>We used U-Net with a ResNet-34 encoder initialized from ImageNet weights. The encoder extracts image features, while the decoder combines them with finer spatial detail to predict a class for each pixel. The same architecture and training recipe were used for each sensor combination, with input channels adapted to the selected sensors and their validity masks. The model predicts six classes; for the displayed wetland results, Swamp and Marsh probabilities are added before choosing among five combined classes.</p>
+        <p>We used <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder initialized from ImageNet weights. The encoder extracts image features, while the decoder combines them with finer spatial detail to predict a class for each pixel. The same architecture and training recipe were used for each sensor combination, with input channels adapted to the selected sensors and their validity masks. The model predicts six classes; for the displayed wetland results, Swamp and Marsh probabilities are added before choosing among five combined classes.</p>
         <h3>Detailed experiment results</h3>
         <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
         <div id="results" class="table-wrap"></div>
@@ -73,22 +73,68 @@
       </section>
       <section id="credentials">
         <h2>Methods &amp; Sources</h2>
+        <h3>Complete report</h3>
         <p><a href="/experiment/final_experiment_report.html">Read the complete final experiment report</a> for dates, training design, temporal follow-ups, sources and full evaluations.</p>
-        <p class="note">Our experiment uses radar backscatter power (GCOV for NISAR), not interferometric phase. Bright radar returns alone do not establish wetland type or peat presence. The sensor comparison asks whether adding NISAR improves agreement with weak reference labels.</p>
-        <p>Inputs: Sentinel-2 optical bands, Sentinel-1 C-band backscatter and NISAR L-band GCOV power. A six-class U-Net uses a ResNet-34 encoder; displayed maps sum Swamp and Marsh probabilities before five-class selection.</p>
+        <h3>Model</h3>
+        <p>Inputs: Sentinel-2 optical bands, Sentinel-1 C-band backscatter and NISAR L-band GCOV power. A six-class <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> uses a ResNet-34 encoder; displayed maps sum Swamp and Marsh probabilities before five-class selection.</p>
         <ul>
           <li>Single seed (17), validation against historical/inferred weak references. Labels can be incomplete, wrong or temporally mismatched; Other is not verified dry land.</li>
-          <li>Validation informed checkpoint selection. No test-set results or independent field validation are available.</li>
+          <li>Validation informed checkpoint selection. No test-set evaluation results or independent field validation are available.</li>
           <li>Review budget means scored area, not a count of sites. Scores are uncalibrated and do not confirm wetlands.</li>
           <li>These experiments do not establish restoration suitability or verified discovery of new wetland sites.</li>
         </ul>
+        <p class="note">Our experiment uses radar backscatter power (GCOV for NISAR), not interferometric phase. Bright radar returns alone do not establish wetland type or peat presence.</p>
+        <p class="note">Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ. <a href="/experiment/demo.json">Selection and provenance</a> / <a href="/experiment/final_experiment_report_data.json">Complete report data</a></p>
         <details class="map-notes"><summary>Map notes &amp; provenance</summary>
 <p class="note">Select labels or predictions to compare. If both are enabled, predictions draw above labels. Coverage: teal = predicted, gray = no prediction. Regional predictions include training and held-out geography; this map is not a new accuracy evaluation. Scores are uncalibrated and do not establish restoration suitability.</p><p id="map-resolution" class="note"></p>
 <p class="note"><a href="/map/manifest.json">Map provenance and coverage</a>. The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
         </details>
-        <p class="note">Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ. <a href="/experiment/demo.json">Selection and provenance</a> / <a href="/experiment/final_experiment_report_data.json">Complete report data</a></p>
+        <h3>Sources</h3>
+        <p>Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>
+        <div class="table-wrap"><table class="sources-table">
+          <thead><tr><th scope="col">Resource</th><th scope="col">What we used it for</th></tr></thead><tbody>
+          <tr><th scope="row"><a href="https://nisar-docs.asf.alaska.edu/gcov/">NASA&ndash;ISRO NISAR GCOV, via ASF DAAC</a></th><td>Ascending and descending HH/HV L-band gamma-0 backscatter. The baseline uses validated products; the separate temporal follow-up uses multiple provisional observations.</td></tr>
+          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED">Copernicus Sentinel-2 L2A, via Google Earth Engine</a></th><td>Optical surface-reflectance bands B2, B3, B4, B8, B11 and B12. The model uses a shared 20 m mosaic; swipe backgrounds use 10 m RGB from the recorded source scenes.</td></tr>
+          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_CLOUD_SCORE_PLUS_V1_S2_HARMONIZED">Google Cloud Score+</a></th><td>Cloud-quality screening for selecting the Sentinel-2 observations, together with scene-classification masks.</td></tr>
+          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S1_GRD">Copernicus Sentinel-1 GRD, via Google Earth Engine</a></th><td>Ascending and descending VV/VH C-band radar inputs. GRD_FLOAT linear sigma-0 power was converted to dB for model inputs.</td></tr>
+          <tr><th scope="row"><a href="https://zenodo.org/records/10068479">Global 30 m annual wetland maps, 2022 layer</a></th><td>Historical swamp, marsh and permanent-water reference classes, plus subtype votes within collected OSM wetland polygons.</td></tr>
+          <tr><th scope="row"><a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></th><td>Collected water and wetland polygons for label construction, and saved country boundaries for the neutral basemap. OSM coverage is incomplete; not every water polygon was treated as permanent water.</td></tr>
+          <tr><th scope="row"><a href="https://zenodo.org/records/15302184">European Wetland Map v5</a></th><td>Peatland evidence in the Polish part of the study area, using class 10.</td></tr>
+          <tr><th scope="row"><a href="https://www.greifswaldmoor.de/global-peatland-database-en.html">Global Peatland Map 2.0, Greifswald Mire Centre</a></th><td>Peat-dominated class outside Poland. Its approximately 1 km source evidence does not become more precise when aligned to the 20 m grid.</td></tr>
+          <tr><th scope="row"><a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200</a></th><td>Separated mapped peat into cropland and selected non-cropland land-cover classes; it does not establish drainage or restoration suitability.</td></tr>
+          <tr><th scope="row"><a href="https://savepolesia.org/">Save Polesia</a> and <a href="https://fzs.org/en/programs/ukraine/wild-polissia/">FZS Wild Polissia</a></th><td>Regional context and conservation background. The study outline was adapted from the Save Polesia regional map, local polygons and approximate image tracing.</td></tr>
+          </tbody></table></div>
+        <h4>Presentation inspiration</h4>
         <ul>
-          <li>Contains modified Copernicus Sentinel data (2026), accessed through Google Earth Engine. Swipe backgrounds use original-resolution 10 m RGB from the recorded source scenes; prediction masks remain at 20 m. Tiny RGB gaps are filled from nearby valid imagery for display only; source data, predictions and evaluation masks are unchanged.</li>
+          <li><a href="https://science.nasa.gov/mission/nisar/arcgis-storymaps/">NISAR StoryMaps</a> &mdash; examples of communicating radar applications through visual stories.</li>
+          <li><a href="https://uavsar.jpl.nasa.gov/education/postcards.html">UAVSAR Postcards</a> &mdash; educational radar imagery and visual explanations. UAVSAR is an airborne sensor; these images were not used as model inputs.</li>
+        </ul>
+        <h4>Data discovery &amp; access</h4>
+        <ul>
+          <li><a href="https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html">NASA&rsquo;s CMR API</a> &mdash; programmatic discovery of NISAR granules, acquisition metadata and footprints used by our acquisition workflow.</li>
+          <li><a href="https://search.earthdata.nasa.gov/search">NASA Earthdata Search</a> &mdash; reviewed for discovering and exploring NASA satellite products.</li>
+          <li><a href="https://search.asf.alaska.edu/">ASF Vertex</a> &mdash; reviewed for SAR product discovery; science products were downloaded directly from ASF using Earthdata authentication.</li>
+        </ul>
+        <h4>Technical references</h4>
+        <ul>
+          <li><a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide</a> &mdash; NISAR products, data access, GCOV interpretation and processing guidance.</li>
+          <li><a href="https://github.com/asc-csa/Synthetic_Aperture_Radar_Tutorial">CSA SAR Python/QGIS tutorial</a> &mdash; a reviewed practical reference for SAR visualization and analysis; its example data were not used in our experiments.</li>
+        </ul>
+        <h4>Application background</h4>
+        <ul>
+          <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Paper: Floods</a> &mdash; background on radar applications for inundation mapping.</li>
+          <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Paper: Soil Moisture and Water Resources</a> &mdash; background on radar applications for moisture and water-resource monitoring.</li>
+        </ul>
+        <p class="note">These application white papers explain the motivation for using NISAR; they are not validation of BogSignal&rsquo;s model results. Links open NASA&rsquo;s white-paper collection.</p>
+        <h4>Background learning resources</h4>
+        <p class="note">Resources reviewed during project research; listing a course does not imply completion of its training.</p>
+        <ul>
+          <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing">NASA Introduction to Remote Sensing</a> &mdash; sensor characteristics, resolution and Earth-observation concepts.</li>
+          <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar">NASA Introduction to SAR</a> &mdash; radar wavelength, polarization and scattering concepts.</li>
+          <li><a href="https://www.earthdata.nasa.gov/data/projects/arset">NASA ARSET</a> &mdash; a catalogue of applied remote-sensing training, including SAR and NISAR.</li>
+        </ul>
+        <h3>Other</h3>
+        <ul>
           <li>Cover photo by Ladislav Stercell on <a href="https://unsplash.com/photos/a-body-of-water-surrounded-by-trees-and-grass-kdIyhflzJrM">Unsplash</a></li>
         </ul>
       </section>
