@@ -101,6 +101,7 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 
 .map-notes { margin:1.3rem 0; }
 .map-notes summary { cursor:pointer; font-weight:600; }
+h2, #full-results > summary { font-size:1.5em; font-weight:700; }
 
 .budget-chart { position:relative; padding:1.5rem 1.5rem 1rem 3.5rem; border:1px solid #c9d4c4; border-radius:.5rem; margin:2rem 0; }
 .budget-chart figcaption { margin:0 0 2rem; }
