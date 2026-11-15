@@ -145,3 +145,33 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .budget-bar strong { font-size:1rem; }
 .budget-bars { gap:clamp(.8rem,2vw,1.5rem); }
 @media(max-width:700px) { .budget-chart { width:100%; } }
+
+/* Season in motion */
+.season-controls { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem 1rem; margin:1.2rem 0 .6rem; }
+.season-controls input[type=range] { flex:1 1 14rem; accent-color:#26664d; }
+.season-controls output { font-weight:600; min-width:17rem; }
+.season-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.season-grid figure { margin:.5rem 0; }
+.season-grid img { display:block; width:100%; height:auto; background:#e3e8de; }
+.season-grid figcaption strong { display:block; margin:.5rem 0 .4rem; }
+.season-grid .choices { margin:.5rem 0 .4rem; }
+.season-grid .choices button { padding:.35rem .6rem; font-size:.85rem; }
+.ramp { display:block; height:.6rem; border-radius:.2rem; background:linear-gradient(90deg,#f4f1e8,#f0c987,#d9722c,#8f2a14,#3d0d0a); border:1px solid #c9d4c4; }
+.ramp-ends { display:flex; justify-content:space-between; font-size:.8rem; color:#526b5f; }
+.season-chart { border:1px solid #c9d4c4; border-radius:.5rem; padding:1.1rem 1.2rem .8rem; margin:1.5rem 0; }
+.season-chart figcaption strong { display:block; font-size:1.05rem; }
+.season-chart figcaption span { display:block; color:#526b5f; margin:.3rem 0 .8rem; }
+.season-plot { position:relative; }
+.season-plot svg { display:block; width:100%; height:auto; }
+.season-plot .grid { stroke:#d5ddd0; stroke-width:1; }
+.season-plot .tick { font-size:11px; fill:#526b5f; }
+.season-plot .tick.flag { font-style:italic; }
+.season-plot .end { font-size:12px; fill:#193b32; }
+.season-plot .cursor { stroke:#193b32; stroke-width:1; stroke-dasharray:3 3; }
+.season-plot .hit { fill:transparent; cursor:pointer; }
+.season-tip { position:absolute; top:.2rem; transform:translateX(.8rem); background:#fff; border:1px solid #a9bcac; border-radius:.4rem; padding:.5rem .7rem; font-size:.8rem; pointer-events:none; box-shadow:0 2px 8px rgb(0 0 0 / .12); }
+.season-tip span { display:flex; align-items:center; gap:.4rem; white-space:nowrap; }
+.season-tip i { width:.7rem; height:.7rem; display:inline-block; }
+.season-tip b { margin-left:auto; padding-left:.8rem; font-variant-numeric:tabular-nums; }
+.season-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (max-width:44rem) { .season-grid,.season-cards { grid-template-columns:1fr; } .season-controls output { min-width:0; } }

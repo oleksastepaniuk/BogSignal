@@ -1,4 +1,5 @@
 import { setupLandscape } from './landscape.js';
+import { setupChange } from './change.js';
 import './style.css';
 
 // Highlight the nav link for the section currently in view.
@@ -141,3 +142,4 @@ setupDemo().catch(error=>{
 });
 
 setupLandscape().catch(error=>{document.getElementById('map-status').textContent='The regional map could not load. Please reload the page.';console.error(error);});
+setupChange().catch(error=>{document.getElementById('change-app').textContent='The season maps could not load. Please reload the page.';console.error(error);});

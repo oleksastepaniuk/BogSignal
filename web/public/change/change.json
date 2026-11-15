@@ -1,0 +1,304 @@
+{
+ "pairs": [
+  {
+   "image": "change-0.png",
+   "start": "2026-06-21",
+   "end": "2026-07-03",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.4380270540714264,
+    "Swamp": 0.5096119046211243,
+    "Marsh": 0.46090957522392273,
+    "Permanent water": 0.3414360284805298,
+    "Peatland cropland": 0.3799695372581482,
+    "Peatland non-cropland": 0.4353065490722656
+   },
+   "window_coherence": {
+    "Other": 0.3811325430870056,
+    "Swamp": 0.5525839924812317,
+    "Marsh": 0.5925213694572449,
+    "Permanent water": 0.3587888181209564,
+    "Peatland cropland": 0.3290557265281677,
+    "Peatland non-cropland": 0.37143662571907043
+   },
+   "rain_mm": 16.4
+  },
+  {
+   "image": "change-1.png",
+   "start": "2026-07-03",
+   "end": "2026-07-15",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.5262477397918701,
+    "Swamp": 0.6013497114181519,
+    "Marsh": 0.5170608758926392,
+    "Permanent water": 0.3686838448047638,
+    "Peatland cropland": 0.43848830461502075,
+    "Peatland non-cropland": 0.5289929509162903
+   },
+   "window_coherence": {
+    "Other": 0.48567742109298706,
+    "Swamp": 0.6514025926589966,
+    "Marsh": 0.6688416600227356,
+    "Permanent water": 0.3735034465789795,
+    "Peatland cropland": 0.3763367533683777,
+    "Peatland non-cropland": 0.4771744906902313
+   },
+   "rain_mm": 46.6
+  },
+  {
+   "image": "change-2.png",
+   "start": "2026-07-15",
+   "end": "2026-07-27",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.5159265995025635,
+    "Swamp": 0.5958414077758789,
+    "Marsh": 0.5144178867340088,
+    "Permanent water": 0.36992165446281433,
+    "Peatland cropland": 0.43058398365974426,
+    "Peatland non-cropland": 0.5275099277496338
+   },
+   "window_coherence": {
+    "Other": 0.4705001413822174,
+    "Swamp": 0.6483439207077026,
+    "Marsh": 0.6810703277587891,
+    "Permanent water": 0.37098732590675354,
+    "Peatland cropland": 0.3752126693725586,
+    "Peatland non-cropland": 0.45989298820495605
+   },
+   "rain_mm": 24.200000000000003
+  },
+  {
+   "image": "change-3.png",
+   "start": "2026-07-27",
+   "end": "2026-08-20",
+   "days": 24,
+   "frame_coherence": {
+    "Other": 0.48890331387519836,
+    "Swamp": 0.5206751823425293,
+    "Marsh": 0.4675696790218353,
+    "Permanent water": 0.3390764594078064,
+    "Peatland cropland": 0.3889400362968445,
+    "Peatland non-cropland": 0.49444934725761414
+   },
+   "window_coherence": {
+    "Other": 0.45410242676734924,
+    "Swamp": 0.6075367331504822,
+    "Marsh": 0.6285907626152039,
+    "Permanent water": 0.35395845770835876,
+    "Peatland cropland": 0.35826846957206726,
+    "Peatland non-cropland": 0.4436247944831848
+   },
+   "rain_mm": 16.4
+  },
+  {
+   "image": "change-4.png",
+   "start": "2026-08-20",
+   "end": "2026-09-01",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.46271640062332153,
+    "Swamp": 0.5408194065093994,
+    "Marsh": 0.49786752462387085,
+    "Permanent water": 0.3627893626689911,
+    "Peatland cropland": 0.46417760848999023,
+    "Peatland non-cropland": 0.47023680806159973
+   },
+   "window_coherence": {
+    "Other": 0.45891040563583374,
+    "Swamp": 0.5715849995613098,
+    "Marsh": 0.608176052570343,
+    "Permanent water": 0.3543771803379059,
+    "Peatland cropland": 0.4046920835971832,
+    "Peatland non-cropland": 0.44739389419555664
+   },
+   "rain_mm": 28.5
+  },
+  {
+   "image": "change-5.png",
+   "start": "2026-09-01",
+   "end": "2026-09-13",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.4801858961582184,
+    "Swamp": 0.5372893810272217,
+    "Marsh": 0.5008842945098877,
+    "Permanent water": 0.3692132830619812,
+    "Peatland cropland": 0.4740521013736725,
+    "Peatland non-cropland": 0.4922114610671997
+   },
+   "window_coherence": {
+    "Other": 0.4823927581310272,
+    "Swamp": 0.5834161043167114,
+    "Marsh": 0.6123162508010864,
+    "Permanent water": 0.3656766712665558,
+    "Peatland cropland": 0.4217831790447235,
+    "Peatland non-cropland": 0.4693845510482788
+   },
+   "rain_mm": 24.500000000000004
+  },
+  {
+   "image": "change-6.png",
+   "start": "2026-09-13",
+   "end": "2026-09-25",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.46764275431632996,
+    "Swamp": 0.5473880171775818,
+    "Marsh": 0.5038170218467712,
+    "Permanent water": 0.36335262656211853,
+    "Peatland cropland": 0.442264586687088,
+    "Peatland non-cropland": 0.4923286736011505
+   },
+   "window_coherence": {
+    "Other": 0.41343292593955994,
+    "Swamp": 0.531837522983551,
+    "Marsh": 0.5515795350074768,
+    "Permanent water": 0.35776659846305847,
+    "Peatland cropland": 0.38701751828193665,
+    "Peatland non-cropland": 0.42951878905296326
+   },
+   "rain_mm": 20.1
+  },
+  {
+   "image": "change-7.png",
+   "start": "2026-09-25",
+   "end": "2026-10-07",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.46816495060920715,
+    "Swamp": 0.4736270010471344,
+    "Marsh": 0.44640251994132996,
+    "Permanent water": 0.3521158695220947,
+    "Peatland cropland": 0.38402891159057617,
+    "Peatland non-cropland": 0.4868053197860718
+   },
+   "window_coherence": {
+    "Other": 0.3858058750629425,
+    "Swamp": 0.5093038082122803,
+    "Marsh": 0.522437334060669,
+    "Permanent water": 0.34141549468040466,
+    "Peatland cropland": 0.3413671851158142,
+    "Peatland non-cropland": 0.40562376379966736
+   },
+   "rain_mm": 0.4
+  },
+  {
+   "image": "change-8.png",
+   "start": "2026-10-07",
+   "end": "2026-10-19",
+   "days": 12,
+   "frame_coherence": {
+    "Other": 0.44070741534233093,
+    "Swamp": 0.471782922744751,
+    "Marsh": 0.4406503140926361,
+    "Permanent water": 0.3597782850265503,
+    "Peatland cropland": 0.39967015385627747,
+    "Peatland non-cropland": 0.4473203122615814
+   },
+   "window_coherence": {
+    "Other": 0.3794134259223938,
+    "Swamp": 0.44703319668769836,
+    "Marsh": 0.4737124443054199,
+    "Permanent water": 0.36099186539649963,
+    "Peatland cropland": 0.34047171473503113,
+    "Peatland non-cropland": 0.37905725836753845
+   },
+   "rain_mm": 28.599999999999998
+  }
+ ],
+ "classes": [
+  "Other",
+  "Swamp",
+  "Marsh",
+  "Permanent water",
+  "Peatland cropland",
+  "Peatland non-cropland"
+ ],
+ "class_colors": [
+  "#b9b9aa",
+  "#197b49",
+  "#197b49",
+  "#2879b9",
+  "#cf9a4b",
+  "#8b668b"
+ ],
+ "polarization": "HH",
+ "pixel_m": 40.0,
+ "size_px": 512,
+ "window_km": 20.48,
+ "bounds": [
+  [
+   51.954833315235106,
+   24.642375883649148
+  ],
+  [
+   52.133247335340535,
+   24.949825454163523
+  ]
+ ],
+ "center": [
+  52.044040325287824,
+  24.796100668906334
+ ],
+ "change_range": [
+  0.25,
+  0.85
+ ],
+ "window_class_share": {
+  "Other": 0.34552001953125,
+  "Swamp": 0.2335052490234375,
+  "Marsh": 0.0758819580078125,
+  "Permanent water": 0.031829833984375,
+  "Peatland cropland": 0.1348876953125,
+  "Peatland non-cropland": 0.1532745361328125
+ },
+ "frame_labelled_pixels_80m": {
+  "Other": 5149379,
+  "Swamp": 129434,
+  "Marsh": 60069,
+  "Permanent water": 95517,
+  "Peatland cropland": 256381,
+  "Peatland non-cropland": 794372
+ },
+ "window_backscatter": {
+  "Other": {
+   "hh_db": -8.332352638244629,
+   "hv_db": -12.706486701965332
+  },
+  "Swamp": {
+   "hh_db": -7.601251602172852,
+   "hv_db": -12.23141098022461
+  },
+  "Marsh": {
+   "hh_db": -7.92495584487915,
+   "hv_db": -12.849329948425293
+  },
+  "Permanent water": {
+   "hh_db": -10.868683815002441,
+   "hv_db": -14.51838207244873
+  },
+  "Peatland cropland": {
+   "hh_db": -9.696681022644043,
+   "hv_db": -13.640721321105957
+  },
+  "Peatland non-cropland": {
+   "hh_db": -8.032033920288086,
+   "hv_db": -12.351624488830566
+  }
+ },
+ "source": "NISAR L2 GUNW (provisional), frequency A, HH, track 100 frame 28; coherenceMagnitude of the wrapped interferogram, 20 m averaged to 40 m",
+ "labels_source": "s1s2nisar_256_v4 weak reference labels on the 80 m radar grid",
+ "files": [
+  "NISAR_L2_PR_GUNW_023_100_A_028_024_2000_SH_20260621T030554_20260621T030633_20260703T030553_20260703T030632_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_024_100_A_028_025_2000_SH_20260703T030553_20260703T030632_20260715T030553_20260715T030632_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_025_100_A_028_026_2000_SH_20260715T030553_20260715T030632_20260727T030552_20260727T030631_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_026_100_A_028_028_2000_SH_20260727T030552_20260727T030631_20260820T030551_20260820T030628_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_028_100_A_028_029_2000_SH_20260820T030551_20260820T030628_20260901T030551_20260901T030628_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_029_100_A_028_030_2000_SH_20260901T030551_20260901T030628_20260913T030550_20260913T030628_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_030_100_A_028_031_2000_SH_20260913T030550_20260913T030628_20260925T030551_20260925T030626_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_031_100_A_028_032_2000_SH_20260925T030551_20260925T030626_20261007T030551_20261007T030628_P05023_N_F_J_001.h5",
+  "NISAR_L2_PR_GUNW_032_100_A_028_033_2000_SH_20261007T030551_20261007T030628_20261019T030551_20261019T030628_P05023_N_F_J_001.h5"
+ ]
+}
