@@ -171,8 +171,7 @@ async function setupSeasonal() {
     </div></div>
     </div>
     <p>The third panel highlights where the model newly identifies Swamp/Marsh or no longer predicts it. <strong>These differences do not necessarily indicate actual wetland expansion or loss.</strong></p>
-    <p id="seasonal-key" class="note"></p>
-    <details class="map-notes"><summary>Image dates and display details</summary><p id="seasonal-dates" class="note"></p></details>`;
+    `;
   let site=sites[0], view='prediction';
   function render() {
     const row=examples.find(item=>item.site===site);
@@ -185,17 +184,6 @@ async function setupSeasonal() {
     $('seasonal-change').src=`${import.meta.env.BASE_URL}seasonal_full/${row.files.change.filename}`;
     $('seasonal-change').alt=`${names[site]} full patch: predicted Swamp and Marsh gains and losses between June and October`;
     $('seasonal-caption').textContent='Each comparison covers a 5.12 × 5.12 km area on the same map grid.';
-    $('seasonal-key').textContent=view==='prediction'
-      ? `Green = predicted Swamp/Marsh; gray = Other; blue = water; ochre and purple = peatland classes. In the change panel, blue = newly predicted Swamp/Marsh, orange = no longer predicted, gray = no wetland-class change. White = unavailable at one or both dates.`
-      : view==='s2' ? 'Sentinel-2 model-grid RGB uses B4/B3/B2 with the same 0–0.3 reflectance stretch in both months. White = cloud-screened or missing.'
-      : view==='s1' ? 'Sentinel-1 ascending VV backscatter, shown at a fixed −30 to 0 dB grayscale stretch. Descending VV/VH also enter the model.'
-      : 'Illustrative false color from ascending NISAR: red = HH, green = HV, blue = HH−HV contrast. Both ascending and descending HH/HV enter the model. Colors are radar signals, not land-cover classes.';
-    if(view!=='prediction') $('seasonal-key').textContent+=' The third panel always shows changes in wetland predictions.';
-    const dateLine=month=>{
-      const d=row.dates[month];
-      return `${month==='june'?'June':'October'} — Sentinel-2: ${d.s2.join(', ')}; Sentinel-1 ascending/descending: ${d.s1_ascending.join(', ')} / ${d.s1_descending.join(', ')}; provisional NISAR ascending/descending: ${d.nisar_ascending.join(', ')} / ${d.nisar_descending.join(', ')}.`;
-    };
-    $('seasonal-dates').textContent=dateLine('june')+' '+dateLine('october')+' All images use the same 20 m grid; exact source scenes can vary by pixel.';
     document.querySelectorAll('#seasonal-sites button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.site===site)));
     document.querySelectorAll('#seasonal-views button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===view)));
   }
