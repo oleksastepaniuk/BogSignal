@@ -112,28 +112,30 @@
           <article class="cred-card">
             <h3>Data &amp; model</h3>
             <dl>
-              <dt>Inputs</dt>
-              <dd>Sentinel-2 optical bands, Sentinel-1 C-band backscatter and NISAR L-band GCOV power.</dd>
-              <dt>Radar signal</dt>
-              <dd>Radar backscatter power (GCOV for NISAR), not interferometric phase. Bright radar returns alone do not establish wetland type or peat presence.</dd>
-              <dt>Model</dt>
-              <dd>A six-class <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder. Displayed maps sum Swamp and Marsh probabilities before five-class selection.</dd>
-              <dt>Comparison</dt>
-              <dd>The sensor comparison asks whether adding NISAR improves agreement with weak reference labels.</dd>
+              <dt>Satellite inputs</dt>
+              <dd>Sentinel-2 optical imagery, Sentinel-1 C-band radar (VV/VH) and NISAR L-band radar (HH/HV), using ascending and descending observations.</dd>
+              <dt>AI model</dt>
+              <dd>A <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder predicts six land-cover classes: Swamp, Marsh, Water, Peatland cropland, Peatland non-cropland, and Other.</dd>
+              <dt>Experiment</dt>
+              <dd>Four versions of the same model compare different satellite combinations to measure what NISAR adds beyond existing observations.</dd>
+              <dt>Radar measurements</dt>
+              <dd>We analyze radar backscatter, not interferometric phase. Swamp and Marsh are combined for the headline wetland results.</dd>
             </dl>
           </article>
           <article class="cred-card">
             <h3>Limitations</h3>
-            <ul>
-              <li>Single seed (17), validation against historical/inferred weak references. Labels can be incomplete, wrong or temporally mismatched; Other is not verified dry land.</li>
-              <li>Validation informed checkpoint selection. No test-set evaluation results or independent field validation are available.</li>
-              <li>Review budget means scored area, not a count of sites. Scores are uncalibrated and do not confirm wetlands.</li>
-              <li>Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ.</li>
-              <li>These experiments do not establish restoration suitability or verified discovery of new wetland sites.</li>
-            </ul>
+            <dl>
+              <dt>Historical references</dt>
+              <dd>Our labels come from historical and inferred wetland maps, which may be incomplete, inaccurate or outdated.</dd>
+              <dt>Preliminary evaluation</dt>
+              <dd>Results come from one training run, with validation used for model selection. No independent test-set or field evaluation is available.</dd>
+              <dt>Unverified predictions</dt>
+              <dd>Model scores help rank areas for investigation, but do not confirm wetland presence, degradation or restoration suitability.</dd>
+              <dt>Selected examples</dt>
+              <dd>The interactive examples illustrate successes and failures rather than representing average model performance.</dd>
+            </dl>
           </article>
         </div>
-        <p>We used <a href="https://en.wikipedia.org/wiki/U-Net">U-Net</a> with a ResNet-34 encoder initialized from ImageNet weights. The encoder extracts image features, while the decoder combines them with finer spatial detail to predict a class for each pixel. The same architecture and training recipe were used for each sensor combination, with input channels adapted to the selected sensors and their validity masks. The model predicts six classes; for the displayed wetland results, Swamp and Marsh probabilities are added before choosing among five combined classes.</p>
         <h3>Detailed experiment results</h3>
         <p class="note">A-D share 585 validation patches and 37,411,425 scored pixels. Wetland means Swamp + Marsh; water and peatland classes remain separate.</p>
         <div id="results" class="table-wrap"></div>
@@ -143,7 +145,6 @@
       </section>
       <section id="credentials">
         <h2>Sources</h2>
-        <p class="section-lede">Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>
 
         <div class="source-group">
           <h4 class="group-label">Satellite inputs</h4>
