@@ -141,5 +141,3 @@ setupDemo().catch(error=>{
 });
 
 setupLandscape().catch(error=>{document.getElementById('map-status').textContent='The regional map could not load. Please reload the page.';console.error(error);});
-
-document.getElementById('open-results').addEventListener('click',()=>{document.getElementById('full-results').open=true;});
