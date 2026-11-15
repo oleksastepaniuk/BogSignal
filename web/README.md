@@ -71,28 +71,38 @@ The full-resolution 20 m source outputs stay in data/inference.
 Map verification: with the site running, execute `node scripts/check_map.mjs`
 using the same optional PLAYWRIGHT_MODULE setting as the other browser checks.
 
-## Provisional June–October site examples
+## Full June–October site examples
 
-The "A first step toward better-informed conservation" section shows two
-sampled patch comparisons each for Cheremske, Somyne and Syra Pohonia. The
-frozen model D checkpoint uses unchanged Sentinel-2 and Sentinel-1 inputs;
-only provisional June/October NISAR HH/HV observations change. The third panel
-shows predicted Swamp/Marsh gains and losses on pixels valid at both dates.
-These are selected illustrations, not site-wide or field-verified change maps.
+The conservation section shows one full 256 × 256 patch at each of Cheremske,
+Somyne and Syra Pohonia. June and October update all Sentinel-2, Sentinel-1 and
+provisional NISAR inputs while retaining frozen model D and its normalization.
+The June and October panels switch among model prediction, Sentinel-2 RGB,
+Sentinel-1 ascending VV and NISAR HH/HV false color. The Difference panel
+always shows predicted Swamp/Marsh gains and losses on jointly valid pixels.
+Full patches extend beyond the site boxes; they are not site-wide or
+field-verified change maps. The earlier NISAR-only experiment and its source
+report remain separate from this full-input comparison.
 
-The site boxes come from Argos `data/targets/polesia_restoration_sites_bbox.geojson`.
-The complete counts and limitations are in
-`docs/site_provisional_june_oct_2026.md`. To reproduce the local counts and
-then export the six checked-in image sets from BogSignal/ml:
+Site boxes come from Argos `data/targets/polesia_restoration_sites_bbox.geojson`.
+The complete counts and limitations are in `docs/full_seasonal_june_oct_2026.md`.
+Reproduction from BogSignal/ml with the existing Earth Engine project and ML
+environment:
 
 ```sh
-PYTHONPATH=src .venv/bin/python compare_site_provisional.py
-PYTHONPATH=src .venv/bin/python compare_site_provisional.py --export-selected
+.venv/bin/python plan_full_seasonal_patches.py
+.venv/bin/python acquire_full_seasonal_patches.py
+PYTHONPATH=src .venv/bin/python evaluate_full_seasonal_patches.py
+PYTHONPATH=src .venv/bin/python audit_full_seasonal_drivers.py
+cd ..
+ml/.venv/bin/python web/scripts/export_full_seasonal.py
 ```
 
-The first command requires its output directory to be absent and does not overwrite
-an existing report; the second uses its saved counts to select the two examples
-per site. The public manifest records source dates and the selection rule.
+Raw source chips, exact source manifests, normalized-model inputs, validity
+masks, probability rasters and display images are saved under
+`data/inference/full_seasonal_june_oct_2026_v2/`. The public
+`web/public/seasonal_full/manifest.json` contains display files, source dates,
+compared footprint and patch selection. Local source chips and model outputs
+are intentionally outside the published static site.
 
 
 ## Original-resolution swipe backgrounds

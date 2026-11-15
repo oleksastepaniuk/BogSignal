@@ -141,48 +141,59 @@ setupDemo().catch(error=>{
 });
 
 async function setupSeasonal() {
-  const response = await fetch(import.meta.env.BASE_URL+'seasonal/manifest.json');
+  const response = await fetch(import.meta.env.BASE_URL+'seasonal_full/manifest.json');
   if (!response.ok) throw new Error('Seasonal examples unavailable');
   const {examples} = await response.json();
   const names = {cheremske:'Cheremske',somyne:'Somyne',syra_pohonia:'Syra Pohonia'};
   const sites = Object.keys(names);
   for (const site of sites) {
-    if (examples.filter(row=>row.site===site).length!==2) throw new Error(`Expected two ${site} examples`);
+    if (examples.filter(row=>row.site===site).length!==1) throw new Error(`Expected one ${site} example`);
   }
+  const viewNames={prediction:'Model prediction',s2:'Sentinel-2 RGB',s1:'Sentinel-1 VV',nisar:'NISAR HH/HV false color'};
   const host=$('seasonal-examples');
   host.innerHTML=`
     <fieldset><legend>Choose a site</legend><div class="choices" id="seasonal-sites">
       ${sites.map((site,i)=>`<button type="button" data-site="${site}" aria-pressed="${i===0}">${names[site]}</button>`).join('')}
     </div></fieldset>
-    <fieldset><legend>Choose a sampled patch</legend><div class="choices" id="seasonal-patches">
-      <button type="button" data-patch="0" aria-pressed="true">Example 1</button>
-      <button type="button" data-patch="1" aria-pressed="false">Example 2</button>
+    <fieldset><legend>View the predictions or model inputs</legend><div class="choices" id="seasonal-views">
+      ${Object.entries(viewNames).map(([key,label],i)=>`<button type="button" data-view="${key}" aria-pressed="${i===0}">${label}</button>`).join('')}
     </div></fieldset>
     <p id="seasonal-caption" class="note" aria-live="polite"></p>
-    <div class="seasonal-grid">
-      <figure><img id="seasonal-june" width="256" height="256" alt=""><figcaption>June prediction</figcaption></figure>
-      <figure><img id="seasonal-october" width="256" height="256" alt=""><figcaption>October prediction</figcaption></figure>
-      <figure><img id="seasonal-change" width="256" height="256" alt=""><figcaption>Swamp/Marsh prediction changes</figcaption></figure>
+    <div class="seasonal-grid" id="seasonal-grid">
+      <figure><img id="seasonal-june" width="256" height="256" alt=""><figcaption id="seasonal-june-label">June prediction</figcaption></figure>
+      <figure><img id="seasonal-october" width="256" height="256" alt=""><figcaption id="seasonal-october-label">October prediction</figcaption></figure>
+      <figure id="seasonal-change-figure"><img id="seasonal-change" width="256" height="256" alt=""><figcaption>Swamp/Marsh prediction changes</figcaption></figure>
     </div>
-    <p class="legend seasonal-legend"><span style="--swatch:#197b49">Predicted Swamp/Marsh</span><span style="--swatch:#2879b9">Predicted water</span><span style="--swatch:#3470ad">New Swamp/Marsh prediction</span><span style="--swatch:#c7673c">Lost Swamp/Marsh prediction</span></p>
-    <p class="note">The left and middle panels use the same land-cover colors as the earlier examples. In the right panel, gray means no Swamp/Marsh classification change. Blue and orange describe a change in the model's prediction, not confirmed change on the ground.</p>`;
-  let site=sites[0], patch=0;
+    <p id="seasonal-key" class="note"></p>
+    <details class="map-notes"><summary>Image dates and display details</summary><p id="seasonal-dates" class="note"></p></details>`;
+  let site=sites[0], view='prediction';
   function render() {
-    const row=examples.filter(item=>item.site===site)[patch];
-    for (const key of ['june','october','change']) {
-      const image=$('seasonal-'+key);
-      image.src=`${import.meta.env.BASE_URL}seasonal/${site}-${row.id}-${key}.png`;
-      image.alt=`${names[site]} example ${patch+1}: ${key} ${key==='change'?'Swamp and Marsh prediction changes':'land-cover prediction'} on the shared valid area`;
+    const row=examples.find(item=>item.site===site);
+    for (const month of ['june','october']) {
+      const image=$('seasonal-'+month);
+      image.src=`${import.meta.env.BASE_URL}seasonal_full/${row.files[month+'_'+view].filename}`;
+      image.alt=`${names[site]} full patch in ${month}: ${viewNames[view]}`;
+      $('seasonal-'+month+'-label').textContent=`${month==='june'?'June':'October'} ${viewNames[view].toLowerCase()}`;
     }
-    const area=(row.compared_pixels*0.0004).toFixed(2);
-    const june=(row.june_wetland_pixels*0.0004).toFixed(2);
-    const october=(row.october_wetland_pixels*0.0004).toFixed(2);
-    $('seasonal-caption').textContent=`${names[site]} / example ${patch+1} (${row.id}). Compared area: ${area} km². Predicted Swamp/Marsh: ${june} km² in June, ${october} km² in October.`;
+    $('seasonal-change').src=`${import.meta.env.BASE_URL}seasonal_full/${row.files.change.filename}`;
+    $('seasonal-change').alt=`${names[site]} full patch: predicted Swamp and Marsh gains and losses between June and October`;
+    $('seasonal-caption').textContent=`${names[site]}: one full 5.12 km square, including surrounding land. June and October use the same map grid.`;
+    $('seasonal-key').textContent=view==='prediction'
+      ? `Green = predicted Swamp/Marsh; gray = Other; blue = water; ochre and purple = peatland classes. In the change panel, blue = newly predicted Swamp/Marsh, orange = no longer predicted, gray = no wetland-class change. White = unavailable at one or both dates.`
+      : view==='s2' ? 'Sentinel-2 model-grid RGB uses B4/B3/B2 with the same 0–0.3 reflectance stretch in both months. White = cloud-screened or missing.'
+      : view==='s1' ? 'Sentinel-1 ascending VV backscatter, shown at a fixed −30 to 0 dB grayscale stretch. Descending VV/VH also enter the model.'
+      : 'Illustrative false color from ascending NISAR: red = HH, green = HV, blue = HH−HV contrast. Both ascending and descending HH/HV enter the model. Colors are radar signals, not land-cover classes.';
+    if(view!=='prediction') $('seasonal-key').textContent+=' The Difference panel always shows the model prediction change.';
+    const dateLine=month=>{
+      const d=row.dates[month];
+      return `${month==='june'?'June':'October'} — Sentinel-2: ${d.s2.join(', ')}; Sentinel-1 ascending/descending: ${d.s1_ascending.join(', ')} / ${d.s1_descending.join(', ')}; provisional NISAR ascending/descending: ${d.nisar_ascending.join(', ')} / ${d.nisar_descending.join(', ')}.`;
+    };
+    $('seasonal-dates').textContent=dateLine('june')+' '+dateLine('october')+' All images use the same 20 m grid; exact source scenes can vary by pixel.';
     document.querySelectorAll('#seasonal-sites button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.site===site)));
-    document.querySelectorAll('#seasonal-patches button').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.patch)===patch)));
+    document.querySelectorAll('#seasonal-views button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===view)));
   }
-  host.querySelectorAll('#seasonal-sites button').forEach(button=>button.addEventListener('click',()=>{site=button.dataset.site;patch=0;render();}));
-  host.querySelectorAll('#seasonal-patches button').forEach(button=>button.addEventListener('click',()=>{patch=Number(button.dataset.patch);render();}));
+  host.querySelectorAll('#seasonal-sites button').forEach(button=>button.addEventListener('click',()=>{site=button.dataset.site;render();}));
+  host.querySelectorAll('#seasonal-views button').forEach(button=>button.addEventListener('click',()=>{view=button.dataset.view;render();}));
   render();
 }
 setupSeasonal().catch(error=>{

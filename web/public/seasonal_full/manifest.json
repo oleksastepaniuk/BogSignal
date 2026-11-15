@@ -1,0 +1,382 @@
+{
+  "selection": "One existing dataset-grid patch per site, ranked by number of pixels inside the saved site bounding box among patches with June/October provisional NISAR in both passes; selection uses geography and source coverage, not predictions",
+  "comparison": "All six Sentinel-2, four Sentinel-1 and four provisional NISAR channels updated between June and October; frozen model D and v4 normalization",
+  "caution": "Single autumn-centered training mosaic; June input is a seasonal distribution shift. Provisional NISAR. Model predictions do not establish wetland or restoration change.",
+  "display": "S2 model-grid RGB (B4/B3/B2), fixed reflectance 0-0.3 and gamma 0.7; S1 ascending VV grayscale -30 to 0 dB; NISAR ascending HH grayscale -25 to 5 dB, HV -35 to 0 dB; false color R=HH, G=HV, B=HH-HV (0 to 25 dB), fixed stretches across months",
+  "examples": [
+    {
+      "site": "cheremske",
+      "name": "Cheremske",
+      "patch_id": "r016896_c009984",
+      "patch_size_pixels": [
+        256,
+        256
+      ],
+      "pixel_size_m": 20,
+      "site_box_pixels_in_patch": 32951,
+      "full_patch": {
+        "pixels": 65536,
+        "area_km2": 26.2144,
+        "june_wetland_pixels": 77,
+        "october_wetland_pixels": 7299,
+        "gain_pixels": 7224,
+        "loss_pixels": 2,
+        "changed_class_pixels": 15438
+      },
+      "within_site_box": {
+        "pixels": 32951,
+        "area_km2": 13.1804,
+        "june_wetland_pixels": 75,
+        "october_wetland_pixels": 7271,
+        "gain_pixels": 7196,
+        "loss_pixels": 0,
+        "changed_class_pixels": 13537
+      },
+      "dates": {
+        "june": {
+          "s2": [
+            "2026-06-21",
+            "2026-06-23",
+            "2026-06-26",
+            "2026-06-29"
+          ],
+          "s1_ascending": [
+            "2026-06-25"
+          ],
+          "s1_descending": [
+            "2026-06-24"
+          ],
+          "nisar_ascending": [
+            "2026-06-26"
+          ],
+          "nisar_descending": [
+            "2026-06-27"
+          ]
+        },
+        "october": {
+          "s2": [
+            "2026-10-01",
+            "2026-10-07",
+            "2026-10-09",
+            "2026-10-12"
+          ],
+          "s1_ascending": [
+            "2026-10-12"
+          ],
+          "s1_descending": [
+            "2026-10-10"
+          ],
+          "nisar_ascending": [
+            "2026-10-12"
+          ],
+          "nisar_descending": [
+            "2026-10-13"
+          ]
+        }
+      },
+      "files": {
+        "june_prediction": {
+          "filename": "cheremske-june-prediction.png",
+          "sha256": "267918aee087eeb102553336b009229a93a921f70b6f3f497a1a2668471bcf39"
+        },
+        "june_s2": {
+          "filename": "cheremske-june-s2.png",
+          "sha256": "bc3bd1ecc48b16eb8f1807a947e1e1ee79a88327c7a43f5acc412f26466310a5"
+        },
+        "june_s1": {
+          "filename": "cheremske-june-s1.png",
+          "sha256": "a876fe6235d421e6cdedf96210dd5cfc74d45e81cbf54d811c992465df11d9d9"
+        },
+        "june_nisar": {
+          "filename": "cheremske-june-nisar.png",
+          "sha256": "1ea1f86d4a189a60a1180ea479a07b38df8e597951d2a84bd6f8c07d76fd2366"
+        },
+        "june_hh": {
+          "filename": "cheremske-june-hh.png",
+          "sha256": "3be3b6893a0ededbf6d364dd49279718b3ad5a5b5d52e255d17b0ece31d44ade"
+        },
+        "june_hv": {
+          "filename": "cheremske-june-hv.png",
+          "sha256": "b40144a4ad32866d6b9a5d519828a78512c387194e282e4fdac8fcc04c2c4599"
+        },
+        "october_prediction": {
+          "filename": "cheremske-october-prediction.png",
+          "sha256": "60ed2f3be001ce582180f7424f0ecd1d199d11d54d87545771227e68ae1523cf"
+        },
+        "october_s2": {
+          "filename": "cheremske-october-s2.png",
+          "sha256": "a9c732499a8c7d7f9a4e18e0bc4d79f0b99c4f57d1ed5f459e871dec0dbaeaca"
+        },
+        "october_s1": {
+          "filename": "cheremske-october-s1.png",
+          "sha256": "826b7da360b65e6c427fa0947eb74a488af6664c18c37aaadb2424d5e49ef6d9"
+        },
+        "october_nisar": {
+          "filename": "cheremske-october-nisar.png",
+          "sha256": "2003cf92d5d2f429b4e51069dd7d797684bb0b5b51907fc69767ad8362651be2"
+        },
+        "october_hh": {
+          "filename": "cheremske-october-hh.png",
+          "sha256": "ec0ebdf4a1ebc06fc83400019bb2abd27e9a7750aa18911138580b1f11c0a0a3"
+        },
+        "october_hv": {
+          "filename": "cheremske-october-hv.png",
+          "sha256": "2930986b3cee4f5ca77fd774284b9a511a895b7e85db8d969383e8afddd3d51b"
+        },
+        "change": {
+          "filename": "cheremske-change.png",
+          "sha256": "df5528861713a41dfa980fb93250d0a79e4b5e38d2af11bec5bfefd342578ab4"
+        }
+      }
+    },
+    {
+      "site": "somyne",
+      "name": "Somyne",
+      "patch_id": "r016640_c014848",
+      "patch_size_pixels": [
+        256,
+        256
+      ],
+      "pixel_size_m": 20,
+      "site_box_pixels_in_patch": 29472,
+      "full_patch": {
+        "pixels": 60969,
+        "area_km2": 24.3876,
+        "june_wetland_pixels": 230,
+        "october_wetland_pixels": 24687,
+        "gain_pixels": 24540,
+        "loss_pixels": 83,
+        "changed_class_pixels": 28081
+      },
+      "within_site_box": {
+        "pixels": 26379,
+        "area_km2": 10.5516,
+        "june_wetland_pixels": 134,
+        "october_wetland_pixels": 18949,
+        "gain_pixels": 18815,
+        "loss_pixels": 0,
+        "changed_class_pixels": 19949
+      },
+      "dates": {
+        "june": {
+          "s2": [
+            "2026-06-11",
+            "2026-06-13",
+            "2026-06-16",
+            "2026-06-21",
+            "2026-06-23",
+            "2026-06-26"
+          ],
+          "s1_ascending": [
+            "2026-06-27"
+          ],
+          "s1_descending": [
+            "2026-06-25"
+          ],
+          "nisar_ascending": [
+            "2026-06-26"
+          ],
+          "nisar_descending": [
+            "2026-06-27"
+          ]
+        },
+        "october": {
+          "s2": [
+            "2026-10-01",
+            "2026-10-21"
+          ],
+          "s1_ascending": [
+            "2026-10-13"
+          ],
+          "s1_descending": [
+            "2026-10-11"
+          ],
+          "nisar_ascending": [
+            "2026-10-12"
+          ],
+          "nisar_descending": [
+            "2026-10-13"
+          ]
+        }
+      },
+      "files": {
+        "june_prediction": {
+          "filename": "somyne-june-prediction.png",
+          "sha256": "f723b9ba5260e69073cbe86005a56815f934e6fae68f74e5d9c44d7141e6709b"
+        },
+        "june_s2": {
+          "filename": "somyne-june-s2.png",
+          "sha256": "18a1961d3c807300e310d5c7f2928090d03d459275efc1ec03feeb8a4fe3c8db"
+        },
+        "june_s1": {
+          "filename": "somyne-june-s1.png",
+          "sha256": "18a5592a25c3c52097da05820932924d42f6e85dab0251b8548c9a0a74710d46"
+        },
+        "june_nisar": {
+          "filename": "somyne-june-nisar.png",
+          "sha256": "00c26d7819c0a22f5e223001c59317d9a76a229ea5fa373607ef6b8fd7b5f0c4"
+        },
+        "june_hh": {
+          "filename": "somyne-june-hh.png",
+          "sha256": "7fe52af65b1f48cf8d90f26f566f7cb2b902a1b3523ba418b4abd46e6797aaf8"
+        },
+        "june_hv": {
+          "filename": "somyne-june-hv.png",
+          "sha256": "81d00844e30461e7d9cecc39cee6e2858fab7fb9e1b7fcfb836a0aae9a44505e"
+        },
+        "october_prediction": {
+          "filename": "somyne-october-prediction.png",
+          "sha256": "2cd646e516201536eb8972ac06492f027592c4201af057f27dd86ce344cd8f4e"
+        },
+        "october_s2": {
+          "filename": "somyne-october-s2.png",
+          "sha256": "82387fcb7ebba6ef155ce04a8a0af4da4e9f7a190ab363f96b5dd6e75d218ec9"
+        },
+        "october_s1": {
+          "filename": "somyne-october-s1.png",
+          "sha256": "239a460dcbc28130ee1714a1a256e8b12762ceea8ab3b0a635c962dcf445d2d6"
+        },
+        "october_nisar": {
+          "filename": "somyne-october-nisar.png",
+          "sha256": "0072f76e8e5f380ad434f1e5606a383c87eddd2bb3d9d03c8a882dd12cb16ca7"
+        },
+        "october_hh": {
+          "filename": "somyne-october-hh.png",
+          "sha256": "12fa2d67c417f2bd846a659e9b5162462a58250733f9797670bccc4759fe6cb9"
+        },
+        "october_hv": {
+          "filename": "somyne-october-hv.png",
+          "sha256": "e54012aef90e387474f7c70b4f7f44c50761e8ec50657b9c46111a567d26291d"
+        },
+        "change": {
+          "filename": "somyne-change.png",
+          "sha256": "e85999e57737dbfc63e553b8023e2e4cd433708702722c2ca740d5947dfbf672"
+        }
+      }
+    },
+    {
+      "site": "syra_pohonia",
+      "name": "Syra Pohonia",
+      "patch_id": "r015360_c015616",
+      "patch_size_pixels": [
+        256,
+        256
+      ],
+      "pixel_size_m": 20,
+      "site_box_pixels_in_patch": 65536,
+      "full_patch": {
+        "pixels": 65536,
+        "area_km2": 26.2144,
+        "june_wetland_pixels": 10746,
+        "october_wetland_pixels": 28024,
+        "gain_pixels": 17750,
+        "loss_pixels": 472,
+        "changed_class_pixels": 25231
+      },
+      "within_site_box": {
+        "pixels": 65536,
+        "area_km2": 26.2144,
+        "june_wetland_pixels": 10746,
+        "october_wetland_pixels": 28024,
+        "gain_pixels": 17750,
+        "loss_pixels": 472,
+        "changed_class_pixels": 25231
+      },
+      "dates": {
+        "june": {
+          "s2": [
+            "2026-06-23",
+            "2026-06-26",
+            "2026-06-28"
+          ],
+          "s1_ascending": [
+            "2026-06-27"
+          ],
+          "s1_descending": [
+            "2026-06-25"
+          ],
+          "nisar_ascending": [
+            "2026-06-26"
+          ],
+          "nisar_descending": [
+            "2026-06-27"
+          ]
+        },
+        "october": {
+          "s2": [
+            "2026-10-01",
+            "2026-10-06",
+            "2026-10-08",
+            "2026-10-14"
+          ],
+          "s1_ascending": [
+            "2026-10-13"
+          ],
+          "s1_descending": [
+            "2026-10-11"
+          ],
+          "nisar_ascending": [
+            "2026-10-12"
+          ],
+          "nisar_descending": [
+            "2026-10-13"
+          ]
+        }
+      },
+      "files": {
+        "june_prediction": {
+          "filename": "syra_pohonia-june-prediction.png",
+          "sha256": "98f1fff8564c5448618ac13de564f5b8ecc73b36a291fda203808e633068085d"
+        },
+        "june_s2": {
+          "filename": "syra_pohonia-june-s2.png",
+          "sha256": "3829c3cc7dd421390fc2f3df4f3fe47bbba03ccaee3caee47331a9743da4b1d4"
+        },
+        "june_s1": {
+          "filename": "syra_pohonia-june-s1.png",
+          "sha256": "7e1f6cac46f69fef64bba48dd50d5d0598c5ae16de189fdb3bfe190a689b9c96"
+        },
+        "june_nisar": {
+          "filename": "syra_pohonia-june-nisar.png",
+          "sha256": "4410f3f586582d6a7583a90e60d089dac27918ac8e48ceb67cf6c394fc85da34"
+        },
+        "june_hh": {
+          "filename": "syra_pohonia-june-hh.png",
+          "sha256": "fe4f9e503b2a6d376350259438ec623b365923cccd6b9aea03ee428c432307fb"
+        },
+        "june_hv": {
+          "filename": "syra_pohonia-june-hv.png",
+          "sha256": "af11cc1a78ae7ae60bf3bc4a0c863e027bd8dcaf076a0fc7ae054efde64a9d46"
+        },
+        "october_prediction": {
+          "filename": "syra_pohonia-october-prediction.png",
+          "sha256": "2289e47e09f4323c503950f0664218e099c0ced9c754af50d97fa3e3bd6a1580"
+        },
+        "october_s2": {
+          "filename": "syra_pohonia-october-s2.png",
+          "sha256": "a4fe62bb116eb4bac59bb76a79cf86a0b18bc367b4fc2ca8170350ca0c523f92"
+        },
+        "october_s1": {
+          "filename": "syra_pohonia-october-s1.png",
+          "sha256": "e473ed9448d796568b82755c51061ae51fb1abc0a42756ef46dc7b08796c502f"
+        },
+        "october_nisar": {
+          "filename": "syra_pohonia-october-nisar.png",
+          "sha256": "ce781dd5b4e4e599cb8151c54d3595d11155af0bd9893577e637184b4ada3ce5"
+        },
+        "october_hh": {
+          "filename": "syra_pohonia-october-hh.png",
+          "sha256": "25c03cc0e84224496c1f3ca3adf8318e035c2ebfd2492f8e08dae67db74f081e"
+        },
+        "october_hv": {
+          "filename": "syra_pohonia-october-hv.png",
+          "sha256": "349f256b6aca8c7488b3a278ff5db23ac0d532a61710c3ea1384ed995da5b50e"
+        },
+        "change": {
+          "filename": "syra_pohonia-change.png",
+          "sha256": "62a3ea9cafd7f60c016ba778700daf51734412cf180d144c954bcab5a6dcc2ce"
+        }
+      }
+    }
+  ]
+}
