@@ -19,6 +19,17 @@ for(const viewport of [{width:1280,height:900},{width:390,height:844}]) {
   await page.waitForFunction(()=>[...document.querySelectorAll('#demo img')].every(i=>i.complete&&i.naturalWidth>0));
   assert.ok((await page.locator('#satellite').getAttribute('src')).startsWith('/BogSignal/experiment/'));
  }
+ await page.locator('#seasonal-sites button').last().waitFor();
+ for(const site of ['cheremske','somyne','syra_pohonia']) {
+  await page.locator('#seasonal-sites [data-site="'+site+'"]').click();
+  for(const patch of [0,1]) {
+   await page.locator('#seasonal-patches [data-patch="'+patch+'"]').click();
+   await page.waitForFunction(()=>[...document.querySelectorAll('.seasonal-grid img')].every(i=>i.complete&&i.naturalWidth===256));
+   assert.ok((await page.locator('#seasonal-june').getAttribute('src')).startsWith('/BogSignal/seasonal/'+site+'-'));
+   assert.equal(await page.locator('#seasonal-sites [aria-pressed="true"]').count(),1);
+   assert.equal(await page.locator('#seasonal-patches [aria-pressed="true"]').count(),1);
+  }
+ }
  for(const layer of ['labels','coverage','prediction']) {
   await page.locator('#map-'+layer).check();
   await page.waitForFunction(()=>[...document.querySelectorAll('.map-raster')].every(i=>i.complete&&i.naturalWidth>0));
