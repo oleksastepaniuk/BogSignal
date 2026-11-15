@@ -11,7 +11,7 @@
       <p class="eyebrow">An Argos project</p>
       <h1>BogSignal</h1>
       <p class="cover-message">A clearer picture of Europe&rsquo;s hidden wetlands.</p>
-      <p>We cannot protect what we cannot see. BogSignal explores how NISAR can help us see more of Polissia&#39;s wetlands &mdash; and focus conservation research where it is needed.</p>
+      <p>We cannot protect what we cannot see. BogSignal explores how NISAR can help us identify Polissia&#39;s wetlands &mdash; and focus conservation research where it is needed.</p>
     </header>
 
     <nav class="nav">
@@ -26,7 +26,7 @@
       <section id="landscape">
         <h2>Europe&rsquo;s Amazon</h2>
 <p>Across a roughly 186,000 km&sup2; region, Polissia is a mosaic of rivers, floodplains, peatlands and forests &mdash; one of Europe&rsquo;s great wetland landscapes. These habitats store carbon, regulate water and provide vital refuge for wildlife and migratory birds.</p>
-<p>Drainage, habitat loss and infrastructure threaten this landscape. The <a href="https://savepolesia.org/">Save Polesia coalition</a> campaigns against the proposed <a href="https://savepolesia.org/the-threat/">E40 waterway</a>, while <a href="https://fzs.org/en/programs/ukraine/wild-polissia/">FZS and its Wild Polissia partners</a> support protected areas, restore drained wetlands and monitor their recovery.</p>
+<p>Decades of drainage, agricultural expansion and infrastructure development have put Polissia&#39;s wetlands under pressure. But efforts to reverse this damage are underway. Conservation initiatives such as <strong><a href="https://fzs.org/en/programs/ukraine/wild-polissia/">Wild Polissia</a></strong> are working to bring water back to drained wetlands, aiming to restore up to <strong>20,000 hectares</strong> in Ukraine alone.</p>
 <fieldset class="map-controls"><legend>Map layers</legend><label><input id="map-polissia" type="checkbox" checked> Polissia outline</label><label><input id="map-labels" type="checkbox"> Historical / inferred labels</label><label><input id="map-prediction" type="checkbox" checked> With NISAR: predictions</label><label><input id="map-coverage" type="checkbox"> Area covered by our analysis</label></fieldset>
 <div class="map-actions"><button id="map-reset" type="button">Whole study area</button><button id="map-detail" type="button">Zoom to predictions</button></div>
 <div id="landscape-map" role="region" aria-label="Interactive map of Polissia, weak labels and model D predictions"></div><p id="map-status" class="note" role="status">Loading regional map...</p>
@@ -40,7 +40,7 @@
         <div class="sensor-cards">
           <article><p class="eyebrow">Sentinel-2</p><h3>What the landscape looks like</h3><p>Reflected sunlight reveals vegetation, open water and land cover. Clouds block the view, and a canopy can hide water below.</p><figure><img id="sensor-s2" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-s2-caption"></p></details></figcaption></figure></article>
           <article><p class="eyebrow">Sentinel-1 &middot; C-band</p><h3>A different perspective</h3><p>Radar works day and night through clouds. Backscatter responds to surface roughness, moisture and vegetation structure.</p><figure><img id="sensor-s1" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-s1-caption"></p></details></figcaption></figure></article>
-          <article><p class="eyebrow">NISAR &middot; L-band</p><h3>Looking deeper into vegetation</h3><p>L-band can interact deeper into vegetation, adding clues about woody structure and inundation beneath some canopies. It does not directly confirm a bog.</p><figure><img id="sensor-nisar" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-nisar-caption"></p></details></figcaption></figure></article>
+          <article><p class="eyebrow">NISAR &middot; L-band</p><h3>Looking deeper into vegetation</h3><p>NISAR&rsquo;s longer-wavelength radar can penetrate further into some vegetation canopies, providing additional clues about woody structure and water beneath vegetation. These signals alone do not confirm a bog.</p><figure><img id="sensor-nisar" width="256" height="256" alt="" loading="lazy"><figcaption><details><summary>Image details</summary><p id="sensor-nisar-caption"></p></details></figcaption></figure></article>
         </div>
 
         <p class="note">Sensor background: <a href="https://www.jpl.nasa.gov/press-kits/nisar/mission-overview/science/">NASA/JPL: NISAR science</a> &middot; <a href="https://eros.usgs.gov/doi-remote-sensing-activities/2025/usgs/coastal-inundation-monitoring-nisar">USGS: inundation monitoring with NISAR</a>.</p>
@@ -54,10 +54,10 @@
       </section>
       <section id="findings">
         <h2>What we discovered</h2>
-        <p class="note">Preliminary results &middot; comparison with historical and inferred wetland references</p>
+        <p class="note">Preliminary findings from one experimental run, evaluated against historical and inferred wetland maps rather than independent field observations.</p>
         <div id="sensor-finding"></div>
-        <h3>02 &mdash; Finding where to look first</h3>
-        <p>Our combined model ranks locations by their swamp/marsh score. Reviewing only the highest-scoring 5% of validation area captured nearly three-quarters of the reference wetland pixels. This can help researchers decide where to examine imagery, consult local knowledge and gather field evidence first.</p>
+        <h3>02 &mdash; Knowing where to look first</h3>
+        <p><strong>The highest-scoring 5% of our validation area contained 73.4% of the swamp and marsh pixels in our reference maps.</strong> This suggests BogSignal could help researchers narrow their search, prioritizing promising areas for closer investigation.</p>
         <div id="ranking"></div>
         <p class="note">These are two different results: the overlap improvement compares models with and without NISAR; the ranking chart describes the combined model alone. Neither measures field-verified accuracy.</p>
         <h3>A first step toward better-informed conservation</h3>
@@ -84,7 +84,7 @@
         </ul>
         <details class="map-notes"><summary>Map notes &amp; provenance</summary>
 <p class="note">Select labels or predictions to compare. If both are enabled, predictions draw above labels. Coverage: teal = predicted, gray = no prediction. Regional predictions include training and held-out geography; this map is not a new accuracy evaluation. Scores are uncalibrated and do not establish restoration suitability.</p><p id="map-resolution" class="note"></p>
-<p class="note"><a href="/map/manifest.json">Map provenance and coverage</a>. The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline.</p>
+<p class="note"><a href="/map/manifest.json">Map provenance and coverage</a>. The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
         </details>
         <p class="note">Examples are deliberately selected by performance, not a representative sample. Little effect means similar wetland IoU; maps can still differ. <a href="/experiment/demo.json">Selection and provenance</a> / <a href="/experiment/final_experiment_report_data.json">Complete report data</a></p>
         <ul>

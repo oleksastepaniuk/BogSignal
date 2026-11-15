@@ -109,9 +109,9 @@ async function setupDemo() {
   const wetlandB=data.baseline[1].combined_class.classes['Wetland (Swamp + Marsh)'];
   const wetlandD=data.baseline[3].combined_class.classes['Wetland (Swamp + Marsh)'];
   $('sensor-finding').innerHTML=`<div class="finding-card">
-    <h3>01 &mdash; NISAR improved wetland overlap</h3>
+    <h3>01 &mdash; NISAR adds valuable information</h3>
     <p class="finding-number">+${(100*(wetlandD.iou-wetlandB.iou)).toFixed(1)}<span>percentage points in wetland overlap</span></p>
-    <p class="finding-comparison"><span>Without NISAR <strong>${pct(wetlandB.iou)}</strong></span><span aria-hidden="true">&rarr;</span><span>With NISAR <strong>${pct(wetlandD.iou)}</strong></span></p>
+    <p>Adding NISAR improved the model&rsquo;s agreement with historical and inferred wetland references from <strong>${pct(wetlandB.iou)}</strong> to <strong>${pct(wetlandD.iou)}</strong>.</p>
   </div>`;
   $('ranking').innerHTML=`<figure class="budget-chart" aria-labelledby="budget-chart-title">
     <figcaption id="budget-chart-title"><strong>How much of the reference wetland can we find?</strong><span>Combined model with NISAR / highest-scoring areas first</span></figcaption>

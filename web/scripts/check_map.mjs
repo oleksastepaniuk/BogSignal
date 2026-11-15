@@ -13,7 +13,7 @@ try {
   await page.goto(process.env.DEMO_URL||'http://localhost:5173/');
   await page.waitForFunction(()=>document.getElementById('landscape-map')?.dataset.ready==='true');
   await page.waitForFunction(()=>[...document.querySelectorAll('#landscape-map img.map-raster')].every(i=>i.complete&&i.naturalWidth>0));
-  assert.match(await page.locator('#map-status').textContent(),new RegExp((100*info.coverage_fraction).toFixed(1).replace('.','\\.')+'%'));
+  assert.ok((await page.locator('#map-status').textContent()).includes((info.counts.predicted_pixels*0.0004).toLocaleString(undefined,{maximumFractionDigits:0})));
   for(const id of ['prediction','labels','coverage']) {
    await page.locator('#map-'+id).check();
    const filename=id==='prediction'?'prediction':id;
