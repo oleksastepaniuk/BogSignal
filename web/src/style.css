@@ -250,7 +250,7 @@ h2, #full-results > summary { font-size:1.5em; font-weight:700; }
 .dataset-card-header { display:flex; gap:1rem; align-items:center; padding-bottom:1.3rem; border-bottom:1px solid #c0ceba; }
 .dataset-icon { display:grid; place-items:center; flex:none; width:3.6rem; height:3.6rem; border-radius:.8rem; background:#193b32; color:#fff; }
 .dataset-card .eyebrow { margin:0 0 .4rem; font-size:.7rem; font-weight:700; color:#4d655b; }
-.dataset-card h2 { margin:0; font-size:1.15rem; line-height:1.4; }
+.dataset-card-header h3 { margin:0; font-size:1.15rem; line-height:1.4; }
 .dataset-card .dataset-byline { margin:.4rem 0 0; font-size:.9rem; color:#4d655b; }
 .dataset-card-body h3 { font-size:1.1rem; margin:1.5rem 0 .7rem; }
 .dataset-card-body p { font-size:1rem; margin:.6rem 0; }
@@ -258,7 +258,9 @@ h2, #full-results > summary { font-size:1.5em; font-weight:700; }
 .dataset-card-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.4rem; }
 .dataset-platform { font-size:.8rem; color:#4d655b; }
 .dataset-card-footer a { font-weight:600; text-underline-offset:.25em; }
-@media(max-width:600px) { .dataset-card { padding:1rem; } .dataset-card-header { align-items:flex-start; } .dataset-icon { width:2.5rem; height:2.5rem; } .dataset-card h2 { font-size:1rem; } }
+.dataset-card-footer .dataset-action { padding:.65rem 1rem; font-size:.9rem; background:#193b32; color:#fff; text-decoration:none; }
+.dataset-card-footer .dataset-action:hover { background:#24654d; }
+@media(max-width:600px) { .dataset-card { padding:1rem; } .dataset-card-header { align-items:flex-start; } .dataset-icon { width:2.5rem; height:2.5rem; } .dataset-card-header h3 { font-size:1rem; } }
 .challenge-badge { text-decoration:none; }
 .challenge-badge:hover { background:rgb(12 32 26 / .8); text-decoration:underline; }
 .seasonal-grid { grid-template-columns:1fr 1fr 1.65fr; }
