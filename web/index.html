@@ -144,8 +144,19 @@
       </section>
       <section id="credentials">
         <h2>Methods &amp; Sources</h2>
-        <h3>Complete report</h3>
-        <p><a href="/experiment/final_experiment_report.html">Read the complete final experiment report</a> for dates, training design, temporal follow-ups, sources and full evaluations.</p>
+
+        <div class="report-cta">
+          <div>
+            <p class="eyebrow">Complete report</p>
+            <p>Dates, training design, temporal follow-ups, sources and full evaluations.</p>
+          </div>
+          <a class="button-link" href="/experiment/final_experiment_report.html">Read the final experiment report <span aria-hidden="true">&rarr;</span></a>
+          <ul class="data-files" aria-label="Data files">
+            <li><a href="/experiment/final_experiment_report_data.json">Complete report data <span>JSON</span></a></li>
+            <li><a href="/experiment/demo.json">Example selection and provenance <span>JSON</span></a></li>
+            <li><a href="/map/manifest.json">Map provenance and coverage <span>JSON</span></a></li>
+          </ul>
+        </div>
 
         <div class="cred-grid">
           <article class="cred-card">
@@ -173,87 +184,144 @@
           </article>
         </div>
 
-        <details class="cred-card cred-details"><summary>Map notes &amp; provenance</summary>
+        <details id="map-provenance" class="cred-card cred-details"><summary>Map notes &amp; provenance</summary>
           <p>Select labels or predictions to compare. If both are enabled, predictions draw above labels. Coverage: teal = predicted, gray = no prediction. Regional predictions include training and held-out geography; this map is not a new accuracy evaluation. Scores are uncalibrated and do not establish restoration suitability.</p>
           <p id="map-resolution"></p>
           <p>The Polissia outline is based on the regional map shown on <a href="https://savepolesia.org/">Save Polesia</a>, adapted through local regional polygons and approximate image tracing. It is an illustrative ecological outline, not an official boundary. Country boundaries are a saved OpenStreetMap snapshot, simplified for display; the neutral basemap works offline. The roughly 186,000 km&sup2; figure describes the wider Polissia region. Our mapped analysis footprint is 180,452 km&sup2;, determined by the project outline and rasterized analysis mask; coverage percentages use this smaller footprint, not the regional estimate.</p>
         </details>
 
         <h3>Sources</h3>
-        <p>Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>
-        <div class="table-wrap"><table class="sources-table">
-          <thead><tr><th scope="col">Resource</th><th scope="col">What we used it for</th></tr></thead><tbody>
-          <tr><th scope="row"><a href="https://nisar-docs.asf.alaska.edu/gcov/">NASA&ndash;ISRO NISAR GCOV, via ASF DAAC</a></th><td>Ascending and descending HH/HV L-band gamma-0 backscatter. The baseline uses validated products; the separate temporal follow-up uses multiple provisional observations.</td></tr>
-          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED">Copernicus Sentinel-2 L2A, via Google Earth Engine</a></th><td>Optical surface-reflectance bands B2, B3, B4, B8, B11 and B12. The model uses a shared 20 m mosaic; swipe backgrounds use 10 m RGB from the recorded source scenes.</td></tr>
-          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_CLOUD_SCORE_PLUS_V1_S2_HARMONIZED">Google Cloud Score+</a></th><td>Cloud-quality screening for selecting the Sentinel-2 observations, together with scene-classification masks.</td></tr>
-          <tr><th scope="row"><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S1_GRD">Copernicus Sentinel-1 GRD, via Google Earth Engine</a></th><td>Ascending and descending VV/VH C-band radar inputs. GRD_FLOAT linear sigma-0 power was converted to dB for model inputs.</td></tr>
-          <tr><th scope="row"><a href="https://zenodo.org/records/10068479">Global 30 m annual wetland maps, 2022 layer</a></th><td>Historical swamp, marsh and permanent-water reference classes, plus subtype votes within collected OSM wetland polygons.</td></tr>
-          <tr><th scope="row"><a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></th><td>Collected water and wetland polygons for label construction, and saved country boundaries for the neutral basemap. OSM coverage is incomplete; not every water polygon was treated as permanent water.</td></tr>
-          <tr><th scope="row"><a href="https://zenodo.org/records/15302184">European Wetland Map v5</a></th><td>Peatland evidence in the Polish part of the study area, using class 10.</td></tr>
-          <tr><th scope="row"><a href="https://www.greifswaldmoor.de/global-peatland-database-en.html">Global Peatland Map 2.0, Greifswald Mire Centre</a></th><td>Peat-dominated class outside Poland. Its approximately 1 km source evidence does not become more precise when aligned to the 20 m grid.</td></tr>
-          <tr><th scope="row"><a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200</a></th><td>Separated mapped peat into cropland and selected non-cropland land-cover classes; it does not establish drainage or restoration suitability.</td></tr>
-          <tr><th scope="row"><a href="https://savepolesia.org/">Save Polesia</a> and <a href="https://fzs.org/en/programs/ukraine/wild-polissia/">FZS Wild Polissia</a></th><td>Regional context and conservation background. The study outline was adapted from the Save Polesia regional map, local polygons and approximate image tracing.</td></tr>
-          </tbody></table></div>
-        <h4>Presentation inspiration</h4>
-        <ul>
-          <li><a href="https://science.nasa.gov/mission/nisar/arcgis-storymaps/">NISAR StoryMaps</a> &mdash; examples of communicating radar applications through visual stories.</li>
-          <li><a href="https://uavsar.jpl.nasa.gov/education/postcards.html">UAVSAR Postcards</a> &mdash; educational radar imagery and visual explanations. UAVSAR is an airborne sensor; these images were not used as model inputs.</li>
-        </ul>
-        <h4>Data discovery &amp; access</h4>
-        <ul>
-          <li><a href="https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html">NASA&rsquo;s CMR API</a> &mdash; programmatic discovery of NISAR granules, acquisition metadata and footprints used by our acquisition workflow.</li>
-          <li><a href="https://search.earthdata.nasa.gov/search">NASA Earthdata Search</a> &mdash; reviewed for discovering and exploring NASA satellite products.</li>
-          <li><a href="https://search.asf.alaska.edu/">ASF Vertex</a> &mdash; reviewed for SAR product discovery; science products were downloaded directly from ASF using Earthdata authentication.</li>
-        </ul>
-        <h4>Technical references</h4>
-        <ul>
-          <li><a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide</a> &mdash; NISAR products, data access, GCOV interpretation and processing guidance.</li>
-          <li><a href="https://github.com/asc-csa/Synthetic_Aperture_Radar_Tutorial">CSA SAR Python/QGIS tutorial</a> &mdash; a reviewed practical reference for SAR visualization and analysis; its example data were not used in our experiments.</li>
-        </ul>
-        <h4>Application background</h4>
-        <ul>
-          <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Paper: Floods</a> &mdash; background on radar applications for inundation mapping.</li>
-          <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Paper: Soil Moisture and Water Resources</a> &mdash; background on radar applications for moisture and water-resource monitoring.</li>
-        </ul>
-        <p class="note">These application white papers explain the motivation for using NISAR; they are not validation of BogSignal&rsquo;s model results. Links open NASA&rsquo;s white-paper collection.</p>
-        <h4>Background learning resources</h4>
-        <p class="note">Resources reviewed during project research; listing a course does not imply completion of its training.</p>
-        <ul>
-          <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing">NASA Introduction to Remote Sensing</a> &mdash; sensor characteristics, resolution and Earth-observation concepts.</li>
-          <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar">NASA Introduction to SAR</a> &mdash; radar wavelength, polarization and scattering concepts.</li>
-          <li><a href="https://www.earthdata.nasa.gov/data/projects/arset">NASA ARSET</a> &mdash; a catalogue of applied remote-sensing training, including SAR and NISAR.</li>
-        </ul>
+        <p class="section-lede">Satellite inputs and reference datasets serve different roles. The reference maps were combined into provisional labels; they are not independent field observations.</p>
 
-        <h3 class="cred-heading">Credits</h3>
-        <div class="cred-grid cred-grid-3">
-          <div class="cred-card">
-            <h4>Data</h4>
-            <ul>
-              <li>Contains modified Copernicus Sentinel data (2026), accessed through Google Earth Engine. Swipe backgrounds use original-resolution 10 m RGB from the recorded source scenes; prediction masks remain at 20 m. Tiny RGB gaps are filled from nearby valid imagery for display only; source data, predictions and evaluation masks are unchanged.</li>
-              <li><a href="/experiment/final_experiment_report_data.json">Complete report data</a></li>
-              <li><a href="/experiment/demo.json">Example selection and provenance</a></li>
-              <li><a href="/map/manifest.json">Map provenance and coverage</a></li>
-            </ul>
-          </div>
-          <div class="cred-card">
-            <h4>Facts</h4>
-            <ul>
-              <li>Facts about Polissia from <a href="https://savepolesia.org/polesia/">Save Polesia</a> (Frankfurt Zoological Society)</li>
-              <li>Facts about Ukrainian bogs and drainage from <a href="https://wwf.ua/our-work/freshwater/restoration/">WWF-Ukraine</a></li>
-              <li>Details of the Somyne and Syra Pohonia restoration from <a href="https://7dniv.rv.ua/ekolohiia/vidnovlennia-bolit-rivnenshchyna/">7dniv.rv.ua</a> (29 October 2026), citing the Government Portal of Ukraine</li>
-            </ul>
-          </div>
-          <div class="cred-card">
-            <h4>Images</h4>
-            <ul>
-              <li>Cover photo by Ladislav Stercell on <a href="https://unsplash.com/photos/a-body-of-water-surrounded-by-trees-and-grass-kdIyhflzJrM">Unsplash</a></li>
-              <li>Case-study sites map: a screenshot of the Polesia map from <a href="https://savepolesia.org/polesia/">Save Polesia</a> (Frankfurt Zoological Society) with our site markers added; <a href="https://savepolesia.org/wp-content/uploads/2020/05/Save-Polesia_Website-map_data-sources.pdf">data sources</a> © <a href="http://pg-webstudio.de/">pg-webstudio.de</a>; basemap © <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>; site coordinates from Wikipedia.</li>
-              <li>Cheremske Nature Reserve photo (<a href="https://commons.wikimedia.org/wiki/File:Cherem1.jpg">Cherem1.jpg</a>) by an unknown author, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, via Wikimedia Commons</li>
-              <li>Lake Somyne photo (<a href="https://commons.wikimedia.org/wiki/File:%D0%9E%D0%B7%D0%B5%D1%80%D0%BE_%D0%A1%D0%BE%D0%BC%D0%B8%D0%BD%D0%B5_(%D0%A1%D0%B0%D1%80%D0%BD%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80-%D0%BD).JPG">Озеро Сомине (Сарненський р-н)</a>) by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</li>
-              <li>Syra Pohonia photo (<a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%81%D0%B8%D0%B2_%D0%A1%D0%B8%D1%80%D0%B0_%D0%9F%D0%BE%D0%B3%D0%BE%D0%BD%D1%8F._%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D1%96%D0%B4%D0%BD%D0%B5_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BE._%D0%A3%D0%B3%D1%80%D1%83%D0%BF%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D1%88%D0%B5%D0%B9%D1%85%D1%86%D0%B5%D1%80%D1%96%D1%97_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BD%D0%BE%D1%97.jpg">Масив Сира Погоня. Перехідне болото</a>) by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</li>
-            </ul>
-          </div>
+        <div class="source-group">
+          <h4 class="group-label">Satellite inputs</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://nisar-docs.asf.alaska.edu/gcov/">NASA&ndash;ISRO NISAR GCOV</a><span>via ASF DAAC</span></dt>
+              <dd>Ascending and descending HH/HV L-band gamma-0 backscatter. The baseline uses validated products; the separate temporal follow-up uses multiple provisional observations.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED">Copernicus Sentinel-2 L2A</a><span>via Google Earth Engine</span></dt>
+              <dd>Optical surface-reflectance bands B2, B3, B4, B8, B11 and B12. The model uses a shared 20 m mosaic. Swipe backgrounds use original-resolution 10 m RGB from the recorded source scenes; prediction masks remain at 20 m. Tiny RGB gaps are filled from nearby valid imagery for display only; source data, predictions and evaluation masks are unchanged.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_CLOUD_SCORE_PLUS_V1_S2_HARMONIZED">Google Cloud Score+</a></dt>
+              <dd>Cloud-quality screening for selecting the Sentinel-2 observations, together with scene-classification masks.</dd>
+            </div>
+            <div>
+              <dt><a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S1_GRD">Copernicus Sentinel-1 GRD</a><span>via Google Earth Engine</span></dt>
+              <dd>Ascending and descending VV/VH C-band radar inputs. GRD_FLOAT linear sigma-0 power was converted to dB for model inputs.</dd>
+            </div>
+          </dl>
         </div>
+
+        <div class="source-group">
+          <h4 class="group-label">Reference labels</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://zenodo.org/records/10068479">Global 30 m annual wetland maps</a><span>2022 layer</span></dt>
+              <dd>Historical swamp, marsh and permanent-water reference classes, plus subtype votes within collected OSM wetland polygons.</dd>
+            </div>
+            <div>
+              <dt><a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></dt>
+              <dd>Collected water and wetland polygons for label construction, and saved country boundaries for the neutral basemap. OSM coverage is incomplete; not every water polygon was treated as permanent water.</dd>
+            </div>
+            <div>
+              <dt><a href="https://zenodo.org/records/15302184">European Wetland Map v5</a></dt>
+              <dd>Peatland evidence in the Polish part of the study area, using class 10.</dd>
+            </div>
+            <div>
+              <dt><a href="https://www.greifswaldmoor.de/global-peatland-database-en.html">Global Peatland Map 2.0</a><span>Greifswald Mire Centre</span></dt>
+              <dd>Peat-dominated class outside Poland. Its approximately 1 km source evidence does not become more precise when aligned to the 20 m grid.</dd>
+            </div>
+            <div>
+              <dt><a href="https://esa-worldcover.org/en/data-access">ESA WorldCover 2021 v200</a></dt>
+              <dd>Separated mapped peat into cropland and selected non-cropland land-cover classes; it does not establish drainage or restoration suitability.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="source-group">
+          <h4 class="group-label">Regional context &amp; facts</h4>
+          <dl class="source-list">
+            <div>
+              <dt><a href="https://savepolesia.org/polesia/">Save Polesia</a> &amp; <a href="https://fzs.org/en/programs/ukraine/wild-polissia/">FZS Wild Polissia</a><span>Frankfurt Zoological Society</span></dt>
+              <dd>Facts about Polissia, regional context and conservation background. The study outline was adapted from the Save Polesia regional map (see <a href="#map-provenance">map notes</a>).</dd>
+            </div>
+            <div>
+              <dt><a href="https://wwf.ua/our-work/freshwater/restoration/">WWF-Ukraine</a></dt>
+              <dd>Facts about Ukrainian bogs and drainage.</dd>
+            </div>
+            <div>
+              <dt><a href="https://7dniv.rv.ua/ekolohiia/vidnovlennia-bolit-rivnenshchyna/">7dniv.rv.ua</a><span>29 October 2026</span></dt>
+              <dd>Details of the Somyne and Syra Pohonia restoration, citing the Government Portal of Ukraine.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <h3>Further reading &amp; tools</h3>
+        <div class="cred-grid">
+          <article class="cred-card">
+            <h4>Data discovery &amp; access</h4>
+            <ul class="link-list">
+              <li><a href="https://cmr.earthdata.nasa.gov/search/site/docs/search/api.html">NASA&rsquo;s CMR API</a><span>Programmatic discovery of NISAR granules, acquisition metadata and footprints used by our acquisition workflow.</span></li>
+              <li><a href="https://search.earthdata.nasa.gov/search">NASA Earthdata Search</a><span>Reviewed for discovering and exploring NASA satellite products.</span></li>
+              <li><a href="https://search.asf.alaska.edu/">ASF Vertex</a><span>Reviewed for SAR product discovery; science products were downloaded directly from ASF using Earthdata authentication.</span></li>
+            </ul>
+          </article>
+          <article class="cred-card">
+            <h4>Technical references</h4>
+            <ul class="link-list">
+              <li><a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide</a><span>NISAR products, data access, GCOV interpretation and processing guidance.</span></li>
+              <li><a href="https://github.com/asc-csa/Synthetic_Aperture_Radar_Tutorial">CSA SAR Python/QGIS tutorial</a><span>A reviewed practical reference for SAR visualization and analysis; its example data were not used in our experiments.</span></li>
+            </ul>
+          </article>
+          <article class="cred-card">
+            <h4>Background reading</h4>
+            <ul class="link-list">
+              <li><a href="https://science.nasa.gov/mission/nisar/societal-benefits/">NISAR Applications White Papers</a><span>NASA&rsquo;s white-paper collection, notably <em>Floods</em> (radar for inundation mapping) and <em>Soil Moisture and Water Resources</em> (moisture and water-resource monitoring). They explain the motivation for using NISAR; they are not validation of BogSignal&rsquo;s model results.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing">NASA Introduction to Remote Sensing</a><span>Sensor characteristics, resolution and Earth-observation concepts.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar">NASA Introduction to SAR</a><span>Radar wavelength, polarization and scattering concepts.</span></li>
+              <li><a href="https://www.earthdata.nasa.gov/data/projects/arset">NASA ARSET</a><span>A catalogue of applied remote-sensing training, including SAR and NISAR.</span></li>
+            </ul>
+            <p class="card-note">Learning resources were reviewed during project research; listing a course does not imply completion of its training.</p>
+          </article>
+          <article class="cred-card">
+            <h4>Presentation inspiration</h4>
+            <ul class="link-list">
+              <li><a href="https://science.nasa.gov/mission/nisar/arcgis-storymaps/">NISAR StoryMaps</a><span>Examples of communicating radar applications through visual stories.</span></li>
+              <li><a href="https://uavsar.jpl.nasa.gov/education/postcards.html">UAVSAR Postcards</a><span>Educational radar imagery and visual explanations. UAVSAR is an airborne sensor; these images were not used as model inputs.</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <h3>Credits</h3>
+        <ul class="credit-list">
+          <li>
+            <img src="/images/cover-river-wetland.jpg" alt="" loading="lazy" />
+            <div><strong>Cover photo</strong><p>By Ladislav Stercell on <a href="https://unsplash.com/photos/a-body-of-water-surrounded-by-trees-and-grass-kdIyhflzJrM">Unsplash</a></p></div>
+          </li>
+          <li>
+            <img src="/images/polesia-case-study-sites.jpg" alt="" loading="lazy" />
+            <div><strong>Case-study sites map</strong><p>A screenshot of the Polesia map from <a href="https://savepolesia.org/polesia/">Save Polesia</a> (Frankfurt Zoological Society) with our site markers added; <a href="https://savepolesia.org/wp-content/uploads/2020/05/Save-Polesia_Website-map_data-sources.pdf">data sources</a> &copy; <a href="http://pg-webstudio.de/">pg-webstudio.de</a>; basemap &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>; site coordinates from Wikipedia.</p></div>
+          </li>
+          <li>
+            <img src="/images/sites/somyne-lake.jpg" alt="" loading="lazy" />
+            <div><strong>Lake Somyne</strong><p><a href="https://commons.wikimedia.org/wiki/File:%D0%9E%D0%B7%D0%B5%D1%80%D0%BE_%D0%A1%D0%BE%D0%BC%D0%B8%D0%BD%D0%B5_(%D0%A1%D0%B0%D1%80%D0%BD%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80-%D0%BD).JPG">Озеро Сомине (Сарненський р-н)</a> by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</p></div>
+          </li>
+          <li>
+            <img src="/images/sites/syra-pohonia.jpg" alt="" loading="lazy" />
+            <div><strong>Syra Pohonia</strong><p><a href="https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%81%D0%B8%D0%B2_%D0%A1%D0%B8%D1%80%D0%B0_%D0%9F%D0%BE%D0%B3%D0%BE%D0%BD%D1%8F._%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D1%96%D0%B4%D0%BD%D0%B5_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BE._%D0%A3%D0%B3%D1%80%D1%83%D0%BF%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F_%D1%88%D0%B5%D0%B9%D1%85%D1%86%D0%B5%D1%80%D1%96%D1%97_%D0%B1%D0%BE%D0%BB%D0%BE%D1%82%D0%BD%D0%BE%D1%97.jpg">Масив Сира Погоня. Перехідне болото</a> by Oksana Golovko, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons; resized</p></div>
+          </li>
+          <li>
+            <img src="/images/sites/cheremske.jpg" alt="" loading="lazy" />
+            <div><strong>Cheremske Nature Reserve</strong><p><a href="https://commons.wikimedia.org/wiki/File:Cherem1.jpg">Cherem1.jpg</a> by an unknown author, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, via Wikimedia Commons</p></div>
+          </li>
+          <li>
+            <span class="credit-tile" aria-hidden="true">Sentinel</span>
+            <div><strong>Satellite imagery</strong><p>Contains modified Copernicus Sentinel data (2026), accessed through Google Earth Engine.</p></div>
+          </li>
+        </ul>
       </section>
     </main>
     <script type="module" src="/src/main.js"></script>

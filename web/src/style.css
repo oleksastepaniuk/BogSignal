@@ -172,7 +172,6 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 
 /* Methods & Sources: one card system for model, limitations, map notes and credits. */
 .cred-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1.5rem 0 1rem; }
-.cred-grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); margin-top:1rem; }
 .cred-card { padding:1.1rem 1.25rem; border:1px solid #c9d4c4; border-radius:.4rem; background:#fff6; min-width:0; }
 .cred-card h3, .cred-card h4 { margin:0 0 .75rem; font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:#4d655b; }
 .cred-card p, .cred-card li, .cred-card dd { font-size:.9rem; line-height:1.55; }
@@ -186,9 +185,47 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 .cred-card a { overflow-wrap:anywhere; }
 .cred-details summary { cursor:pointer; font-weight:600; font-size:.95rem; }
 .cred-details p:empty { display:none; }
-.cred-heading { margin:2rem 0 0; }
-@media(max-width:800px) { .cred-grid-3 { grid-template-columns:1fr; } }
 @media(max-width:600px) { .cred-grid { grid-template-columns:1fr; } }
-.sources-table th { width:32%; vertical-align:top; }
-.sources-table td { white-space:normal; line-height:1.6; vertical-align:top; }
-#credentials > h3 { margin-top:1.8rem; }
+#credentials > h3 { margin:2.75rem 0 .25rem; font-size:1.5rem; letter-spacing:-.02em; }
+#credentials .section-lede { margin:0 0 .5rem; font-size:1rem; color:#4d655b; max-width:48rem; }
+
+/* Report call-to-action: the full report plus its machine-readable data files. */
+.report-cta { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:1rem 2rem; margin:1.25rem 0 1.5rem; padding:1.25rem 1.5rem; border-left:4px solid #197b49; border-radius:.4rem; background:#e8efe4; }
+.report-cta p { margin:0; font-size:1rem; line-height:1.5; }
+.report-cta .eyebrow { font-size:.75rem; font-weight:600; letter-spacing:.1em; color:#4d655b; margin-bottom:.25rem; }
+.button-link { display:inline-block; padding:.7rem 1.1rem; border-radius:.4rem; background:#193b32; color:#fff; font-weight:600; text-decoration:none; white-space:nowrap; }
+.button-link:hover { background:#24654d; }
+.data-files { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:.5rem; margin:0; padding:1rem 0 0; list-style:none; border-top:1px solid #c9d4c4; }
+.data-files a { display:inline-flex; align-items:center; gap:.5rem; padding:.3rem .4rem .3rem .75rem; border:1px solid #a9bcac; border-radius:999px; background:#fff; font-size:.85rem; text-decoration:none; }
+.data-files a:hover { border-color:#24654d; }
+.data-files span { padding:.1rem .4rem; border-radius:999px; background:#e0ebdd; color:#4d655b; font-size:.65rem; font-weight:700; letter-spacing:.08em; }
+@media(max-width:600px) { .report-cta { grid-template-columns:1fr; } .button-link { white-space:normal; } }
+
+/* Sources: grouped name/description rows. */
+.source-group { margin-top:1.75rem; }
+.group-label { margin:0; padding-bottom:.5rem; border-bottom:2px solid #193b32; font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:#4d655b; }
+.source-list { margin:0; }
+.source-list > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:.35rem 2rem; padding:.9rem 0; border-bottom:1px solid #dbe3d7; }
+.source-list dt { font-weight:600; font-size:.95rem; line-height:1.4; }
+.source-list dt a { text-decoration:none; }
+.source-list dt a:hover, .link-list a:hover { text-decoration:underline; }
+.source-list dt span { display:block; margin-top:.2rem; font-size:.8rem; font-weight:400; color:#4d655b; }
+.source-list dd { margin:0; font-size:.9rem; line-height:1.6; }
+@media(max-width:600px) { .source-list > div { grid-template-columns:1fr; } }
+
+/* Further reading: link title over a short muted description. */
+.cred-card .link-list { padding:0; list-style:none; }
+.cred-card .link-list li + li { margin-top:.85rem; }
+.link-list a { display:block; font-weight:600; text-decoration:none; }
+.link-list span { display:block; margin-top:.15rem; font-size:.85rem; color:#4d655b; }
+.cred-card .card-note { margin-top:1rem; padding-top:.75rem; border-top:1px dashed #c9d4c4; font-size:.8rem; color:#4d655b; }
+
+/* Credits: thumbnail + attribution. */
+.credit-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,21rem),1fr)); gap:1rem; margin:1rem 0 0; padding:0; list-style:none; }
+.credit-list li { display:flex; gap:1rem; align-items:flex-start; padding:.75rem; border:1px solid #c9d4c4; border-radius:.4rem; background:#fff6; min-width:0; }
+.credit-list img, .credit-tile { flex:none; width:5.5rem; aspect-ratio:1; border-radius:.3rem; object-fit:cover; }
+.credit-tile { display:grid; place-items:center; background:linear-gradient(135deg,#193b32,#4f7f63); color:#fff; font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.credit-list div { min-width:0; }
+.credit-list strong { display:block; font-size:.95rem; }
+.credit-list p { margin:.25rem 0 0; font-size:.8rem; line-height:1.5; color:#4d655b; }
+.credit-list a { overflow-wrap:anywhere; }
