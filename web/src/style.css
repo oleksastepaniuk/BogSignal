@@ -216,7 +216,8 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
 /* Further reading: link title over a short muted description. */
 .cred-card .link-list { padding:0; list-style:none; }
 .cred-card .link-list li + li { margin-top:.85rem; }
-.link-list a { display:block; font-weight:600; text-decoration:none; }
+.link-list > li > a { display:block; font-weight:600; text-decoration:none; }
+.link-list span a { display:inline; font-weight:600; text-decoration:underline; }
 .link-list span { display:block; margin-top:.15rem; font-size:.85rem; color:#4d655b; }
 .cred-card .card-note { margin-top:1rem; padding-top:.75rem; border-top:1px dashed #c9d4c4; font-size:.8rem; color:#4d655b; }
 
