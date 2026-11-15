@@ -169,3 +169,23 @@ td small,th small { display:block; font-size:.75rem; font-weight:400; white-spac
   border:2px solid #fff; border-radius:50%; background:#d9480f; box-shadow:0 0 0 1px #d9480f;
 }
 @media(max-width:700px) { .sites { grid-template-columns:1fr; } }
+
+/* Methods & Sources: one card system for model, limitations, map notes and credits. */
+.cred-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1.5rem 0 1rem; }
+.cred-grid-3 { grid-template-columns:repeat(3,minmax(0,1fr)); margin-top:1rem; }
+.cred-card { padding:1.1rem 1.25rem; border:1px solid #c9d4c4; border-radius:.4rem; background:#fff6; min-width:0; }
+.cred-card h3, .cred-card h4 { margin:0 0 .75rem; font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:#4d655b; }
+.cred-card p, .cred-card li, .cred-card dd { font-size:.9rem; line-height:1.55; }
+.cred-card p { margin:.75rem 0 0; }
+.cred-card ul { margin:0; padding-left:1.1rem; }
+.cred-card li + li { margin-top:.5rem; }
+.cred-card dl { margin:0; }
+.cred-card dt { font-weight:600; font-size:.9rem; }
+.cred-card dd { margin:.15rem 0 .75rem; }
+.cred-card dd:last-child { margin-bottom:0; }
+.cred-card a { overflow-wrap:anywhere; }
+.cred-details summary { cursor:pointer; font-weight:600; font-size:.95rem; }
+.cred-details p:empty { display:none; }
+.cred-heading { margin:2rem 0 0; }
+@media(max-width:800px) { .cred-grid-3 { grid-template-columns:1fr; } }
+@media(max-width:600px) { .cred-grid { grid-template-columns:1fr; } }
